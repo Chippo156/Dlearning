@@ -1,0 +1,22 @@
+admin:
+  username: admin
+  password: admin
+  email: admin@gmail.com
+server:
+  port: 8080
+spring:
+  application:
+    name: D learning_Service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/d_learning
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
+
+
