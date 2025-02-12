@@ -25,6 +25,7 @@ import java.util.Optional;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Slf4j
 public class ApplicationConfiguration {
+
     PasswordEncoder passwordEncoder;
     @NonFinal
     @Value("${admin.username}")

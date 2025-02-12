@@ -20,3 +20,7 @@ spring:
 
 
 
+jwt:
+  secretKey: 90c85b588e8d468d45cf5a70a5517dc6507a0655d7ea0664f6eb70dd4d76394e
+  valid-duration: 86400
+  refresh-duration: 86400
