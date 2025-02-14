@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #2878EB;
+  --secondary: #F14D5D;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #ECF4FF;
+  --dark: #120F2D;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.content-page{
+  margin-top: 200px;
+}
+.header-page {
+  position: fixed;
+  top: 40px;
+  /* Điều chỉnh theo chiều cao của TopBar */
+  left: 0;
+
+  width: 100%;
+  z-index: 998;
+  /* Nằm dưới TopBar */
+  
+  
+  /* Chiều cao của Header */
+
+  
+}
+.content-page {
+  margin-top: 150px;
+}
+.fixed-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+.points-display {
+  font-size: 1rem;
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #f0f8ff;
+  border-radius: 20px;
+  color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: 0px;
+  white-space: nowrap;
+}
+
+.points-display:hover {
+  cursor: pointer;
+}
+/* filepath: /d:/SpringBoot/Dlearning_project/dlearning-frontend/src/index.css */
+.navbar-nav .nav-link {
+  color: #000;
+  padding: 10px 15px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #007bff;
+}
+
+.hover-navbar {
+  position: relative;
+}
+
+.hover-navbar::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #007bff;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out;
+}
+
+
+.hover-navbar:hover::before,
+.hover-navbar.active::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: #007bff;
+  transition: all 0.3s ease-in-out;
+}
