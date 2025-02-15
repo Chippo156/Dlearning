@@ -11,12 +11,15 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.IntrospectRequest;
+import org.learning.dlearning_backend.dto.request.RefreshTokenRequest;
 import org.learning.dlearning_backend.dto.request.SignInRequest;
 import org.learning.dlearning_backend.dto.response.IntrospectResponse;
-import org.learning.dlearning_backend.dto.response.SignInResponse;
+import org.learning.dlearning_backend.dto.response.AuthenticationResponse;
 import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.exception.ErrorCode;
+import org.learning.dlearning_backend.model.InvalidDateToken;
 import org.learning.dlearning_backend.model.User;
+import org.learning.dlearning_backend.repository.InvalidTokenRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,6 +40,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService {
     UserRepository userRepository;
+    InvalidTokenRepository invalidTokenRepository;
 
     @NonFinal
     @Value("${jwt.secretKey}")
@@ -49,7 +53,7 @@ public class AuthenticationService {
     @NonFinal
     @Value("${jwt.refresh-duration}")
     protected long REFRESHABLE_DURATION;
-    public SignInResponse signIn(SignInRequest request) {
+    public AuthenticationResponse signIn(SignInRequest request) {
         log.info("User {} is signing in", request.getEmail());
 
         var user = userRepository.findByEmail(request.getEmail())
@@ -67,7 +71,7 @@ public class AuthenticationService {
 
         String role = user.getRole().getName();
 
-        return SignInResponse.builder()
+        return AuthenticationResponse.builder()
                 .token(token)
                 .role(role)
                 .authenticated(Boolean.TRUE)
@@ -106,8 +110,25 @@ public class AuthenticationService {
         return joiner.toString();
     }
 
-    public String generateRefreshToken(User user) {
-        return null;
+    public AuthenticationResponse generateRefreshToken(RefreshTokenRequest request) throws ParseException, JOSEException {
+        var signedJWT = verification(request.getToken(), false);
+        var jid = signedJWT.getJWTClaimsSet().getJWTID();
+        var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        InvalidDateToken invalidDateToken = InvalidDateToken.builder()
+                .id(jid)
+                .expiryTime(expiryTime)
+                .build();
+
+        invalidTokenRepository.save(invalidDateToken);
+        var email = signedJWT.getJWTClaimsSet().getSubject();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        return AuthenticationResponse.builder()
+                .authenticated(Boolean.TRUE)
+                .token(generateToken(user))
+                .role(user.getRole().getName())
+                .build();
     }
 
 
@@ -128,6 +149,10 @@ public class AuthenticationService {
             if (!verified) {
                 throw new AppException(ErrorCode.INVALID_TOKEN);
             }
+
+            if(!invalidTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
+                throw new AppException(ErrorCode.INVALID_TOKEN);
+
             return signedJWT;
 
         }catch (ParseException | JOSEException e){

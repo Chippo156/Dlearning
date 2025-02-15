@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class SignInResponse {
+public class AuthenticationResponse {
     private String token;
-    private String refreshToken;
-    private Long userId;
+    private String role;
+    private boolean authenticated;
 }

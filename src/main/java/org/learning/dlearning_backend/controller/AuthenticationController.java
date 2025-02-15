@@ -1,14 +1,18 @@
 package org.learning.dlearning_backend.controller;
 
+import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.IntrospectRequest;
+import org.learning.dlearning_backend.dto.request.RefreshTokenRequest;
 import org.learning.dlearning_backend.dto.request.SignInRequest;
 import org.learning.dlearning_backend.dto.response.IntrospectResponse;
 import org.learning.dlearning_backend.dto.response.ResponseData;
-import org.learning.dlearning_backend.dto.response.SignInResponse;
+import org.learning.dlearning_backend.dto.response.AuthenticationResponse;
 import org.learning.dlearning_backend.service.impl.AuthenticationService;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,10 +22,10 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/sign-in")
-    ResponseData<SignInResponse> signIn(@RequestBody SignInRequest request) {
+    ResponseData<AuthenticationResponse> signIn(@RequestBody SignInRequest request) {
         log.info("User {} is signing in", request.getEmail());
         var response = authenticationService.signIn(request);
-        return ResponseData.<SignInResponse>builder()
+        return ResponseData.<AuthenticationResponse>builder()
                 .data(response)
                 .code(200)
                 .message("Sign in success")
@@ -35,6 +39,16 @@ public class AuthenticationController {
                 .data(response)
                 .code(200)
                 .message("Sign in success")
+                .build();
+    }
+    @PostMapping("/refresh")
+    ResponseData<AuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request) throws ParseException, JOSEException {
+        log.info("Refresh token");
+        var response = authenticationService.generateRefreshToken(request);
+        return ResponseData.<AuthenticationResponse>builder()
+                .data(response)
+                .code(200)
+                .message("Refresh token success")
                 .build();
     }
 }
