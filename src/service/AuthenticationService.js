@@ -1,4 +1,5 @@
 import axios from "../utils/CustomAxios";
+import { toast } from "react-toastify";
 
 export const login = async (email, password) => {
   try {
@@ -12,7 +13,6 @@ export const login = async (email, password) => {
     return response.data;
   } catch (error) {
     console.error("Erorr logging in : ", error);
-    throw new Error(error);
   }
 };
 export const introspect = async (token) => {

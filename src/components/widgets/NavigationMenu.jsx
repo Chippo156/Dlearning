@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 
 export const NavigationMenu = ({ isActive, underlineRef }) => {
   return (
-    <div className="navbar-nav gap-4 mx-auto py-0 position-relative">
+    <div className="navbar-nav gap-5 gap-sm-1 mx-auto py-0 position-relative">
       <NavLink
-        to="/home"
+        to="/"
         className={`nav-item nav-link rounded hover-navbar ${
-          isActive("/home") ? "active" : ""
+          isActive("/") ? "active" : ""
         }`}
       >
         Home

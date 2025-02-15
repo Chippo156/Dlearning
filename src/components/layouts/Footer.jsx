@@ -51,16 +51,16 @@ export const Footer = () => {
                 <i className="fa fa-envelope mr-2"></i>info@example.com
               </p>
               <div className="d-flex justify-content-start mt-4">
-                <Link className="text-white mr-4" to="/">
+                <Link className="text-white mr-4  text-decoration-none" to="/">
                   <i className="fab fa-2x fa-twitter"></i>
                 </Link>
-                <Link className="text-white mr-4" to="/">
+                <Link className="text-white mr-4  text-decoration-none" to="/">
                   <i className="fab fa-2x fa-facebook-f"></i>
                 </Link>
-                <Link className="text-white mr-4" to="/">
+                <Link className="text-white mr-4  text-decoration-none" to="/">
                   <i className="fab fa-2x fa-linkedin-in"></i>
                 </Link>
-                <Link className="text-white" to="/">
+                <Link className="text-white  text-decoration-none" to="/">
                   <i className="fab fa-2x fa-instagram"></i>
                 </Link>
               </div>
@@ -68,19 +68,31 @@ export const Footer = () => {
             <div className="col-md-4 mb-5">
               <h3 className="text-white mb-4">Our Courses</h3>
               <div className="d-flex flex-column">
-                <Link className="text-white-50 mb-2" to="/">
+                <Link
+                  className="text-white-50 mb-2  text-decoration-none"
+                  to="/"
+                >
                   <i className="fa fa-angle-right mr-2"></i>Web Design
                 </Link>
-                <Link className="text-white-50 mb-2" to="/">
+                <Link
+                  className="text-white-50 mb-2  text-decoration-none"
+                  to="/"
+                >
                   <i className="fa fa-angle-right mr-2"></i>Apps Design
                 </Link>
-                <Link className="text-white-50 mb-2" to="/">
+                <Link
+                  className="text-white-50 mb-2  text-decoration-none"
+                  to="/"
+                >
                   <i className="fa fa-angle-right mr-2"></i>Marketing
                 </Link>
-                <Link className="text-white-50 mb-2" to="/">
+                <Link
+                  className="text-white-50 mb-2  text-decoration-none"
+                  to="/"
+                >
                   <i className="fa fa-angle-right mr-2"></i>Research
                 </Link>
-                <Link className="text-white-50" to="/">
+                <Link className="text-white-50  text-decoration-none" to="/">
                   <i className="fa fa-angle-right mr-2"></i>SEO
                 </Link>
               </div>
@@ -88,19 +100,31 @@ export const Footer = () => {
             <div className="col-md-4 mb-5">
               <h3 className="text-white mb-4">Quick Links</h3>
               <div className="d-flex flex-column">
-                <Link className="text-white-50 mb-2" to="/">
-                  <i className="fa fa-angle-right mr-2"></i>Privacy Policy
+                <Link
+                  className="text-white-50 mb-2 text-decoration-none"
+                  to="/"
+                >
+                  <i className="fa fa-angle-right mr-2 "></i>Privacy Policy
                 </Link>
-                <Link className="text-white-50 mb-2" to="/">
+                <Link
+                  className="text-white-50 mb-2  text-decoration-none"
+                  to="/"
+                >
                   <i className="fa fa-angle-right mr-2"></i>Terms & Condition
                 </Link>
-                <Link className="text-white-50 mb-2" to="/">
+                <Link
+                  className="text-white-50 mb-2  text-decoration-none"
+                  to="/"
+                >
                   <i className="fa fa-angle-right mr-2"></i>Regular FAQs
                 </Link>
-                <Link className="text-white-50 mb-2" to="/">
+                <Link
+                  className="text-white-50 mb-2  text-decoration-none"
+                  to="/"
+                >
                   <i className="fa fa-angle-right mr-2"></i>Help & Support
                 </Link>
-                <Link className="text-white-50" to="/">
+                <Link className="text-white-50  text-decoration-none" to="/">
                   <i className="fa fa-angle-right mr-2"></i>Contact
                 </Link>
               </div>
@@ -127,19 +151,13 @@ export const Footer = () => {
               <p className="m-0">
                 Designed by
                 <a className="text-white" href="https://htmlcodex.com">
-                  HTML Codex
+                  Chippo
                 </a>
               </p>
             </div>
           </div>
         </div>
       </div>
-      <Link
-        to="/"
-        className="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"
-      >
-        <i className="fa fa-angle-double-up"></i>
-      </Link>
     </div>
   );
 };
