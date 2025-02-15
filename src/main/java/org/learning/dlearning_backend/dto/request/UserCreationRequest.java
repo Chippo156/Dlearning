@@ -23,10 +23,10 @@ public class UserCreationRequest {
     @Size(min = 6, message = "INVALID_PASSWORD")
     private String password;
 
-    @JsonProperty("first_name")
+
     private String firstName;
 
-    @JsonProperty("last_name")
+
     private String lastName;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")

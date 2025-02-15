@@ -35,5 +35,21 @@ public class UserController {
                 .build();
 
     }
+    @GetMapping("/check-exist-user")
+    public ResponseData<UserResponse> checkExistUser(@RequestParam String email){
+        if(userService.findByUsername(email) != null){
+            return ResponseData.<UserResponse>builder()
+                    .data(null)
+                    .message("User already exists")
+                    .code(400)
+                    .build();
+        }else{
+            return ResponseData.<UserResponse>builder()
+                    .data(null)
+                    .message("User not found")
+                    .code(404)
+                    .build();
+        }
+    }
 
 }

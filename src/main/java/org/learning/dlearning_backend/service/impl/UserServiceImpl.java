@@ -19,6 +19,8 @@ import org.mapstruct.Mapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -44,4 +46,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
+
+    @Override
+    public UserResponse findByUsername(String username) {
+
+            Optional<User> user = userRepository.findByEmail(username);
+        return user.map(userMapper::toUserResponse).orElse(null);
+
+    }
+
+
 }

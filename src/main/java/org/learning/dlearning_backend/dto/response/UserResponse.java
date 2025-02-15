@@ -15,9 +15,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserResponse {
     private String email;
-    @JsonProperty("first_name")
+
     private String firstName;
-    @JsonProperty("last_name")
+
     private String lastName;
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;

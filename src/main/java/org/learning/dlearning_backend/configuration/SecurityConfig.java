@@ -33,6 +33,7 @@ public class SecurityConfig {
 
     public static final String[] publicList = {
             "/api/v1/user/create-user",
+            "/api/v1/user/check-exist-user",
             "/api/v1/auth/**",
     };
     @Bean
