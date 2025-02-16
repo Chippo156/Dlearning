@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.IntrospectRequest;
+import org.learning.dlearning_backend.dto.request.LogoutRequest;
 import org.learning.dlearning_backend.dto.request.RefreshTokenRequest;
 import org.learning.dlearning_backend.dto.request.SignInRequest;
 import org.learning.dlearning_backend.dto.response.IntrospectResponse;
@@ -111,7 +112,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse generateRefreshToken(RefreshTokenRequest request) throws ParseException, JOSEException {
-        var signedJWT = verification(request.getToken(), false);
+        var signedJWT = verification(request.getToken(), true);
         var jid = signedJWT.getJWTClaimsSet().getJWTID();
         var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
@@ -130,8 +131,6 @@ public class AuthenticationService {
                 .role(user.getRole().getName())
                 .build();
     }
-
-
     public SignedJWT verification(String token, boolean isRefresh) throws JOSEException, ParseException {
         if (token == null || token.trim().isEmpty()) {
             throw new AppException(ErrorCode.UNAUTHORIZED);
@@ -177,6 +176,26 @@ public class AuthenticationService {
                 .scope(scope)
                 .build();
     }
+    public void logout(LogoutRequest request){
+        try{
+            var signedJWT = verification((request.getToken()),false);
+            String jid = signedJWT.getJWTClaimsSet().getJWTID();
+            if(!invalidTokenRepository.existsById(jid)){
+                invalidTokenRepository.save(InvalidDateToken.builder()
+                        .id(jid)
+                        .expiryTime(signedJWT.getJWTClaimsSet().getExpirationTime())
+                        .build());
+            }
+            else{
+               log.info("Token already invalidated");
+            }
+        }catch (Exception e){
+            log.error("Cannot logout", e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
 
 
 }

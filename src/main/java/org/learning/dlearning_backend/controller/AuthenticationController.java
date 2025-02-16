@@ -4,6 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.IntrospectRequest;
+import org.learning.dlearning_backend.dto.request.LogoutRequest;
 import org.learning.dlearning_backend.dto.request.RefreshTokenRequest;
 import org.learning.dlearning_backend.dto.request.SignInRequest;
 import org.learning.dlearning_backend.dto.response.IntrospectResponse;
@@ -49,6 +50,15 @@ public class AuthenticationController {
                 .data(response)
                 .code(200)
                 .message("Refresh token success")
+                .build();
+    }
+    @PostMapping("/logout")
+    ResponseData<Void> logout(@RequestBody LogoutRequest request) {
+        log.info("Logout token");
+        authenticationService.logout(request);
+        return ResponseData.<Void>builder()
+                .code(200)
+                .message("Logout success")
                 .build();
     }
 }
