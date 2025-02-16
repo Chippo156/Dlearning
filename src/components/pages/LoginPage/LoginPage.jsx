@@ -53,7 +53,7 @@ export const LoginPage = () => {
               if (introspectData && introspectData.data.valid) {
                 notifySuccess("Login successfully.");
                 if (introspectData.data.scope === "USER") {
-                  navigate("/login");
+                  navigate("/");
                 } else if (introspectData.data.scope === "ADMIN") {
                   // navigate("/admin");
                 } else if (introspectData.data.scope === "TEACHER") {
