@@ -80,9 +80,8 @@ public class AuthenticationService {
     }
 
     public String generateToken(User user) {
-         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.HS256)
-                .type(JOSEObjectType.JWT)
-                .build();
+         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
          JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getEmail())
                 .issuer("dlearning")
@@ -149,7 +148,7 @@ public class AuthenticationService {
                 throw new AppException(ErrorCode.INVALID_TOKEN);
             }
 
-            if(!invalidTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
+            if(invalidTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
                 throw new AppException(ErrorCode.INVALID_TOKEN);
 
             return signedJWT;

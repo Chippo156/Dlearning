@@ -18,6 +18,9 @@ public enum ErrorCode {
     INVALID_TOKEN(401, "Invalid token", HttpStatus.UNAUTHORIZED),
     USER_NOT_EXCITED(401, "User not excited", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(400, "Unauthenticated", HttpStatus.UNAUTHORIZED),
+    EMAIL_INVALID(400, "Email invalid", HttpStatus.BAD_REQUEST),
+    ACCESS_DENIED(403, "Only teachers and Admins have the right to create or delete courses.", HttpStatus.FORBIDDEN),
+
     ;
     private final int code;
     private final String message;
