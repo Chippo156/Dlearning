@@ -7,8 +7,9 @@ export const login = async (email, password) => {
       email,
       password,
     });
-    if (response.data.code === 400) {
-      throw new Error(response.data.message);
+    if (response.data.code === 401) {
+      toast.error("Invalid email or password");
+      return;
     }
     return response.data;
   } catch (error) {
@@ -26,4 +27,11 @@ export const introspect = async (token) => {
     console.error("Erorr logging in : ", error);
     throw new Error(error);
   }
+};
+
+export const logout = async (token) => {
+  const response = await axios.post("api/v1/auth/logout", {
+    token: token,
+  });
+  return response;
 };
