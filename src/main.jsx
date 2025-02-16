@@ -5,13 +5,15 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BacktoTop } from "./utils/BacktoTop.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <BacktoTop />
-
-      <App />
+      <AuthProvider>
+        <BacktoTop />
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 );

@@ -14,7 +14,7 @@ export const NavigationMenu = ({ isActive, underlineRef }) => {
       <NavLink
         to="/certificate"
         className={`nav-item nav-link rounded hover-navbar ${
-          isActive("/about") ? "active" : ""
+          isActive("/certificate") ? "active" : ""
         }`}
       >
         Certificate
@@ -29,7 +29,7 @@ export const NavigationMenu = ({ isActive, underlineRef }) => {
       </NavLink>
       <NavLink
         to="/community"
-        className={`nav-item nav-link rounded  hover-navbar${
+        className={`nav-item nav-link rounded  hover-navbar ${
           isActive("/comunity") ? "active" : ""
         }`}
       >
@@ -37,11 +37,19 @@ export const NavigationMenu = ({ isActive, underlineRef }) => {
       </NavLink>
       <NavLink
         to="/contact"
-        className={`nav-item nav-link rounded hover-navbar${
+        className={`nav-item nav-link rounded hover-navbar ${
           isActive("/contact") ? "active" : ""
         }`}
       >
         Contact
+      </NavLink>
+      <NavLink
+        to="/about"
+        className={`nav-item nav-link rounded hover-navbar ${
+          isActive("/about") ? "active" : ""
+        }`}
+      >
+        About
       </NavLink>
       <div className="underline" ref={underlineRef}></div>
     </div>
