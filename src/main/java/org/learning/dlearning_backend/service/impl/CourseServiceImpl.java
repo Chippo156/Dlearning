@@ -69,6 +69,7 @@ public class CourseServiceImpl implements CourseService {
                 .currentPage(page)
                 .pageSize(size)
                 .totalElements(courses.getTotalElements())
+                .totalPages(courses.getTotalPages())
                 .result(courseResponses)
                 .build();
 
