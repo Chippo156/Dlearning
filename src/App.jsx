@@ -12,6 +12,7 @@ import { MainLayout } from "./router/MainLayout";
 import { AboutPage } from "./components/pages/AboutPage/AboutPage";
 import AccessDenied from "./components/pages/ErrorPage/AccessDenied";
 import { NotFound } from "./components/pages/ErrorPage/NotFound";
+import { CoursePage } from "./components/pages/CoursePage/CoursePage";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path="/about" element={<AboutPage />}></Route>
       </Route>
       <Route element={<HeaderAndFooterRoute />}>
+        <Route path="/courses" element={<CoursePage />}></Route>
+
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
         <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
       </Route>

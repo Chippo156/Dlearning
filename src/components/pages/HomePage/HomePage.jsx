@@ -9,12 +9,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAllCourses } from "../../../service/CourseService";
 import { OurCourse } from "./components/OurCourse";
+import LoadingSpinner from "../../../utils/LoadingSpinner";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+
 export const HomePage = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [course, setCourse] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(4);
+  const [hasMore, setHasMore] = useState(true); // Trạng thái có còn dữ liệu không
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.title = "Home Page";
@@ -22,6 +28,7 @@ export const HomePage = () => {
       try {
         const response = await getAllCourses(currentPage, pageSize);
         const { result, totalPages } = response.data;
+        toast.success("Welcome to our website!");
 
         if (currentPage === 1) {
           setCourse(result);
@@ -35,15 +42,25 @@ export const HomePage = () => {
           });
         }
         if (currentPage >= totalPages) {
-          return;
+          setHasMore(false);
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCourse();
   }, [currentPage, pageSize]);
 
+  const loadMoreCourses = () => {
+    if (hasMore) {
+      setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+    }
+  };
+  if (loading && currentPage === 1) {
+    return <LoadingSpinner />;
+  }
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }} // Hiệu ứng ban đầu: ẩn và dịch trái
@@ -54,7 +71,11 @@ export const HomePage = () => {
     >
       <EducationHighlights />
       <IntroSection />
-      <OurCourse courses={course} />
+      <OurCourse
+        courses={course}
+        hasMore={hasMore}
+        loadMoreCourses={loadMoreCourses}
+      />
       <InstructorsSection />
       <FeedbackSection />
       <div className="container-fluid py-5">
@@ -65,6 +86,7 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000}></ToastContainer>
     </motion.div>
   );
 };

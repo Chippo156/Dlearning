@@ -1,17 +1,14 @@
-import { Card, Image, Rate } from "antd";
+import { Button, Card, Image, Rate } from "antd";
 import Meta from "antd/es/card/Meta";
 import { FaRegClock } from "react-icons/fa";
 import { GiTeacher } from "react-icons/gi";
 import { MdFavorite } from "react-icons/md";
 import { Link } from "react-router-dom";
 export const OurCourse = (props) => {
-  const { courses } = props;
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-  };
+  const { courses, hasMore, loadMoreCourses } = props;
+
   return (
-    <div className="container px-0 py-5">
+    <div className=" px-5 py-5 ">
       <div className="row mx-0 justify-content-center pt-5">
         <div className="col-lg-6">
           <div className="section-title text-center position-relative mb-4">
@@ -27,11 +24,10 @@ export const OurCourse = (props) => {
         {courses.map((course) => (
           <div className="col-lg-3 col-md-6 mb-4" key={course.id}>
             <Card
-              className="d-flex align-items-center justify-content-center flex-column"
+              className="d-flex align-items-center justify-content-center flex-column border-1 "
               hoverable
               cover={
                 <Image
-                  sizes="large"
                   style={{ height: "300px" }}
                   alt="example"
                   src={
@@ -47,8 +43,8 @@ export const OurCourse = (props) => {
                 title={course.title}
                 description={course.description}
               />
-              <div>
-                <Rate allowHalf defaultValue={course.rating} />
+              <div className="d-flex justify-content-center align-items-center mb-3">
+                <Rate allowHalf defaultValue={4} />
               </div>
               <div className="course-card-custom-footer">
                 <div className="course-card-footer-item">
@@ -72,19 +68,20 @@ export const OurCourse = (props) => {
         ))}
       </div>
 
-      {/* <div className="row justify-content-center mt-4">
+      <div className="row justify-content-center mt-4">
         {hasMore ? (
-          <button
-            className="btn btn-primary"
-            style={{ width: "120px" }}
+          <Button
+            type="primary"
+            size="large"
+            style={{ width: "150px" }}
             onClick={loadMoreCourses}
           >
             Show more
-          </button>
+          </Button>
         ) : (
           <p className="text-center">All courses loaded</p>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };
