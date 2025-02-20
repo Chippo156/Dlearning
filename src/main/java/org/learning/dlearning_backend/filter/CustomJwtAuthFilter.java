@@ -1,6 +1,8 @@
 package org.learning.dlearning_backend.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,15 +18,14 @@ import java.io.IOException;
 
 @Component
 public class CustomJwtAuthFilter extends OncePerRequestFilter {
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
-       //log content type ra cho tôi
-            // Log content type and other request details for debuggin
-           filterChain.doFilter(request, response);
-        }
-        catch (ExpiredTokenException exception){
+    protected void doFilterInternal(@Nonnull  HttpServletRequest request,
+                                    @Nonnull HttpServletResponse response,
+                                    @Nonnull FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            filterChain.doFilter(request, response);
+        }catch (ExpiredTokenException exception) {
             ErrorCode errorCode = exception.getErrorCode();
             ResponseData<Object> apiResponse = ResponseData.builder()
                     .code(errorCode.getCode())

@@ -2,11 +2,9 @@ package org.learning.dlearning_backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.dto.request.BuyCourseRequest;
 import org.learning.dlearning_backend.dto.request.CourseCreationRequest;
-import org.learning.dlearning_backend.dto.response.CourseCreationResponse;
-import org.learning.dlearning_backend.dto.response.CourseResponse;
-import org.learning.dlearning_backend.dto.response.PageResponse;
-import org.learning.dlearning_backend.dto.response.ResponseData;
+import org.learning.dlearning_backend.dto.response.*;
 import org.learning.dlearning_backend.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +38,23 @@ public class CourseController {
                 .message("Get All Courses Successfully")
                 .code(HttpStatus.OK.value())
                 .data(courseService.getAllCourses(page,size))
+                .build();
+    }
+    @GetMapping("/{id}")
+    public ResponseData<CourseResponse> getCourseById(@PathVariable Long id){
+        return ResponseData.<CourseResponse>builder()
+                .message("Get Course Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.getCourseById(id))
+                .build();
+    }
+
+    @PostMapping("/buy-course")
+    public ResponseData<BuyCourseResponse> buyCourse(@RequestBody BuyCourseRequest request){
+        return ResponseData.<BuyCourseResponse>builder()
+                .code(HttpStatus.CREATED.value())
+                .message("Buy Course Successfully")
+                .data(courseService.buyCourse(request))
                 .build();
     }
 

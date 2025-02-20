@@ -35,6 +35,7 @@ public class SecurityConfig {
             "/api/v1/user/create-user",
             "/api/v1/user/check-exist-user",
             "/api/v1/auth/**",
+            "/api/v1/courses/**"
     };
     @Bean
     public PasswordEncoder passwordEncoder(){

@@ -1,7 +1,9 @@
 package org.learning.dlearning_backend.configuration;
 
+import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
+import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.service.impl.AuthenticationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -12,6 +14,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.text.ParseException;
 import java.util.Objects;
 
 @Component
@@ -25,14 +28,12 @@ public class CustomJwtDecoder implements JwtDecoder {
     public CustomJwtDecoder(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-
     private NimbusJwtDecoder nimbusJwtDecoder = null;
-
     @Override
     public Jwt decode(String token) throws JwtException {
         try {
             authenticationService.verification(token, false);
-        } catch (Exception e) {
+        } catch (JOSEException | ParseException e) {
             throw new JwtException(e.getMessage());
         }
         if (Objects.isNull(nimbusJwtDecoder)) {

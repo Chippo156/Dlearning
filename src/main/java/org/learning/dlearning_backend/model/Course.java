@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.CourseLevel;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "courses")
 @Setter
@@ -49,6 +51,10 @@ public class Course extends AbstractEntity<Long> {
     @JoinColumn(name = "author_id")
     @JsonIgnore
     User author;
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<Enrollment> enrollments;
 
     @PrePersist
     private void prePersist() {

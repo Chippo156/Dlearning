@@ -18,6 +18,8 @@ import org.learning.dlearning_backend.dto.response.IntrospectResponse;
 import org.learning.dlearning_backend.dto.response.AuthenticationResponse;
 import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.exception.ErrorCode;
+import org.learning.dlearning_backend.exception.ExpiredTokenException;
+import org.learning.dlearning_backend.exception.InvalidTokenException;
 import org.learning.dlearning_backend.model.InvalidDateToken;
 import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.InvalidTokenRepository;
@@ -135,40 +137,33 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
         JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
-        try{
+
             SignedJWT signedJWT = SignedJWT.parse(token);
             Date expiryTime = (isRefresh) ?
                     new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESHABLE_DURATION, ChronoUnit.HOURS).toEpochMilli()) :
                     signedJWT.getJWTClaimsSet().getExpirationTime();
             if (expiryTime.before(new Date())) {
-                throw new AppException(ErrorCode.EXPIRED_TOKEN);
+                throw  new ExpiredTokenException();
             }
             var verified = signedJWT.verify(verifier);
             if (!verified) {
-                throw new AppException(ErrorCode.INVALID_TOKEN);
+                throw new InvalidTokenException();
             }
 
             if(invalidTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
-                throw new AppException(ErrorCode.INVALID_TOKEN);
+                throw new InvalidTokenException();
 
             return signedJWT;
-
-        }catch (ParseException | JOSEException e){
-            log.error("Cannot verify token", e);
-            throw new RuntimeException(e.getMessage());
-        }
-
     }
-    public IntrospectResponse introspect(IntrospectRequest request){
+    public IntrospectResponse introspect(IntrospectRequest request) throws ParseException, JOSEException {
         var token = request.getToken();
         boolean isValid = true;
         String scope = "";
         try{
             SignedJWT signedJWT = verification(token,false);
             scope = (String) signedJWT.getJWTClaimsSet().getClaim("scope");
-        } catch (AppException | JOSEException | ParseException e) {
+        } catch (AppException e) {
             isValid = false;
-            throw new AppException(ErrorCode.INVALID_TOKEN);
         }
         return IntrospectResponse.builder()
                 .valid(isValid)
