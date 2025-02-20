@@ -25,7 +25,7 @@ export const LoginPage = () => {
       return;
     }
     if (token) {
-      introspect(token)
+      introspect()
         .then((introspectData) => {
           if (introspectData.data.valid) {
             navigate("/");
@@ -55,7 +55,7 @@ export const LoginPage = () => {
                 if (introspectData.data.scope === "USER") {
                   navigate("/");
                 } else if (introspectData.data.scope === "ADMIN") {
-                  // navigate("/admin");
+                  navigate("/");
                 } else if (introspectData.data.scope === "TEACHER") {
                   // navigate("/manager-courses");
                 }

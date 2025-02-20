@@ -16,16 +16,26 @@ export const login = async (email, password) => {
     console.error("Erorr logging in : ", error);
   }
 };
-export const introspect = async (token) => {
+export const introspect = async () => {
   try {
-    const response = await axios.post("api/v1/auth/introspect", { token });
-    if (response.data.code === 400) {
-      throw new Error(response.data.message);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Token is missing");
     }
-    return response.data;
+    const response = await axios.post(`api/v1/auth/introspect`, {
+      token: token,
+    });
+
+    if (response.data && response.data.data) {
+      return response.data.data;
+    } else {
+      throw new Error("Invalid introspect response structure");
+    }
   } catch (error) {
-    console.error("Erorr logging in : ", error);
-    throw new Error(error);
+    const errorMessage =
+      error.response?.data?.message || "Failed to introspect token";
+
+    throw new Error(errorMessage);
   }
 };
 

@@ -1,11 +1,17 @@
 import { div } from "framer-motion/client";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { NavigationMenu } from "../widgets/NavigationMenu";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { Favourite } from "../widgets/Favourite";
 import { motion } from "framer-motion";
 import { ProfileDropdown } from "../widgets/ProfileDropdown";
+import { HandleLogout } from "../../service/OAuth2/HandleLogout";
+import AuthContext from "../../context/AuthContext";
 export const Header = () => {
+  const authContext = useContext(AuthContext);
+  const location = useLocation();
+  const { handleLogout } = HandleLogout();
+
   const underlineRef = useRef(null);
   const role = "USER";
   const points = "6";
@@ -51,7 +57,10 @@ export const Header = () => {
                 </span>
               </div>
               <Favourite role={role} />
-              <ProfileDropdown />
+              <ProfileDropdown
+                isTokenValid={authContext.authenticated}
+                handleLogout={handleLogout}
+              />
             </div>
           </div>
         </nav>

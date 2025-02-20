@@ -9,9 +9,10 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (!token) {
       setAuthenticated(false);
+      return;
     }
     try {
-      const result = await introspect(token);
+      const result = await introspect();
       setAuthenticated(result.valid);
     } catch (error) {
       console.error("Error refreshing token: ", error);
