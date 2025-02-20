@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.learning.dlearning_backend.common.CourseLevel;
 
 import java.util.Set;
@@ -13,12 +14,12 @@ import java.util.Set;
 @Table(name = "courses")
 @Setter
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "wishlists"})
 public class Course extends AbstractEntity<Long> {
+
     @Column(name = "title", nullable = false)
     String title;
 
@@ -56,6 +57,14 @@ public class Course extends AbstractEntity<Long> {
     @JsonIgnore
     Set<Enrollment> enrollments;
 
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<Chapter> chapters;
+
+
+    public Long getId() {
+        return super.getId();
+    }
     @PrePersist
     private void prePersist() {
         if (this.quantity == null) {
