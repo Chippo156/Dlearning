@@ -31,6 +31,4 @@ public class Lesson extends AbstractEntity<Long> {
     Chapter chapter;
 
 
-
-
 }
