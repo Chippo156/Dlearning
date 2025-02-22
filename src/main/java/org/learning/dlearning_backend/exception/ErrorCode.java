@@ -24,7 +24,14 @@ public enum ErrorCode {
     COURSE_NOT_EXISTED(400, "Course not existed", HttpStatus.NOT_FOUND),
     INVALID_PATH_VARIABLE_ID (400, "Id must be a number greater than zero ", HttpStatus.BAD_REQUEST),
     COURSE_ALREADY_PURCHASED(400, "You already own this course", HttpStatus.BAD_REQUEST),
-    NOT_ENOUGH_POINTS(400, "Current points is not enough", HttpStatus.BAD_REQUEST),;
+    NOT_ENOUGH_POINTS(400, "Current points is not enough", HttpStatus.BAD_REQUEST),
+    CHAPTER_NOT_EXISTED(400, "Chapter not existed", HttpStatus.NOT_FOUND),
+    LESSON_NOT_EXISTED(400, "Lesson not existed", HttpStatus.NOT_FOUND),
+    FORBIDDEN(403, "Insufficient rights", HttpStatus.FORBIDDEN),
+    UPLOAD_LESSON_INVALID(400, "An error occurred while uploading the lesson, please try again.", HttpStatus.BAD_REQUEST),
+    COURSE_ACCESS_DENIED(400, "You do not have permission to view the progress of this course.", HttpStatus.BAD_REQUEST),
+
+    ;
     private final int code;
     private final String message;
     private final HttpStatusCode httpStatusCode;

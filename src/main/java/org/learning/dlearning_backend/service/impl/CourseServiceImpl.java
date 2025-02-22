@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.common.PredefinedRole;
 import org.learning.dlearning_backend.dto.request.BuyCourseRequest;
 import org.learning.dlearning_backend.dto.request.CourseCreationRequest;
-import org.learning.dlearning_backend.dto.response.BuyCourseResponse;
-import org.learning.dlearning_backend.dto.response.CourseCreationResponse;
-import org.learning.dlearning_backend.dto.response.CourseResponse;
-import org.learning.dlearning_backend.dto.response.PageResponse;
+import org.learning.dlearning_backend.dto.response.*;
 import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.exception.ErrorCode;
+import org.learning.dlearning_backend.mapper.CourseChapterAndLessonMapper;
 import org.learning.dlearning_backend.mapper.CourseMapper;
 import org.learning.dlearning_backend.mapper.EnrollmentMapper;
 import org.learning.dlearning_backend.mapper.UserMapper;
@@ -31,8 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +43,7 @@ public class CourseServiceImpl implements CourseService {
     private final CloudinaryService cloudinaryService;
     private final EnrollmentRepository enrollmentRepository;
     private final EnrollmentMapper enrollmentMapper;
+    private final CourseChapterAndLessonMapper courseChapterAndLessonMapper;
 
     @Transactional
     @Override
@@ -139,6 +137,29 @@ public class CourseServiceImpl implements CourseService {
         enrollmentRepository.save(enrollment);
 
         return enrollmentMapper.toBuyCourseResponse(enrollment);
+    }
+
+    @Override
+    public CourseChapterResponse getInfoCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_EXISTED));
+        Long totalLessons = course.getChapters().stream().mapToLong(chapter -> chapter.getLessons().size()).sum();
+
+        CourseChapterResponse courseLessonResponse = courseChapterAndLessonMapper.getCourseChapterAndLesson(courseId);
+
+        Set<CourseChapterResponse.ChapterDto> sortedChapter = courseLessonResponse.getChapters().stream()
+                .sorted(Comparator.comparing(CourseChapterResponse.ChapterDto::getChapterId))
+                .peek(chapter -> {
+                    Set<CourseChapterResponse.LessonDto> sortedLesson = chapter.getLessonDto().stream()
+                            .sorted(Comparator.comparing(CourseChapterResponse.LessonDto::getLessonId))
+                            .collect(Collectors.toCollection(LinkedHashSet::new));
+                    chapter.setLessonDto(sortedLesson);
+                })
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        courseLessonResponse.setTotalLesson(totalLessons);
+        courseLessonResponse.setChapters(sortedChapter);
+
+        return courseLessonResponse;
     }
 
 }

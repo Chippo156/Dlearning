@@ -58,4 +58,13 @@ public class CourseController {
                 .build();
     }
 
+    @GetMapping("/get-info-course/{courseId}")
+    public ResponseData<CourseChapterResponse> getInfoCourse(@PathVariable Long courseId){
+        return ResponseData.<CourseChapterResponse>builder()
+                .message("Get Info Course Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.getInfoCourse(courseId))
+                .build();
+    }
+
 }

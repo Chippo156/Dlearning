@@ -26,13 +26,5 @@ public class ChapterController {
                 .code(HttpStatus.CREATED.value())
                 .build();
     }
-    @GetMapping("/get/{courseId}")
-    public ResponseData<List<ChapterCreationResponse>> getChaptersByCourseId(@PathVariable Long courseId) {
-        return ResponseData.<List<ChapterCreationResponse>>builder()
-                .data(chapterService.getChaptersByCourseId(courseId))
-                .message("Chapters fetched successfully")
-                .code(HttpStatus.OK.value())
-                .build();
-    }
 
 }
