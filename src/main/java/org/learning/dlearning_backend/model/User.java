@@ -1,5 +1,7 @@
 package org.learning.dlearning_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.Gender;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity(name = "User")
 @Table(name = "users")
@@ -84,6 +87,14 @@ public class User extends AbstractEntity<Long>{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     Role role;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<Course> courses;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews"})
+    Set<Review> reviews;
 
 
 }

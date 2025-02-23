@@ -2,14 +2,13 @@ package org.learning.dlearning_backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.dto.request.LessonProgressRequest;
+import org.learning.dlearning_backend.dto.response.LessonProgressResponse;
 import org.learning.dlearning_backend.dto.response.ResponseData;
 import org.learning.dlearning_backend.dto.response.UserCompletionResponse;
 import org.learning.dlearning_backend.service.LessonProgressService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +25,16 @@ public class LessonProgressController {
                 .code(HttpStatus.OK.value())
                 .message("User completion calculated successfully")
                 .data(lessonProgressService.calculateUserCompletion(courseId))
+                .build();
+    }
+
+    @PostMapping("/mark-lesson-as-complete")
+    public ResponseData<LessonProgressResponse> markLessonAsComplete(@RequestBody LessonProgressRequest request) {
+
+        return ResponseData.<LessonProgressResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Lesson marked as complete successfully")
+                .data(lessonProgressService.markLessonAsComplete(request))
                 .build();
     }
 }

@@ -2,15 +2,19 @@ package org.learning.dlearning_backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.dto.request.LessonProgressRequest;
+import org.learning.dlearning_backend.dto.response.LessonProgressResponse;
 import org.learning.dlearning_backend.dto.response.UserCompletionResponse;
 import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.exception.ErrorCode;
 import org.learning.dlearning_backend.model.Course;
+import org.learning.dlearning_backend.model.Lesson;
 import org.learning.dlearning_backend.model.LessonProgress;
 import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.*;
 import org.learning.dlearning_backend.service.LessonProgressService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -38,7 +42,7 @@ public class LessonProgressServiceImpl implements LessonProgressService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_EXISTED));
 
-        if(!enrollmentRepository.existsByUserAndCourse(user, course)) {
+        if (!enrollmentRepository.existsByUserAndCourse(user, course)) {
             throw new AppException(ErrorCode.COURSE_ACCESS_DENIED);
         }
 
@@ -46,7 +50,7 @@ public class LessonProgressServiceImpl implements LessonProgressService {
 
         long completedLessons = lessonProgressRepository.countByUserAndCourseAndCompleted(user, course, true);
 
-        if(totalLessons == 0) {
+        if (totalLessons == 0) {
             return UserCompletionResponse.builder()
                     .totalLessonComplete(0L)
                     .completionPercentage(BigDecimal.ZERO)
@@ -57,7 +61,7 @@ public class LessonProgressServiceImpl implements LessonProgressService {
         List<LessonProgress> lessonProgresses = lessonProgressRepository.findByUserAndCourse(user, course, true);
 
         List<UserCompletionResponse.LessonComplete> lessonCompleteList = new ArrayList<>();
-        if(!lessonProgresses.isEmpty()){
+        if (!lessonProgresses.isEmpty()) {
             lessonCompleteList = lessonProgresses.stream()
                     .map(lessonProgress -> UserCompletionResponse.LessonComplete.builder()
                             .lessonId(lessonProgress.getLesson().getId())
@@ -72,9 +76,49 @@ public class LessonProgressServiceImpl implements LessonProgressService {
 
         return UserCompletionResponse.builder()
                 .totalLessonComplete(completedLessons)
-                .totalLessons((long)totalLessons)
+                .totalLessons((long) totalLessons)
                 .completionPercentage(percentage)
                 .lessonCompletes(lessonCompleteList)
+                .build();
+    }
+
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public LessonProgressResponse markLessonAsComplete(LessonProgressRequest request) {
+        String email = SecurityUtils.getCurrentUserLogin()
+                .orElseThrow(() -> new AppException(ErrorCode.EMAIL_INVALID));
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXCITED));
+
+        Lesson lesson = lessonRepository.findById(request.getLessonId())
+                .orElseThrow(() -> new AppException(ErrorCode.LESSON_NOT_EXISTED));
+
+        Course course = lesson.getChapter().getCourse();
+
+        if (!enrollmentRepository.existsByUserAndCourse(user, course)) {
+            throw new AppException(ErrorCode.COURSE_ACCESS_DENIED);
+        }
+
+        LessonProgress lessonProgress = lessonProgressRepository.findByUserAndLesson(user, lesson);
+        if (lessonProgress != null) {
+            return LessonProgressResponse.builder()
+                    .lessonId(lessonProgress.getLesson().getId())
+                    .lessonName(lessonProgress.getLesson().getLessonName())
+                    .isComplete(lessonProgress.getCompleted())
+                    .build();
+        }
+
+        lessonProgressRepository.save(LessonProgress.builder()
+                .user(user)
+                .completed(true)
+                .lesson(lesson)
+                .build());
+
+        return LessonProgressResponse.builder()
+                .lessonId(lesson.getId())
+                .lessonName(lesson.getLessonName())
+                .isComplete(true)
                 .build();
     }
 
