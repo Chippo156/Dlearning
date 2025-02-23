@@ -1,20 +1,26 @@
 import { div } from "framer-motion/client";
 import { NavLink, useLocation } from "react-router-dom";
 import { NavigationMenu } from "../widgets/NavigationMenu";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Favourite } from "../widgets/Favourite";
 import { motion } from "framer-motion";
 import { ProfileDropdown } from "../widgets/ProfileDropdown";
 import { HandleLogout } from "../../service/OAuth2/HandleLogout";
 import AuthContext from "../../context/AuthContext";
+import { useUserProfile } from "../../hooks/useUserProfile";
+import LoadingSpinner from "../../utils/LoadingSpinner";
+import { useAuthData } from "../../hooks/useAuthData";
 export const Header = () => {
   const authContext = useContext(AuthContext);
-  const location = useLocation();
   const { handleLogout } = HandleLogout();
 
-  const underlineRef = useRef(null);
-  const role = "USER";
-  const points = "6";
+  const { role, loading: roleLoading } = useAuthData();
+  const { avatar, points, loading: profileLoading } = useUserProfile();
+  const loading = profileLoading || roleLoading;
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="header-page">
@@ -47,7 +53,6 @@ export const Header = () => {
           >
             <NavigationMenu
               isActive={(path) => location.pathname === path}
-              underlineRef={underlineRef}
             ></NavigationMenu>
 
             <div className="navbar-nav ml-auto d-flex align-items-center gap-4">
@@ -60,6 +65,8 @@ export const Header = () => {
               <ProfileDropdown
                 isTokenValid={authContext.authenticated}
                 handleLogout={handleLogout}
+                avatar={avatar}
+                role={role}
               />
             </div>
           </div>

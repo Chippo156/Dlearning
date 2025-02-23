@@ -3,10 +3,14 @@ import Meta from "antd/es/card/Meta";
 import { FaRegClock } from "react-icons/fa";
 import { GiTeacher } from "react-icons/gi";
 import { MdFavorite } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export const OurCourse = (props) => {
   const { courses, hasMore, loadMoreCourses } = props;
 
+  const navigate = useNavigate();
+  const handleDetailCourse = (id) => {
+    navigate(`/course-detail/${id}`);
+  };
   return (
     <div className=" px-5 py-5 ">
       <div className="row mx-0 justify-content-center pt-5">
@@ -24,6 +28,7 @@ export const OurCourse = (props) => {
         {courses.map((course) => (
           <div className="col-lg-3 col-md-6 mb-4" key={course.id}>
             <Card
+              onClick={() => handleDetailCourse(course.id)}
               className="d-flex align-items-center justify-content-center flex-column border-1 "
               hoverable
               cover={

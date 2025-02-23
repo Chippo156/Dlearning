@@ -27,7 +27,10 @@ export const LoginPage = () => {
     if (token) {
       introspect()
         .then((introspectData) => {
-          if (introspectData.data.valid) {
+          console.log("====================================");
+          console.log(introspectData);
+          console.log("====================================");
+          if (introspectData.valid) {
             navigate("/");
           }
         })
@@ -50,7 +53,7 @@ export const LoginPage = () => {
           localStorage.setItem("token", token);
           introspect(token)
             .then((introspectData) => {
-              if (introspectData && introspectData.data.valid) {
+              if (introspectData && introspectData.valid) {
                 notifySuccess("Login successfully.");
                 if (introspectData.data.scope === "USER") {
                   navigate("/");

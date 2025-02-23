@@ -144,13 +144,14 @@ export const ProfileDropdown = (props) => {
       <Dropdown className="mx-2 nav-item" overlay={widgetMenu}>
         {avatar ? (
           <img
-            src="https://bootdey.com/img/Content/avatar/avatar7.png"
+            src={avatar}
             alt="User Avatar"
             style={{
-              width: "50%",
-              height: "50%",
-              objectFit: "cover",
+              width: "10%",
+              height: "80px",
+              flex: 1,
               borderRadius: "50%",
+              padding: "5px",
             }}
           />
         ) : (

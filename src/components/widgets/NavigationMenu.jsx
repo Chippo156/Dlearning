@@ -51,7 +51,6 @@ export const NavigationMenu = ({ isActive, underlineRef }) => {
       >
         About
       </NavLink>
-      <div className="underline" ref={underlineRef}></div>
     </div>
   );
 };

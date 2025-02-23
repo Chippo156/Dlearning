@@ -23,3 +23,28 @@ export const registerUser = async (otp, formData) => {
     console.error(error);
   }
 };
+
+export const myInfo = async () => {
+  try {
+    const response = await axios.get(`api/v1/user/my-info`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const getAvatar = async () => {
+  try {
+    const response = await axios.get(`api/v1/user/get-avatar`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const getPoints = async () => {
+  try {
+    const response = await axios.get(`api/v1/user/get-points-current`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

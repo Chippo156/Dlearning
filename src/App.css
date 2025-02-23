@@ -324,3 +324,473 @@
 .course-card-footer-item:last-child:hover svg {
   color: #bd2130;
 }
+.course-features-container {
+  background: linear-gradient(135deg, #5e28b5, #0d7e9d);
+  border-radius: 15px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-features-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.course-features-title {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.course-feature-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.course-price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffd700;
+  text-align: center;
+}
+.currency {
+  font-size: 0.8em;
+  vertical-align: top;
+  margin-left: 5px;
+}
+.course-content-container {
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  background: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Tiêu đề chính của nội dung khóa học */
+.course-content-header {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e7e7e7;
+  /* Gạch chân tiêu đề */
+  padding-bottom: 10px;
+}
+
+/* Mô tả ngắn gọn của nội dung */
+.course-content-summary {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Danh sách các chương */
+.course-chapters {
+  margin-top: 15px;
+}
+
+/* Từng chương học */
+.course-chapter {
+  border-bottom: 1px solid #e7e7e7;
+  /* Đường kẻ nhẹ giữa các chương */
+  margin-bottom: 0;
+}
+
+/* Tiêu đề chương */
+.chapter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  color: #444;
+  font-weight: 560;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  border-top: 1px solid #e7e7e7;
+}
+
+.chapter-header span {
+  padding-left: 15px;
+}
+
+/* Hiển thị thông tin chương học */
+.chapter-info {
+  display: flex;
+  align-items: center;
+}
+
+/* Biểu tượng mũi tên */
+.chapter-icon {
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hiệu ứng mũi tên xoay khi mở chương */
+.chapter-icon.open {
+  transform: rotate(180deg);
+}
+
+/* Danh sách bài giảng bên trong chương */
+.chapter-lectures {
+  padding: 10px 20px;
+  border-top: 1px solid #e7e7e7;
+  overflow: visible;
+  /* Đảm bảo không bị ẩn các bài giảng */
+}
+
+/* Từng bài giảng */
+.lecture-item {
+  list-style: none;
+  margin: 9px 0;
+  /* khoảng cách giữa các bài giảng */
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+  border-radius: 5px;
+  padding: 5px 0;
+  font-size: 16px;
+}
+
+.lecture-item:hover {
+  background-color: #f0f0f0;
+  /* Màu nền khi hover */
+  color: #212529;
+  cursor: pointer;
+}
+
+/* Biểu tượng cho bài giảng */
+.lecture-icon {
+  margin-right: 10px;
+  color: #007bff;
+  font-size: 20px;
+  transition: color 0.3s ease-in-out;
+  /* Hiệu ứng chuyển màu cho biểu tượng */
+}
+
+/* Tiêu đề chương khi được mở */
+.chapter-header.open {
+  background-color: #e7f3ff;
+  color: #333;
+}
+
+.chapter-header:hover {
+  background-color: #f0f0f0;
+}
+
+.lecture-icon {
+  color: rgb(26, 32, 39);
+}
+.lp-learning-container {
+  display: flex;
+  height: 100vh;
+  padding: 20px;
+}.lp-lesson-list {
+  width: 25%;
+  background-color: #fff;
+  overflow-y: auto;
+}.lesson-section {
+  margin-bottom: 15px;
+}.sections-title {
+  background-color: #e8e8e8;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}.lesson-list {
+  list-style: none;
+  padding: 0;
+}
+.lesson-item {
+  background-color: #f0f4f8;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.lesson-item:hover {
+  background-color: #e9ecef;
+  /* Thay đổi nhẹ màu nền khi hover */
+  border-color: #3498db;
+  /* Đổi màu border cho nổi bật */
+  transform: none;
+  /* Loại bỏ hiệu ứng phóng to */
+}
+.lesson-icon {
+  font-size: 1.5em;
+  color: #3498db;
+  margin-right: 15px;
+}
+
+.lesson-title {
+  font-size: 1.05em;
+  color: #2c3e50;
+  /* Màu chữ trung tính */
+}
+
+.lesson-duration {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  /* Giảm kích thước badge */
+}
+.lp-video-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.progress-bar-container {
+  background-color: #1c1c1c;
+  /* màu nền tối hơn */
+  padding: 10px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #f0f0f0;
+  /* màu chữ sáng hơn */
+  font-family: Arial, sans-serif;
+}
+
+.progress-bar-back-button {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.circle-back-button {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #3a3a3a;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.circle-back-button:hover {
+  background-color: #2c2c2c;
+  transform: scale(1.1);
+}
+
+.circle-back-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5);
+}
+
+.progress-bar-course-info {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.progress-bar-course-title {
+  font-size: 18px;
+  font-weight: bold;
+  flex: 1;
+  text-align: left;
+}
+
+.progress-bar-right-section {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-progress-details {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.progress-bar-circle-percentage {
+  position: relative;
+  margin-right: 8px;
+}
+
+.progress-bar-circle-percentage svg {
+  position: relative;
+}
+
+.progress-bar-percentage-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: #4caf50;
+  /* màu của số phần trăm */
+}
+
+.progress-bar-lesson-info {
+  font-size: 14px;
+}
+
+.progress-bar-extra-options {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-extra-options span {
+  margin-left: 12px;
+  cursor: pointer;
+}
+.complete-course-card {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  text-align: center;
+  width: 400px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.complete-course-title {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.complete-course-subtitle {
+  font-size: 1.2em;
+  margin: 10px 0;
+  color: #FFD700;
+}
+
+.complete-course-image-container {
+  margin: 20px 0;
+}
+
+.complete-course-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #FFD700;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.complete-course-username {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #FFD700;
+}
+
+.complete-course-message {
+  font-size: 1em;
+  color: #e0e0e0;
+  margin: 10px 0 20px;
+}
+
+.complete-course-button {
+  background-color: #FFD700;
+  color: #333;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.complete-course-button:hover {
+  background-color: #ffcc00;
+}
+
+/* Confetti */
+#confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #FFD700;
+  opacity: 0.7;
+  animation: fall 3s infinite ease-in;
+  transform: rotate(90deg);
+}
+
+/* Hiệu ứng rơi */
+@keyframes fall {
+  0% {
+    transform: translateY(-20px) rotate(45deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+/* Randomize confetti appearance */
+.confetti:nth-child(odd) {
+  animation-duration: 3.5s;
+  background-color: #ffcc00;
+}
+
+.confetti:nth-child(even) {
+  animation-duration: 2.5s;
+  background-color: #ffff66;
+}
+
+.confetti:nth-child(3n) {
+  animation-duration: 4s;
+  background-color: #ffd700;
+}
+
+/* CSS for overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* CSS for modal */
+.complete-course-card {
+  background-color: #f4b400;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1001;
+}

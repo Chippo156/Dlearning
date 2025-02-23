@@ -13,6 +13,8 @@ import { AboutPage } from "./components/pages/AboutPage/AboutPage";
 import AccessDenied from "./components/pages/ErrorPage/AccessDenied";
 import { NotFound } from "./components/pages/ErrorPage/NotFound";
 import { CoursePage } from "./components/pages/CoursePage/CoursePage";
+import { CourseDetailPage } from "./components/pages/CourseDetailPage/CourseDetailPage";
+import { LearningPage } from "./components/pages/LearningPage/LearningPage";
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage></HomePage>}></Route>
         <Route path="/about" element={<AboutPage />}></Route>
+        <Route path="/course-detail/:id" element={<CourseDetailPage />} />
       </Route>
       <Route element={<HeaderAndFooterRoute />}>
         <Route path="/courses" element={<CoursePage />}></Route>
@@ -29,6 +32,7 @@ function App() {
       </Route>
       <Route path="/accessdenied" element={<AccessDenied />}></Route>
       <Route path="/*" element={<NotFound />}></Route>
+      <Route path="/lesson-detail/:id" element={<LearningPage />} />
     </Routes>
   );
 }
