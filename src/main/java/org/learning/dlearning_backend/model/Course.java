@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.learning.dlearning_backend.common.CourseLevel;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -60,6 +61,10 @@ public class Course extends AbstractEntity<Long> {
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
     Set<Chapter> chapters;
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Review> reviews;
 
 
     public Long getId() {

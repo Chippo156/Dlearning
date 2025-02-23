@@ -2,14 +2,13 @@ package org.learning.dlearning_backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.dto.request.IsCourseCompleteRequest;
 import org.learning.dlearning_backend.dto.response.BuyCourseResponse;
 import org.learning.dlearning_backend.dto.response.CoursePurchaseResponse;
+import org.learning.dlearning_backend.dto.response.IsCompletionCourseResponse;
 import org.learning.dlearning_backend.dto.response.ResponseData;
 import org.learning.dlearning_backend.service.EnrollmentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +35,15 @@ public class EnrollmentController {
                 .message("Check Course Purchase Successfully")
                 .code(200)
                 .data(enrollmentService.checkCoursePurchase(courseId))
+                .build();
+    }
+
+    @PostMapping("/is-complete-course")
+    public ResponseData<IsCompletionCourseResponse> isCompleteCourse(@RequestBody IsCourseCompleteRequest request){
+        return ResponseData.<IsCompletionCourseResponse>builder()
+                .message("Check Course Completion Successfully")
+                .code(200)
+                .data(enrollmentService.isCompleteCourse(request))
                 .build();
     }
 
