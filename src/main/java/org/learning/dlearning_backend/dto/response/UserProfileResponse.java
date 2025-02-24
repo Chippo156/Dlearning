@@ -19,8 +19,8 @@ public class UserProfileResponse {
     String firstName;
     String lastName;
     Gender gender;
-    String phone;
-    LocalDate dob;
+    String phoneNumber;
+    LocalDate dateOfBirth;
     String address;
     String description;
     CourseLevel courseLevel;
