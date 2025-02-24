@@ -10,15 +10,23 @@ import org.mapstruct.Mapping;
 public interface ReviewMapper {
 
 
-    @Mapping(source = "user.name", target = "name")
+    @Mapping(source = "user.fullName", target = "name")
     @Mapping(source = "user.avatar", target = "avatar")
     @Mapping(source = "replies", target = "replies")
     ReviewResponse toCommentResponse(Review comment);
 
-    @Mapping(source = "user.name", target = "name")
+
+    @Mapping(source = "user.fullName", target = "name")
     @Mapping(source = "user.avatar", target = "avatar")
     @Mapping(source = "replies", target = "replies")
+    @Mapping(source = "course.id",target= "courseId")
+    @Mapping(source = "chapter.id",target= "chapterId")
+    @Mapping(target = "lessonId", source = "lesson.id")
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "reviewId", source = "id")
     ReviewLessonResponse toResponseLesson(Review comment);
+
+
 
 
 }

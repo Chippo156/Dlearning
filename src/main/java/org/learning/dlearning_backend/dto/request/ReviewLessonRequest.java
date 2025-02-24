@@ -1,25 +1,22 @@
-package org.learning.dlearning_backend.dto.response;
+package org.learning.dlearning_backend.dto.request;
 
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 @Setter
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewLessonResponse {
+public class ReviewLessonRequest {
     Long reviewId;
     Long courseId;
     Long chapterId;
     Long lessonId;
-    String name;
-    String avatar;
     String content;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
-    List<ReviewLessonResponse> replies = new ArrayList<>();
+    Long parentReviewId;
 
 }

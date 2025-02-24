@@ -30,6 +30,11 @@ public enum ErrorCode {
     FORBIDDEN(403, "Insufficient rights", HttpStatus.FORBIDDEN),
     UPLOAD_LESSON_INVALID(400, "An error occurred while uploading the lesson, please try again.", HttpStatus.BAD_REQUEST),
     COURSE_ACCESS_DENIED(400, "You do not have permission to view the progress of this course.", HttpStatus.BAD_REQUEST),
+    PARENT_COMMENT_NOT_EXISTED(400, "ParentComment not existed", HttpStatus.BAD_REQUEST),
+    INVALID_COMMENT_OR_RATING(400, "Please provide at least a comment or a rating.", HttpStatus.BAD_REQUEST),
+    INVALID_RATING(400, "Only rating greater than or equal to 0 and less than 5", HttpStatus.BAD_REQUEST),
+    INVALID_COMMENT_CONTENT(400, "Comment content is invalid", HttpStatus.BAD_REQUEST),
+    DELETE_COMMENT_INVALID(403, "You can only delete your own comments.", HttpStatus.FORBIDDEN),
 
     ;
     private final int code;
