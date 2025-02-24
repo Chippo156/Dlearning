@@ -27,6 +27,13 @@ import {
 } from "../../../service/EnrollmentService";
 import { CongratulationsModal } from "./components/CongratulationModal";
 import { getAvatar, myInfo } from "../../../service/UserSevice";
+import axios from "axios";
+import {
+  addCommentLesson,
+  getAllReviewsLesson,
+} from "../../../service/ReviewService";
+import { ReviewLesson } from "./components/ReviewLesson";
+import { Prev } from "react-bootstrap/esm/PageItem";
 
 export const LearningPage = () => {
   useEffect(() => {
@@ -49,6 +56,12 @@ export const LearningPage = () => {
   const [showModalComplete, setShowModelComplete] = useState(false);
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [commentLesson, setCommentLesson] = useState([]);
+  const [newCommentLesson, setNewCommentLesson] = useState("");
+  const [replyContent, setReplyContent] = useState({});
+
+  const [activeReply, setActiveReply] = useState(null);
+
   const [completionData, setCompletionData] = useState({
     totalLessonComplete: 0,
     totalLessons: 0,
@@ -258,12 +271,131 @@ export const LearningPage = () => {
       setCurrentLesson(selectedLesson);
     }
   };
+  //
+  const fetchReviewLesson = async (lessonId) => {
+    if (!lessonId) {
+      return;
+    }
+    try {
+      const response = await getAllReviewsLesson(lessonId);
+      if (response.data) {
+        setCommentLesson(response.data || []);
+        console.log("====================================");
+        console.log(response.data);
+        console.log("====================================");
+      } else {
+        toast.error("Error during fetch review lesson");
+      }
+    } catch (error) {
+      console.error("Error during fetch review lesson:", error);
+      toast.error("Error during fetch review lesson");
+    }
+  };
+  useEffect(() => {
+    if (currentLesson && currentLesson.lessonId) {
+      fetchReviewLesson(currentLesson.lessonId);
+    }
+  }, [currentLesson]);
+
+  //handle add comment lesson
+  const handleAddcommentLesson = async () => {
+    if (!newCommentLesson.trim()) {
+      toast.error("Please enter a comment");
+      return;
+    }
+    if (!currentLesson) {
+      toast.error("No lesson selected");
+      return;
+    }
+    const commentData = {
+      courseId: id,
+      lessonId: currentLesson.lessonId,
+      chapterId: currentChapter.chapterId,
+      content: newCommentLesson,
+      parentReviewId: null,
+    };
+    try {
+      const response = await addCommentLesson(commentData);
+      if (response.data && response) {
+        setCommentLesson((prev) => [
+          {
+            ...response.data,
+            replies: [],
+          },
+          ...prev,
+        ]);
+        toast.success("Comment added successfully");
+        setNewCommentLesson("");
+      } else {
+        toast.error("Error during add comment lesson");
+        console.error("Error during add comment lesson:", error);
+      }
+    } catch (error) {
+      toast.error("Error during add comment lesson");
+      console.error("Error during add comment lesson:", error);
+    }
+  };
+  const handleNewCommentChange = (e) => {
+    setNewCommentLesson(e.target.value);
+  };
+  const toggleReplyInput = (id) => {
+    setActiveReply(activeReply === id ? null : id);
+  };
+
+  const handleReplyChange = (id, value) => {
+    setReplyContent((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+  const handleReplySubmit = async (commentId) => {
+    if (!replyContent[commentId]?.trim()) {
+      return;
+    }
+    const commentData = {
+      courseId: id,
+      lessonId: currentLesson.lessonId,
+      chapterId: currentChapter.chapterId,
+      content: replyContent[commentId],
+      parentReviewId: commentId,
+    };
+    try {
+      const response = await addCommentLesson(commentData);
+      if (response && response.data) {
+        setCommentLesson((prevComments) =>
+          prevComments.map((comment) => {
+            console.log(comment.id, commentId);
+
+            if (comment.id === commentId) {
+              return {
+                ...comment,
+                replies: [...comment.replies, response.data],
+              };
+            }
+            return comment;
+          })
+        );
+        toast.success("Reply added successfully");
+        setReplyContent((prev) => ({
+          ...prev,
+          [id]: "",
+        }));
+        setActiveReply(null);
+      } else {
+        toast.error("Error during add reply");
+      }
+    } catch (error) {
+      console.error("Error during add reply:", error);
+      toast.error("Error during add reply");
+    }
+  };
   if (loading) {
     return <LoadingSpinner />;
   }
   const handleCloseModal = () => {
     setShowModelComplete(!showModalComplete);
   };
+
   return (
     <div>
       <ProgressBar courseTitle={courseTitle} completionData={completionData} />
@@ -306,6 +438,18 @@ export const LearningPage = () => {
               <source src={currentLesson?.videoUrl} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+            <ReviewLesson
+              handleAddCommentLesson={handleAddcommentLesson}
+              handleNewCommentChange={handleNewCommentChange}
+              newCommentLesson={newCommentLesson}
+              replyContent={replyContent}
+              handleReplyChange={handleReplyChange}
+              avatar={avatar}
+              comments={commentLesson}
+              toggleReplyInput={toggleReplyInput}
+              activeReply={activeReply}
+              handleReplySubmit={handleReplySubmit}
+            />
           </Content>
         </Layout>
       </Layout>

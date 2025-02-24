@@ -794,3 +794,85 @@
   position: relative;
   z-index: 1001;
 }
+.comment-lesson-container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 10px 15px;
+  max-width: 100%;
+  margin: 10px 0;
+  width: 100%;
+  box-shadow: none;
+}
+.comment-lesson-avatar{
+  margin-right: 10px;
+}
+.comment-lesson-avatar-img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #4caf50;
+}
+.comment-lesson-input-wrapper{
+  flex:1 ;
+  position: relative;
+}
+.comment-lesson-input{
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  background-color: #f0f4fb;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+}.comment-lesson-input::placeholder {
+  color: #777;
+  font-style: italic;
+}
+.comment-lesson-submit{
+  margin-left: 10px;
+  padding: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.comment-lesson-submit:hover{
+  background-color: #388e3c;
+}.comment-lesson-replies {
+  margin-top: 10px;
+  padding-left: 50px;
+  border-left: 2px solid #f0f0f0;
+}
+.comment-lesson-reply {
+  margin-top: 5px;
+}
+.comment-lesson-content {
+  flex: 1;
+}
+.comment-lesson-name{
+  font-weight: bold;
+  color: #333;
+
+}
+.comment-lesson-text{
+  margin: 5px 0;
+  color: #555;
+}.comment-lesson-actions {
+  font-size: 14px;
+  color: #4CAF50;
+  cursor: pointer;
+  margin-top: 5px;
+}
