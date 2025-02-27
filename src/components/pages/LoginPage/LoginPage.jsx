@@ -55,11 +55,11 @@ export const LoginPage = () => {
             .then((introspectData) => {
               if (introspectData && introspectData.valid) {
                 notifySuccess("Login successfully.");
-                if (introspectData.data.scope === "USER") {
+                if (introspectData.scope === "USER") {
                   navigate("/");
-                } else if (introspectData.data.scope === "ADMIN") {
+                } else if (introspectData.scope === "ADMIN") {
                   navigate("/");
-                } else if (introspectData.data.scope === "TEACHER") {
+                } else if (introspectData.scope === "TEACHER") {
                   // navigate("/manager-courses");
                 }
               } else {

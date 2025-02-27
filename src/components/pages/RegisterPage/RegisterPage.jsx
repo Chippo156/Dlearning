@@ -2,7 +2,13 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterForm } from "./components/RegisterForm";
 import { useEffect, useState } from "react";
-import { checkUserExists, registerUser } from "../../../service/UserSevice";
+import {
+  checkUserExists,
+  registerUser,
+  sendOtp,
+} from "../../../service/UserSevice";
+import { form } from "framer-motion/client";
+import { toast, ToastContainer } from "react-toastify";
 
 export const RegisterPage = () => {
   useEffect(() => {
@@ -83,17 +89,43 @@ export const RegisterPage = () => {
         setErrorMessage("Email already exists");
         return;
       } else {
-        setErrorMessage("");
-        const response = await registerUser(formData.otp, formData);
+        const response = await sendOtp(formData.email);
+        console.log(response);
+
         if (response.code === 200) {
-          navigate("/login");
-          alert("Register successfully");
+          setIsOtpSent(true);
+          setErrorMessage("");
         } else {
-          setErrorMessage(response.message);
+          setErrorMessage("Erorr sending OTP code");
         }
       }
     } catch (error) {
       console.error(error);
+      setErrorMessage("An error occurred while checking email.");
+    }
+  };
+  const handleOtpSubmit = async (values) => {
+    const { otp } = values;
+    const otpString = otp.join("");
+
+    try {
+      const response = await registerUser(otpString, {
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        date_of_birth: formData.date_of_birth,
+      });
+      if (response.code === 200) {
+        navigate("/login");
+        toast.success("Register successfully");
+      } else {
+        setErrorMessage(response.message);
+        console.log(response.message);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("An error occurred while registering.");
     }
   };
 
@@ -125,9 +157,11 @@ export const RegisterPage = () => {
             handleInputBlur={handleInputBlur}
             handleRegisterSubmit={handleRegisterSubmit}
             isOtpSent={isOtpSent}
+            handleOtpSubmit={handleOtpSubmit}
           ></RegisterForm>
         </div>
       </section>
+      <ToastContainer position="top-right" autoClose={3000}></ToastContainer>
     </motion.div>
   );
 };

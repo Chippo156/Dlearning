@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
     "antd": "^5.24.0",
+    "antd-input-otp": "^2.1.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "framer-motion": "^12.4.2",

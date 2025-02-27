@@ -15,8 +15,10 @@ export const checkUserExists = async (email) => {
 };
 export const registerUser = async (otp, formData) => {
   try {
-    const response = await axios.post(`api/v1/user/create-user`, {
-      ...formData,
+    const response = await axios.post(`api/v1/user/create-user`, formData, {
+      params: {
+        otp: otp,
+      },
     });
     return response.data;
   } catch (error) {
@@ -43,6 +45,17 @@ export const getAvatar = async () => {
 export const getPoints = async () => {
   try {
     const response = await axios.get(`api/v1/user/get-points-current`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const sendOtp = async (email) => {
+  try {
+    const response = await axios.post(`api/v1/user/send-otp-register`, {
+      email: email,
+    });
     return response.data;
   } catch (error) {
     console.error(error);
