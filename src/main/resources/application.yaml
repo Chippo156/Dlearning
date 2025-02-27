@@ -20,9 +20,19 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
-
-
-
+  profiles:
+    active: local
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: vovannghiahiep1562003@gmail.com
+    password: zuvzquhzgbnmvqqi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 jwt:
   secretKey: 90c85b588e8d468d45cf5a70a5517dc6507a0655d7ea0664f6eb70dd4d76394e
   valid-duration: 86400

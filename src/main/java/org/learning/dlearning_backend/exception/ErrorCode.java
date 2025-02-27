@@ -35,7 +35,7 @@ public enum ErrorCode {
     INVALID_RATING(400, "Only rating greater than or equal to 0 and less than 5", HttpStatus.BAD_REQUEST),
     INVALID_COMMENT_CONTENT(400, "Comment content is invalid", HttpStatus.BAD_REQUEST),
     DELETE_COMMENT_INVALID(403, "You can only delete your own comments.", HttpStatus.FORBIDDEN),
-
+    INVALID_OTP(400, "OTP is invalid or expired", HttpStatus.BAD_REQUEST),
     ;
     private final int code;
     private final String message;

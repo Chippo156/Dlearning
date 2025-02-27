@@ -3,6 +3,7 @@ package org.learning.dlearning_backend.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.dto.request.EmailRequest;
 import org.learning.dlearning_backend.dto.request.UserCreationRequest;
 import org.learning.dlearning_backend.dto.response.PointsCurrentResponse;
 import org.learning.dlearning_backend.dto.response.ResponseData;
@@ -22,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create-user")
-    public ResponseData<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request, BindingResult result){
+    public ResponseData<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request,@RequestParam String otp, BindingResult result){
         if(result.hasErrors()){
             log.error("Validation error: {}", result.getAllErrors());
             return ResponseData.<UserResponse>builder()
@@ -31,7 +32,7 @@ public class UserController {
                     .code(400)
                     .build();
         }
-        var data = userService.createUser(request);
+        var data = userService.createUser(request,otp);
         return ResponseData.<UserResponse>builder()
                 .data(data)
                 .message("User created successfully")
@@ -91,12 +92,12 @@ public class UserController {
                 .code(200)
                 .build();
     }
-
-    @GetMapping("/test")
-    public User test(){
-        return userService.getUser();
+    @PostMapping("/send-otp-register")
+    public ResponseData<UserResponse> sendOtpRegister(@RequestBody EmailRequest email){
+         userService.sendOtpRegister(email);
+        return ResponseData.<UserResponse>builder()
+                .message("Send OTP successfully")
+                .code(200)
+                .build();
     }
-
-
-
 }

@@ -24,7 +24,7 @@ public class ProfileController {
                 .build();
     }
 
-    @PostMapping("/update-profile")
+    @PutMapping("/update-profile")
     public ResponseData<String> updateProfile(@RequestBody UserProfileRequest request){
         profileService.updateProfile(request);
         return ResponseData.<String>builder()
