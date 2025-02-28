@@ -66,8 +66,5 @@ public class AuthenticationController {
                 .message("Logout success")
                 .build();
     }
-    @GetMapping("/demo")
-    public ResponseData<?> appError() {
-        throw new AppException(ErrorCode.EXPIRED_TOKEN);
-    }
+
 }

@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.common.PredefinedRole;
+import org.learning.dlearning_backend.dto.event.NotificationEvent;
 import org.learning.dlearning_backend.dto.request.EmailRequest;
 import org.learning.dlearning_backend.dto.request.UserCreationRequest;
+import org.learning.dlearning_backend.dto.request.VerifyOtpRequest;
 import org.learning.dlearning_backend.dto.response.PointsCurrentResponse;
 import org.learning.dlearning_backend.dto.response.UserResponse;
+import org.learning.dlearning_backend.dto.response.VerifyOtpResponse;
 import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.exception.ErrorCode;
 import org.learning.dlearning_backend.mapper.UserMapper;
@@ -19,13 +22,16 @@ import org.learning.dlearning_backend.repository.UserRepository;
 import org.learning.dlearning_backend.service.UserService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
 import org.mapstruct.Mapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -43,7 +49,7 @@ public class UserServiceImpl implements UserService {
     CloudinaryService cloudinaryService;
     OtpServiceImpl otpService;
     EmailService emailService;
-
+    KafkaTemplate<String,Object> kafkaTemplate;
     @Override
     public UserResponse createUser(UserCreationRequest request, String otp) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -61,6 +67,13 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(Boolean.TRUE);
         userRepository.save(user);
 
+        NotificationEvent event = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(user.getEmail())
+                .subject("Welcome to CHIPPO Dlearning")
+                .templateCode("welcome-email")
+                .build();
+        kafkaTemplate.send("notification-delivery", event);
         otpService.deleteOtp(request.getEmail());
         return userMapper.toUserResponse(user);
     }
@@ -69,12 +82,8 @@ public class UserServiceImpl implements UserService {
     public void sendOtpRegister(EmailRequest request) {
         String otp = generateOtp();
         otpService.saveOtp(request.getEmail(), otp);
-
-        ;
         String subject = "OTP CODE FOR REGISTER";
         StringBuilder content = new StringBuilder();
-
-
         content.append("<html lang=\"en\">\n" +
                 "  <head>\n" +
                 "    <meta charset=\"UTF-8\" />\n" +
@@ -290,10 +299,116 @@ public class UserServiceImpl implements UserService {
                 "  </body>\n" +
                 "</html>");
         String emailContent = content.toString();
-        emailService.sendEmail(subject, emailContent, List.of(request.getEmail()));
+        NotificationEvent event = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(request.getEmail())
+                .templateCode(emailContent)
+                .subject("OTP Code for Account Registration")
+                .param(Map.of("otp", otp))
+                .build();
+        kafkaTemplate.send("notification-send-otp", event);
 
     }
 
+    @Override
+    public void sendOtpForgotPassword(EmailRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        String otp = generateOtp();
+        LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(30);
+
+        user.setOtp(otp);
+        user.setOtpExpiredTime(expiryDate);
+
+
+        String content = "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Reset Your Password</title>\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Arial, sans-serif;\n" +
+                "            background-color: #f4f4f4;\n" +
+                "            padding: 20px;\n" +
+                "        }\n" +
+                "        .container {\n" +
+                "            max-width: 500px;\n" +
+                "            margin: 0 auto;\n" +
+                "            background: #ffffff;\n" +
+                "            padding: 20px;\n" +
+                "            border-radius: 8px;\n" +
+                "            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);\n" +
+                "            text-align: center;\n" +
+                "        }\n" +
+                "        .otp {\n" +
+                "            font-size: 24px;\n" +
+                "            font-weight: bold;\n" +
+                "            color: #3498db;\n" +
+                "            letter-spacing: 4px;\n" +
+                "            padding: 10px 0;\n" +
+                "        }\n" +
+                "        .button {\n" +
+                "            display: inline-block;\n" +
+                "            padding: 10px 20px;\n" +
+                "            margin-top: 10px;\n" +
+                "            background-color: #3498db;\n" +
+                "            color: #ffffff;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 5px;\n" +
+                "        }\n" +
+                "        .footer {\n" +
+                "            margin-top: 20px;\n" +
+                "            font-size: 12px;\n" +
+                "            color: #888888;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <h2>Password Reset Request</h2>\n" +
+                "        <p>We received a request to reset your password. Use the OTP below to proceed:</p>\n" +
+                "        <div class=\"otp\">" +
+                otp +
+                "</div>\n" +
+                "        <p>This OTP is valid for 10 minutes.</p>\n" +
+                "        <a href=\"#\" class=\"button\">Reset Password</a>\n" +
+                "        <p>If you did not request this, please ignore this email.</p>\n" +
+                "        <div class=\"footer\">\n" +
+                "            &copy; 2025 Your Company | All rights reserved.\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "</html>\n";
+
+        userRepository.save(user);
+        NotificationEvent event = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(user.getEmail())
+                .subject("Reset Your Password")
+                .templateCode(content)
+                .build();
+        kafkaTemplate.send("notification-send-otp",event);
+
+    }
+
+    @Override
+    public VerifyOtpResponse verifyOtp(VerifyOtpRequest request){
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        if(user.getOtp() == null || !user.getOtp().equals(request.getOtp())){
+            return VerifyOtpResponse.builder()
+                    .isValid(false)
+                    .build();
+        }
+        if(user.getOtpExpiredTime() == null || user.getOtpExpiredTime().isBefore(LocalDateTime.now())){
+            return VerifyOtpResponse.builder()
+                    .isValid(false)
+                    .build();
+        }
+        return VerifyOtpResponse.builder()
+                .isValid(true)
+                .build();
+    }
     public static String generateOtp() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i <= 6; i++) {
@@ -304,10 +419,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findByUsername(String username) {
-
         Optional<User> user = userRepository.findByEmail(username);
         return user.map(userMapper::toUserResponse).orElse(null);
-
     }
 
     @Override
@@ -318,7 +431,6 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.toUserResponse(user);
     }
-
     @Override
     @Transactional
     @PreAuthorize("isAuthenticated()")
@@ -329,7 +441,6 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(url);
         userRepository.save(user);
     }
-
     @Override
     @PreAuthorize("isAuthenticated()")
     public String getAvatar() {
@@ -348,11 +459,8 @@ public class UserServiceImpl implements UserService {
                 .build();
 
     }
-
     @Override
     public User getUser() {
         return userRepository.findById(1L).orElse(null);
     }
-
-
 }

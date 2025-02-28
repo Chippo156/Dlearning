@@ -37,7 +37,9 @@ public class SecurityConfig {
             "/api/v1/auth/**",
             "/api/v1/courses/**",
             "/api/v1/enrollments/check-course-purchased/**",
-            "/api/v1/user/send-otp-register"
+            "/api/v1/user/send-otp-register",
+            "/api/v1/user/send-otp-forgot-password",
+            "/api/v1/user/verify-otp",
     };
     @Bean
     public PasswordEncoder passwordEncoder(){

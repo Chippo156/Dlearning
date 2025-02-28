@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to DLearning</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 32px;
+            margin: 0;
+            font-weight: 700;
+        }
+        .body {
+            padding: 40px;
+        }
+
+        .body p {
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+        .feature-box {
+            width: 30%;
+            text-align: center;
+            padding: 15px;
+            background: #f0f4f8;
+            border-radius: 10px;
+        }
+        .feature-box img {
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .footer {
+            background-color: #f1f5f9;
+            color: #6b7280;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Welcome to DLearning</h1>
+        <p>Your journey to knowledge starts here!</p>
+    </div>
+
+    <!-- Body -->
+    <div class="body">
+        <h3>Hello, [[${recipientName}]]!</h3>
+        <p>We are excited to welcome you to <strong>DLearning</strong>, where learning meets convenience and quality. Our platform is designed to provide you with engaging courses, expert instructors, and a community of learners just like you.</p>
+        <p>Here’s what you can look forward to:</p>
+
+        <!-- Features Section -->
+        <div class="features">
+            <div class="feature-box">
+                <img src="https://monamedia.co/wp-content/uploads/2020/02/mot-so-thiet-ke-website-elearning.jpg" alt="Courses">
+                <h3>Diverse Courses</h3>
+                <p>From programming to arts, choose from a wide range of courses tailored to your needs.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://atpsoftware.vn/wp-content/uploads//2021/09/khoa-hoc-online-0-1024x570.png" alt="Community">
+                <h3>Vibrant Community</h3>
+                <p>Connect with learners, share experiences, and grow together.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://cdn.prod.website-files.com/61a05ff14c09ecacc06eec05/61f5877021316b7b901e349a_Online_Learning_Strategies_1.png" alt="Support">
+                <h3>24/7 Support</h3>
+                <p>We are here to help anytime you have questions or need assistance.</p>
+            </div>
+        </div>
+
+        <p>If you have any questions or need assistance, feel free to reply to this email or visit our help center. We're always here to support your learning journey!</p>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>DLearning Team &copy; 2024</p>
+        <p><a href="[[${unsubscribeLink}]]">Unsubscribe</a> if you no longer wish to receive these emails.</p>
+    </div>
+</div>
+</body>
+</html>

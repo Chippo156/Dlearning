@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.Gender;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity(name = "User")
@@ -44,6 +45,12 @@ public class User extends AbstractEntity<Long>{
 
     @Column(name = "phone_number")
     String phoneNumber;
+
+    @Column(name = "otp")
+    String otp;
+
+    @Column(name = "otp_expired_time")
+    LocalDateTime otpExpiredTime;
 
     @Enumerated(EnumType.STRING)
     Gender gender;

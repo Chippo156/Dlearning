@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.dto.event.NotificationEvent;
 import org.learning.dlearning_backend.dto.request.IntrospectRequest;
 import org.learning.dlearning_backend.dto.request.LogoutRequest;
 import org.learning.dlearning_backend.dto.request.RefreshTokenRequest;
@@ -25,6 +26,7 @@ import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.InvalidTokenRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,7 @@ import java.util.UUID;
 public class AuthenticationService {
     UserRepository userRepository;
     InvalidTokenRepository invalidTokenRepository;
+    KafkaTemplate<String,Object> kafkaTemplate;
 
     @NonFinal
     @Value("${jwt.secretKey}")
@@ -188,8 +191,4 @@ public class AuthenticationService {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-
-
-
 }

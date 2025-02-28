@@ -36,6 +36,9 @@ public enum ErrorCode {
     INVALID_COMMENT_CONTENT(400, "Comment content is invalid", HttpStatus.BAD_REQUEST),
     DELETE_COMMENT_INVALID(403, "You can only delete your own comments.", HttpStatus.FORBIDDEN),
     INVALID_OTP(400, "OTP is invalid or expired", HttpStatus.BAD_REQUEST),
+    CURRENT_PASSWORD_INVALID(400, "Current password is invalid", HttpStatus.BAD_REQUEST),
+    PASSWORD_EXISTED(400, "Password existed", HttpStatus.BAD_REQUEST),
+    CONFIRM_PASSWORD_INVALID(400, "Confirm password is invalid", HttpStatus.BAD_REQUEST),
     ;
     private final int code;
     private final String message;

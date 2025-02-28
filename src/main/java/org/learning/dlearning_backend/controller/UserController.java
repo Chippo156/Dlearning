@@ -3,14 +3,15 @@ package org.learning.dlearning_backend.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.dto.request.ChangePasswordRequest;
 import org.learning.dlearning_backend.dto.request.EmailRequest;
 import org.learning.dlearning_backend.dto.request.UserCreationRequest;
-import org.learning.dlearning_backend.dto.response.PointsCurrentResponse;
-import org.learning.dlearning_backend.dto.response.ResponseData;
-import org.learning.dlearning_backend.dto.response.UserResponse;
+import org.learning.dlearning_backend.dto.request.VerifyOtpRequest;
+import org.learning.dlearning_backend.dto.response.*;
 import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.learning.dlearning_backend.service.UserService;
+import org.learning.dlearning_backend.service.impl.ChangePasswordService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/user")
 public class UserController {
     private final UserService userService;
+    private final ChangePasswordService changePasswordService;
 
     @PostMapping("/create-user")
     public ResponseData<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request,@RequestParam String otp, BindingResult result){
@@ -97,6 +99,32 @@ public class UserController {
          userService.sendOtpRegister(email);
         return ResponseData.<UserResponse>builder()
                 .message("Send OTP successfully")
+                .code(200)
+                .build();
+    }
+    @PostMapping("/send-otp-forgot-password")
+    public ResponseData<UserResponse> sendOtpForgotPassword(@RequestBody EmailRequest email){
+        userService.sendOtpForgotPassword(email);
+        return ResponseData.<UserResponse>builder()
+                .message("Send OTP successfully")
+                .code(200)
+                .build();
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseData<VerifyOtpResponse> verifyOtp(@RequestBody VerifyOtpRequest request){
+        var data = userService.verifyOtp(request);
+        return ResponseData.<VerifyOtpResponse>builder()
+                .data(data)
+                .message("Verify OTP successfully")
+                .code(200)
+                .build();
+    }
+    @PostMapping("/change-password")
+    public ResponseData<ChangePasswordResponse> changePassword(@RequestBody ChangePasswordRequest request){
+        changePasswordService.changePassword(request);
+        return ResponseData.<ChangePasswordResponse>builder()
+                .message("Change password successfully")
                 .code(200)
                 .build();
     }
