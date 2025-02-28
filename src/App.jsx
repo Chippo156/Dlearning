@@ -16,6 +16,7 @@ import { CoursePage } from "./components/pages/CoursePage/CoursePage";
 import { CourseDetailPage } from "./components/pages/CourseDetailPage/CourseDetailPage";
 import { LearningPage } from "./components/pages/LearningPage/LearningPage";
 import { ProfilePage } from "./components/pages/ProfilePage/ProfilePage";
+import { ForgotPassword } from "./components/pages/LoginPage/components/ForgotPassword";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
         <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
       <Route path="/accessdenied" element={<AccessDenied />}></Route>
       <Route path="/*" element={<NotFound />}></Route>

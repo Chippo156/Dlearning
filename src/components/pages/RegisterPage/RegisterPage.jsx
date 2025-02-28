@@ -14,7 +14,6 @@ export const RegisterPage = () => {
   useEffect(() => {
     document.title = "Register Page";
   }, []);
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -117,8 +116,8 @@ export const RegisterPage = () => {
         date_of_birth: formData.date_of_birth,
       });
       if (response.code === 200) {
-        navigate("/login");
         toast.success("Register successfully");
+        navigate("/login");
       } else {
         setErrorMessage(response.message);
         console.log(response.message);
@@ -141,9 +140,9 @@ export const RegisterPage = () => {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div class="mb-5">
-                <h2 class="display-5 fw-bold text-center">Sign up</h2>
-                <p class="text-center m-0">
+              <div className="mb-5">
+                <h2 className="display-5 fw-bold text-center">Sign up</h2>
+                <p className="text-center m-0">
                   Already have an account? <Link to={"/login"}>Sign in</Link>
                 </p>
               </div>

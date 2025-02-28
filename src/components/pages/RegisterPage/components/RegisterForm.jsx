@@ -182,7 +182,7 @@ export const RegisterForm = (props) => {
                 "
                 >
                   <Form.Item name="otp">
-                    <InputOTP autoSubmit={form} inputType="numeric" />
+                    <InputOTP inputType="numeric" />
                   </Form.Item>
                   <Form.Item>
                     <Button htmlType="submit">Verify OTP</Button>
