@@ -1,8 +1,10 @@
 package org.learning.dlearning_backend.service;
 
 import org.learning.dlearning_backend.dto.request.EmailRequest;
+import org.learning.dlearning_backend.dto.request.ResetPasswordRequest;
 import org.learning.dlearning_backend.dto.request.UserCreationRequest;
 import org.learning.dlearning_backend.dto.request.VerifyOtpRequest;
+import org.learning.dlearning_backend.dto.response.ChangePasswordResponse;
 import org.learning.dlearning_backend.dto.response.PointsCurrentResponse;
 import org.learning.dlearning_backend.dto.response.UserResponse;
 import org.learning.dlearning_backend.dto.response.VerifyOtpResponse;
@@ -25,6 +27,7 @@ public interface UserService {
     void sendOtpForgotPassword(EmailRequest request);
     VerifyOtpResponse verifyOtp(VerifyOtpRequest request);
 
+    ChangePasswordResponse resetPassword(ResetPasswordRequest request);
 
 
 

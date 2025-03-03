@@ -40,6 +40,7 @@ public class SecurityConfig {
             "/api/v1/user/send-otp-register",
             "/api/v1/user/send-otp-forgot-password",
             "/api/v1/user/verify-otp",
+            "/api/v1/user/reset-password",
     };
     @Bean
     public PasswordEncoder passwordEncoder(){

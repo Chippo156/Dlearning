@@ -7,8 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.common.PredefinedRole;
 import org.learning.dlearning_backend.dto.event.NotificationEvent;
 import org.learning.dlearning_backend.dto.request.EmailRequest;
+import org.learning.dlearning_backend.dto.request.ResetPasswordRequest;
 import org.learning.dlearning_backend.dto.request.UserCreationRequest;
 import org.learning.dlearning_backend.dto.request.VerifyOtpRequest;
+import org.learning.dlearning_backend.dto.response.ChangePasswordResponse;
 import org.learning.dlearning_backend.dto.response.PointsCurrentResponse;
 import org.learning.dlearning_backend.dto.response.UserResponse;
 import org.learning.dlearning_backend.dto.response.VerifyOtpResponse;
@@ -409,6 +411,20 @@ public class UserServiceImpl implements UserService {
                 .isValid(true)
                 .build();
     }
+
+    @Override
+    public ChangePasswordResponse resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setOtp(null);
+        user.setOtpExpiredTime(null);
+        userRepository.save(user);
+        return ChangePasswordResponse.builder()
+                .message("Reset password successfully")
+                .success(true)
+                .build();
+    }
+
     public static String generateOtp() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i <= 6; i++) {

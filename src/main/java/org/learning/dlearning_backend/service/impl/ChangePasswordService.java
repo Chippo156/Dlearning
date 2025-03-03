@@ -32,17 +32,14 @@ public class ChangePasswordService {
         if(!passwordEncoder.matches(request.getCurrentPassword(),user.getPassword())){
             throw new AppException(ErrorCode.CURRENT_PASSWORD_INVALID);
         }
-        if(!passwordEncoder.matches(request.getNewPassword(),user.getPassword())){
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
             throw new AppException(ErrorCode.PASSWORD_EXISTED);
         }
-
         if(!Objects.equals(request.getNewPassword(),request.getConfirmPassword())){
             throw new AppException(ErrorCode.CONFIRM_PASSWORD_INVALID);
         }
-
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
-
         return ChangePasswordResponse.builder()
                 .message("Change password successful")
                 .success(true)

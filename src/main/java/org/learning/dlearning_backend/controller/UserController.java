@@ -3,15 +3,13 @@ package org.learning.dlearning_backend.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.learning.dlearning_backend.dto.request.ChangePasswordRequest;
-import org.learning.dlearning_backend.dto.request.EmailRequest;
-import org.learning.dlearning_backend.dto.request.UserCreationRequest;
-import org.learning.dlearning_backend.dto.request.VerifyOtpRequest;
+import org.learning.dlearning_backend.dto.request.*;
 import org.learning.dlearning_backend.dto.response.*;
 import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.learning.dlearning_backend.service.UserService;
 import org.learning.dlearning_backend.service.impl.ChangePasswordService;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,8 +65,8 @@ public class UserController {
                 .code(200)
                 .build();
     }
-    @PutMapping("/upload-avatar")
-    public ResponseData<UserResponse> uploadAvatar(@RequestPart("avatar") MultipartFile file ){
+    @PostMapping(value = "/upload-avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseData<UserResponse> uploadAvatar(@RequestParam("avatar") MultipartFile file ){
         userService.uploadAvatar(file);
         return ResponseData.<UserResponse>builder()
                 .data(null)
@@ -120,11 +118,21 @@ public class UserController {
                 .code(200)
                 .build();
     }
-    @PostMapping("/change-password")
+    @PutMapping("/change-password")
     public ResponseData<ChangePasswordResponse> changePassword(@RequestBody ChangePasswordRequest request){
-        changePasswordService.changePassword(request);
+        ChangePasswordResponse changePasswordResponse =  changePasswordService.changePassword(request);
         return ResponseData.<ChangePasswordResponse>builder()
                 .message("Change password successfully")
+                .code(200)
+                .data(changePasswordResponse)
+                .build();
+    }
+    @PostMapping("/reset-password")
+    public ResponseData<ChangePasswordResponse> resetPassword(@RequestBody ResetPasswordRequest request){
+        var data = userService.resetPassword(request);
+        return ResponseData.<ChangePasswordResponse>builder()
+                .data(data)
+                .message("Reset password successfully")
                 .code(200)
                 .build();
     }
