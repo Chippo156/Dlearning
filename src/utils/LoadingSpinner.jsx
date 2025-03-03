@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Spin, Switch } from "antd";
+import { ToastContainer } from "react-toastify";
 
 const LoadingSpinner = () => {
   return (
@@ -8,11 +9,11 @@ const LoadingSpinner = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "50vh",
       }}
     >
-      {" "}
       <Spin size="large" />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

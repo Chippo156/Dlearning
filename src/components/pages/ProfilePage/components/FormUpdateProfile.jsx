@@ -3,29 +3,47 @@ import {
   EllipsisOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Card, Form, Input, InputNumber, Select } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Form,
+  Image,
+  Input,
+  InputNumber,
+  Modal,
+  Select,
+} from "antd";
 import Meta from "antd/es/card/Meta";
+import { MdOutlinePassword } from "react-icons/md";
+import { RxAvatar } from "react-icons/rx";
+import { ToastContainer } from "react-toastify";
+import UploadFile from "./UploadFile";
 
 export const FormUpdateProfile = (props) => {
   const {
     profileData,
     selectedImage,
     handleOnChangeAvatar,
-    handleUpdateAvatar,
-    isUpdatingAvatar,
+    isUpdateAvatar,
     isRemovingAvatar,
     handleRemoveAvatar,
     handleInputChange,
     handleEdit,
     handleEditData,
     handleUpdateProfile,
+    isUpdatePassword,
+    setIsUpdateAvatar,
+    setIsUpdatePassword,
+    handleUpdatePassword,
+    modalUpload,
+    setModalUpload,
+    handleUpdateAvatar,
+    avatar,
   } = props;
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
-  };
-  const onFinish = (values) => {
-    console.log(values);
   };
   const validateMessages = {
     required: "${label} is required!",
@@ -37,21 +55,34 @@ export const FormUpdateProfile = (props) => {
       range: "${label} must be between ${min} and ${max}",
     },
   };
+
+  const openModalUpload = () => {
+    setModalUpload(!modalUpload);
+  };
   return (
     <div className="container">
       <div className="row">
         <div className="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
           <Card
             cover={
-              <img
+              <Image
+                style={{
+                  width: "100%",
+                  height: 500,
+                  objectFit: "cover",
+                  borderRadius: 10,
+                }}
                 alt="example"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                src={avatar}
               />
             }
             actions={[
-              <SettingOutlined key="setting" />,
+              <RxAvatar key="avatar" onClick={openModalUpload} />,
               <EditOutlined key="edit" onClick={handleEditData} />,
-              <EllipsisOutlined key="ellipsis" />,
+              <MdOutlinePassword
+                key="password"
+                onClick={() => setIsUpdatePassword(true)}
+              />,
             ]}
           >
             <Meta
@@ -63,6 +94,61 @@ export const FormUpdateProfile = (props) => {
             />
           </Card>
         </div>
+        <Modal
+          title="Upload Avatar"
+          open={modalUpload}
+          onCancel={openModalUpload}
+          onClose={openModalUpload}
+          okButtonProps={{ style: { display: "none" } }}
+        >
+          <UploadFile handleUpdateAvatar={handleUpdateAvatar} />
+        </Modal>
+
+        <Modal
+          title="Update Password"
+          open={isUpdatePassword}
+          onCancel={() => setIsUpdatePassword(false)}
+          onClose={() => setIsUpdatePassword(false)}
+          cancelButtonProps={{ style: { display: "none" } }}
+          okButtonProps={{ style: { display: "none" } }}
+        >
+          <Form
+            {...layout}
+            name="renew-password"
+            onFinish={handleUpdatePassword}
+            validateMessages={validateMessages}
+          >
+            <Form.Item
+              name={["password", "password"]}
+              label="Password"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name={["password", "newPassword"]}
+              label="New Password"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              name={["password", "confirmPassword"]}
+              label="Confirm Password"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item label={null}>
+              <Button type="primary" htmlType="submit">
+                Update
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+
         <div className="mt-3 col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
           <Form
             {...layout}
@@ -92,9 +178,9 @@ export const FormUpdateProfile = (props) => {
               name={["user", "gender"]}
               label="Gender"
               rules={[{ type: "gender" }]}
+              initialValue="Male"
             >
               <Select
-                defaultValue="Male"
                 style={{ width: 120 }}
                 options={[
                   { value: "MALE", label: "Male" },

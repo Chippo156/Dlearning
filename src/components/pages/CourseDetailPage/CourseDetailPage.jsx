@@ -136,7 +136,7 @@ export const CourseDetailPage = () => {
       <div className="container py-5">
         <div className="row">
           <div className="col-lg-8">
-            <div className="mb-4 p-4 bg-white rounded-3 shadow">
+            <div className="mb-4 p-4 bg-white rounded-3 shadow d-flex flex-column gap-3 justify-content-center align-items-center">
               <h1 className="h2 text-dark mb-3 animated-title">
                 {course.title}
               </h1>
@@ -149,6 +149,12 @@ export const CourseDetailPage = () => {
                 />
               </div>
               <p className="lead text-muted mt-3">{course.description}</p>
+            </div>
+            <div className="mb-4 bg-white rounded-3 shadow">
+              <video width="100%" height={400} controls>
+                <source src={course.videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
 
             <Tab.Container defaultActiveKey="course-detail">

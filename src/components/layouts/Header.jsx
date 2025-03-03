@@ -1,7 +1,7 @@
 import { div } from "framer-motion/client";
 import { NavLink, useLocation } from "react-router-dom";
 import { NavigationMenu } from "../widgets/NavigationMenu";
-import { useContext, useEffect, useRef, useState } from "react";
+import { use, useContext, useEffect, useRef, useState } from "react";
 import { Favourite } from "../widgets/Favourite";
 import { motion } from "framer-motion";
 import { ProfileDropdown } from "../widgets/ProfileDropdown";
@@ -11,14 +11,23 @@ import { useUserProfile } from "../../hooks/useUserProfile";
 import LoadingSpinner from "../../utils/LoadingSpinner";
 import { useAuthData } from "../../hooks/useAuthData";
 export const Header = () => {
+  const location = useLocation();
   const authContext = useContext(AuthContext);
   const { handleLogout } = HandleLogout();
-
   const { role, loading: roleLoading } = useAuthData();
   const { avatar, points, loading: profileLoading } = useUserProfile();
-  const loading = profileLoading || roleLoading;
 
-  if (loading) {
+  useEffect(() => {
+    const auth = localStorage.getItem("token");
+    if (auth) {
+      authContext.refresh();
+    }
+  }, []);
+
+  const loading = profileLoading || roleLoading;
+  const underlineRef = useRef(null);
+
+  if (roleLoading) {
     return <LoadingSpinner />;
   }
 

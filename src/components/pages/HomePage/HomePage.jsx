@@ -14,8 +14,6 @@ import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
 export const HomePage = () => {
-  const token = localStorage.getItem("token");
-  const navigate = useNavigate();
   const [course, setCourse] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(4);
@@ -28,7 +26,6 @@ export const HomePage = () => {
       try {
         const response = await getAllCourses(currentPage, pageSize);
         const { result, totalPages } = response.data;
-        toast.success("Welcome to our website!");
 
         if (currentPage === 1) {
           setCourse(result);
@@ -86,7 +83,6 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
-      <ToastContainer position="top-right" autoClose={3000}></ToastContainer>
     </motion.div>
   );
 };

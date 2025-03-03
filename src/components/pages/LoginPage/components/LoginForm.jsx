@@ -84,7 +84,7 @@ export const LoginForm = (props) => {
                         <div className="text-end">
                           <Link
                             to="/forgot-password"
-                            className="link-secondary text-decoration-none"
+                            className="link-secondary text-decoration-none text-primary"
                           >
                             Forgot password?
                           </Link>

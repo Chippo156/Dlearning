@@ -44,7 +44,11 @@ export const OurCourse = (props) => {
               }
             >
               <Meta
-                style={{ textAlign: "center", marginBottom: "10px" }}
+                style={{
+                  textAlign: "center",
+                  marginBottom: "10px",
+                  height: 150,
+                }}
                 title={course.title}
                 description={course.description}
               />

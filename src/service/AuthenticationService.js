@@ -16,9 +16,8 @@ export const login = async (email, password) => {
     console.error("Erorr logging in : ", error);
   }
 };
-export const introspect = async () => {
+export const introspect = async (token) => {
   try {
-    const token = localStorage.getItem("token");
     if (!token) {
       throw new Error("Token is missing");
     }

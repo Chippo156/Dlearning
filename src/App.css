@@ -879,3 +879,284 @@
 .content-profile {
   margin-top: 170px;
 }
+
+.community-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+@media screen and (max-width: 768px) {
+  .community-container {
+    flex-direction: column;
+    /* Chuyển sang bố cục cột khi màn hình nhỏ */
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    /* Chiều rộng toàn bộ màn hình khi ở chế độ di động */
+    padding: 15px;
+    margin-top: 0;
+  }
+}
+.search-group {
+  position: relative;
+  /* Để nút tìm kiếm có thể được đặt bên trong */
+}
+.search-group {
+  position: relative;
+  /* Để nút tìm kiếm có thể được đặt bên trong */
+}
+
+.custom-search-input {
+  padding-right: 40px;
+  border: 2px solid #007bff;
+  border-radius: 25px;
+  height: 50px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.search-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 20px;
+}
+
+.search-button:hover {
+  color: #0056b3;
+}
+
+@media screen and (min-width: 1200px) {
+  .sidebar {
+    width: 300px;
+    /* Sidebar lớn hơn cho màn hình rộng */
+  }
+}
+.sidebar {
+  position: fixed;
+  left: 0;
+  width: 17%;
+  /* Chiều rộng Sidebar */
+  max-width: 20%;
+  height: 100vh;
+  background-color: #2b2b2b;
+  z-index: 1000;
+}
+.sidebar-menu {
+  cursor: pointer;
+}
+.sidebar-item {
+  color: #e4e6eb;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.sidebar-item:hover {
+  background: #3a3b3c;
+}
+
+.create-post-container{
+  width: 100%;
+  max-width: 70vw;
+  min-width: 400px;
+  margin:20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #1c1c1e;
+}
+
+@media (min-width: 2560px) {
+  .create-post-container {
+    max-width: 30vw;
+  }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+  .create-post-container {
+    max-width: 33vw;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1919px) {
+  .create-post-container {
+    max-width: 48vw;
+  }
+}
+
+@media (max-width: 1023px) {
+  .create-post-container {
+    max-width: 70vw;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .create-post-container {
+    max-width: 80vw;
+    padding: 12px;
+  }
+}
+.avatar-img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+.create-post-input {
+  width: 100%;
+  border-radius: 20px;
+  padding: 10px;
+}
+.create-post-footer {
+  width: 100%;
+  /* Chiều rộng của footer đồng bộ với container */
+  display: flex;
+  justify-content: space-between;
+}.main-content {
+  padding: 20px;
+  width: calc(100% - 260px);
+}
+.main-content {
+  margin-left: 20%;
+  /* Đẩy phần nội dung chính sang bên phải, tương ứng với chiều rộng sidebar */
+  padding: 20px;
+  max-width: calc(100% - 250px);
+  /* Đảm bảo nội dung không vượt quá chiều rộng còn lại */
+}
+.main-content {
+  padding: 20px;
+  margin-left: 250px;
+}
+.post-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.post-card {
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .post-card {
+    padding: 15px;
+  }
+}
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .post-content {
+    font-size: 0.9rem;
+    /* Font nhỏ hơn cho màn hình nhỏ */
+  }
+}
+.post-content {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  padding: 0 15px;
+}
+
+.post-modal-body .post-content {
+  padding: 10px 15px;
+  font-size: 15px;
+  color: #333;
+}
+
+.post-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.post-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.post-modal-body{
+  padding: 20px;
+}
+.post-modal-body{
+  padding-bottom: 60px;
+  border-radius: 0px;
+  overflow: hidden;
+}
+.post-modal-comments {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.post-dropdown-toggle{
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.post-dropdown-toggle:after{
+  display: none !important;
+}
+.post-dropdown-toggle {
+  border: none;
+  /* Loại bỏ viền mặc định */
+  padding: 0;
+  /* Loại bỏ khoảng cách */
+  background: none;
+  /* Loại bỏ nền */
+  cursor: pointer;
+  /* Con trỏ hiển thị như nút */
+}
+.post-dropdown-menu{
+  min-width: 120px;
+  padding: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 13px;
+}
+.post-dropdown-menu .dropdown-item {
+  padding: 5px 10px;
+}
+
+.post-dropdown-menu .dropdown-item:hover {
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+.post-comment-item{
+  border-bottom: 1px solid #f1f1f1;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.post-comment-item p {
+  margin: 0;
+}
+
+.replies-container{
+  margin-left: 10px;
+}
+.reply-item {
+  margin-top: 10px;
+}.custom-link {
+  text-decoration: none;
+  color: inherit; /* Giữ nguyên màu sắc của văn bản */
+}
+
+.custom-link:hover {
+  text-decoration: none; /* Loại bỏ gạch chân khi hover */
+}

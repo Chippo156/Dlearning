@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { LoginForm } from "./components/LoginForm";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { introspect, login } from "../../../service/AuthenticationService";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,7 +15,6 @@ export const LoginPage = () => {
   useEffect(() => {
     document.title = "Login Page";
   }, []);
-  const notifyError = (message) => toast.error(message);
   const notifySuccess = (message) => toast.success(message);
 
   useEffect(() => {
@@ -27,9 +26,6 @@ export const LoginPage = () => {
     if (token) {
       introspect()
         .then((introspectData) => {
-          console.log("====================================");
-          console.log(introspectData);
-          console.log("====================================");
           if (introspectData.valid) {
             navigate("/");
           }
@@ -54,14 +50,16 @@ export const LoginPage = () => {
           introspect(token)
             .then((introspectData) => {
               if (introspectData && introspectData.valid) {
-                notifySuccess("Login successfully.");
-                if (introspectData.scope === "USER") {
-                  navigate("/");
-                } else if (introspectData.scope === "ADMIN") {
-                  navigate("/");
-                } else if (introspectData.scope === "TEACHER") {
-                  // navigate("/manager-courses");
-                }
+                notifySuccess("Login successfully");
+                setTimeout(() => {
+                  if (introspectData.scope === "USER") {
+                    navigate("/home");
+                  } else if (introspectData.scope === "ADMIN") {
+                    navigate("/");
+                  } else if (introspectData.scope === "TEACHER") {
+                    // navigate("/manager-courses");
+                  }
+                }, 1000);
               } else {
                 notifyError("Invalid token.");
                 throw new Error("Invalid token.");
@@ -70,15 +68,21 @@ export const LoginPage = () => {
             .catch((error) => {
               console.error("Error during introspect:", error);
               setError(error.message);
+            })
+            .finally(() => {
+              setLoading(false);
             });
         } else {
           throw new Error("Login failed, please try again.");
         }
       })
       .catch((error) => {
-        console.error("Login error:", error.message); // In lỗi ra console
-        setError(error.message || "Login failed, please try again.");
-        notifyError("Login failed, please try again.");
+        setError(error.message);
+        toast.error("Invalid email or password");
+      })
+
+      .finally(() => {
+        setLoading(false); // Tắt chế độ loading
       });
   };
   if (error) {
@@ -104,9 +108,8 @@ export const LoginPage = () => {
           setPassword={setPassword}
           handleLogin={handleLogin}
         ></LoginForm>
-
-        <ToastContainer position="top-right" autoClose={3000}></ToastContainer>
       </section>
+      <ToastContainer position="top-right" autoClose={3000}></ToastContainer>
     </motion.div>
   );
 };

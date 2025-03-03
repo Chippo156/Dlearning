@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../context/AuthContext";
 import { introspect } from "../service/AuthenticationService";
+import AuthContext from "../context/AuthContext";
 
 export const useAuthData = () => {
   const authContext = useContext(AuthContext);
@@ -12,19 +12,15 @@ export const useAuthData = () => {
       setLoading(false);
       return;
     }
+
     const token = localStorage.getItem("token");
     introspect(token)
       .then((data) => {
-        if (data.valid) {
-          setRole(data.scope);
-        }
+        if (data.valid) setRole(data.scope);
       })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch(console.log)
+      .finally(() => setLoading(false));
   }, [authContext]);
-  return [role, loading];
+
+  return { role, loading };
 };
