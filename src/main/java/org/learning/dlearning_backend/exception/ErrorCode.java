@@ -39,6 +39,10 @@ public enum ErrorCode {
     CURRENT_PASSWORD_INVALID(400, "Current password is invalid", HttpStatus.BAD_REQUEST),
     PASSWORD_EXISTED(400, "Password existed", HttpStatus.BAD_REQUEST),
     CONFIRM_PASSWORD_INVALID(400, "Confirm password is invalid", HttpStatus.BAD_REQUEST),
+    POST_NOT_EXISTED(400, "Post not existed", HttpStatus.NOT_FOUND),
+    COMMENT_NOT_EXISTED(400, "Comment not existed", HttpStatus.NOT_FOUND),
+    CONTENT_COMMENT_INVALID(400, "Content Comment cannot be null", HttpStatus.BAD_REQUEST),
+    UPDATE_COMMENT_INVALID(403, "You can only update your own comments.", HttpStatus.FORBIDDEN),
     ;
     private final int code;
     private final String message;

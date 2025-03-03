@@ -65,8 +65,6 @@ public class Course extends AbstractEntity<Long> {
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
     List<Review> reviews;
-
-
     public Long getId() {
         return super.getId();
     }

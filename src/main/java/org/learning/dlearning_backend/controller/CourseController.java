@@ -20,7 +20,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @PostMapping("/create-course")
-    public ResponseData<CourseCreationResponse> createCourse(@RequestPart("course")CourseCreationRequest request,
+    public ResponseData<CourseCreationResponse> createCourse(@RequestPart("course") CourseCreationRequest request,
                                                              @RequestPart(value = "file",required = false) MultipartFile file,
                                                              @RequestPart(value = "video",required = false) MultipartFile video
                                                              ) throws IOException {
