@@ -8,13 +8,12 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class SecurityUtils {
     private SecurityUtils() {
     }
-    private static final Random random = new Random();
+
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext context = SecurityContextHolder.getContext();
         return Optional.ofNullable(extractPrincipal(context.getAuthentication()));

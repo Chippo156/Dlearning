@@ -20,6 +20,6 @@ public class Role extends AbstractEntity<Long>{
     private String description;
 
     @ManyToMany
-    Set<Permission> permissions;
+    transient Set<Permission> permissions;
 
 }

@@ -23,7 +23,6 @@ import org.learning.dlearning_backend.repository.RoleRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.learning.dlearning_backend.service.UserService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
-import org.mapstruct.Mapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -52,6 +50,10 @@ public class UserServiceImpl implements UserService {
     OtpServiceImpl otpService;
     EmailService emailService;
     KafkaTemplate<String,Object> kafkaTemplate;
+    static Random random = new Random();  // Compliant
+
+    private static final String EMAIL = "EMAIL";  // Compliant
+
     @Override
     public UserResponse createUser(UserCreationRequest request, String otp) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -70,7 +72,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         NotificationEvent event = NotificationEvent.builder()
-                .channel("EMAIL")
+                .channel(EMAIL)
                 .recipient(user.getEmail())
                 .subject("Welcome to CHIPPO Dlearning")
                 .templateCode("welcome-email")
@@ -84,7 +86,6 @@ public class UserServiceImpl implements UserService {
     public void sendOtpRegister(EmailRequest request) {
         String otp = generateOtp();
         otpService.saveOtp(request.getEmail(), otp);
-        String subject = "OTP CODE FOR REGISTER";
         StringBuilder content = new StringBuilder();
         content.append("<html lang=\"en\">\n" +
                 "  <head>\n" +
@@ -302,7 +303,7 @@ public class UserServiceImpl implements UserService {
                 "</html>");
         String emailContent = content.toString();
         NotificationEvent event = NotificationEvent.builder()
-                .channel("EMAIL")
+                .channel(EMAIL)
                 .recipient(request.getEmail())
                 .templateCode(emailContent)
                 .subject("OTP Code for Account Registration")
@@ -385,7 +386,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
         NotificationEvent event = NotificationEvent.builder()
-                .channel("EMAIL")
+                .channel(EMAIL)
                 .recipient(user.getEmail())
                 .subject("Reset Your Password")
                 .templateCode(content)
@@ -428,7 +429,7 @@ public class UserServiceImpl implements UserService {
     public static String generateOtp() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i <= 6; i++) {
-            stringBuilder.append(new Random().nextInt(10));
+            stringBuilder.append(random.nextInt(10));
         }
         return stringBuilder.toString();
     }

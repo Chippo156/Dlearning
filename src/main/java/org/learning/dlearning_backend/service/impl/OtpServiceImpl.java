@@ -18,7 +18,7 @@ public class OtpServiceImpl {
         redisTemplate.opsForValue().set(email, otp, 30, TimeUnit.MINUTES);
     }
     public String getOtp(String email) {
-        return redisTemplate.opsForValue().get(email).toString();
+        return (String) redisTemplate.opsForValue().get(email);
     }
     public void deleteOtp(String email) {
         redisTemplate.delete(email);

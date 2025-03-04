@@ -31,7 +31,7 @@ public class SecurityConfig {
 
     private final CustomJwtDecoder customJwtDecoder;
 
-    public static final String[] publicList = {
+    protected static final String [] publicList = {
             "/api/v1/user/create-user",
             "/api/v1/user/check-exist-user",
             "/api/v1/auth/**",
@@ -41,6 +41,8 @@ public class SecurityConfig {
             "/api/v1/user/send-otp-forgot-password",
             "/api/v1/user/verify-otp",
             "/api/v1/user/reset-password",
+            "/actuator/**",
+            "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
     };
     @Bean
     public PasswordEncoder passwordEncoder(){

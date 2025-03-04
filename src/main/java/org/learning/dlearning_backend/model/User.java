@@ -97,11 +97,11 @@ public class User extends AbstractEntity<Long>{
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
-    Set<Course> courses;
+    transient Set<Course> courses;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews"})
-    Set<Review> reviews;
+    transient Set<Review> reviews;
 
 
 }

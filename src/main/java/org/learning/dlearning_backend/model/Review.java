@@ -30,7 +30,7 @@ public class Review extends AbstractEntity<Long> {
     Review parentReview;
 
     @OneToMany(mappedBy = "parentReview", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Review> replies;
+    transient List<Review> replies;
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
