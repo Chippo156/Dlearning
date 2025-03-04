@@ -53,3 +53,25 @@ cloudinary:
   cloud_name: dqnwxejgy
   api_key: 486184719822545
   api_secret: XOtBNDM_B6EzTK9TUQ9ET1CBDHA
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    data:
+      repository:
+        autotime:
+          enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

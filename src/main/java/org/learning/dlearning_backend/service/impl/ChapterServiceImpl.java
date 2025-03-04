@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +60,6 @@ public class ChapterServiceImpl implements ChapterService {
     @PreAuthorize("isAuthenticated()")
     public List<ChapterCreationResponse> getChaptersByCourseId(Long courseId) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_EXISTED));
-        return course.getChapters().stream().map(chapterMapper::toChapterCreationResponse).collect(Collectors.toList());
+        return course.getChapters().stream().map(chapterMapper::toChapterCreationResponse).toList();
     }
 }

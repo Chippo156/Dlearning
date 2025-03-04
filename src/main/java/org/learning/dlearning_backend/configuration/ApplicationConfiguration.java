@@ -29,15 +29,15 @@ public class ApplicationConfiguration {
     PasswordEncoder passwordEncoder;
     @NonFinal
     @Value("${admin.username}")
-    String ADMIN_USER_NAME;
+    String adminUserName;
 
     @NonFinal
     @Value("${admin.password}")
-    String ADMIN_PASSWORD;
+    String adminPassword;
 
     @NonFinal
     @Value("${admin.email}")
-    String ADMIN_EMAIL;
+    String adminEmail;
 
     RoleRepository roleRepository;
     UserRepository userRepository;
@@ -69,17 +69,17 @@ public class ApplicationConfiguration {
                         .description("Teacher role")
                         .build());
             }
-            if (userRepository.findByEmail(ADMIN_EMAIL).isEmpty()) {
+            if (userRepository.findByEmail(adminEmail).isEmpty()) {
                 Role roleADM = roleRepository.findByName(PredefinedRole.ADMIN_ROLE)
                         .orElseThrow(() -> new RuntimeException("Admin role not found"));
                 User user = User.builder()
-                        .email(ADMIN_USER_NAME)
+                        .email(adminUserName)
                         .firstName("Vo Van Nghia")
                         .lastName("Hiep")
-                        .fullName(ADMIN_USER_NAME)
-                        .password(passwordEncoder.encode(ADMIN_PASSWORD))
+                        .fullName(adminUserName)
+                        .password(passwordEncoder.encode(adminPassword))
                         .role(roleADM)
-                        .email(ADMIN_EMAIL)
+                        .email(adminEmail)
                         .dateOfBirth(LocalDate.of(2003, 10, 2))
                         .enabled(true)
                         .build();

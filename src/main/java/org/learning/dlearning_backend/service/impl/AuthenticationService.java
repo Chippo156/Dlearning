@@ -50,15 +50,15 @@ public class AuthenticationService {
 
     @NonFinal
     @Value("${jwt.secretKey}")
-    protected String SECRET_KEY;
+    protected String secretKey;
 
     @NonFinal
     @Value("${jwt.valid-duration}")
-    protected long VALID_DURATION;
+    protected long validDuration;
 
     @NonFinal
     @Value("${jwt.refresh-duration}")
-    protected long REFRESHABLE_DURATION;
+    protected long refreshableDuration;
     public AuthenticationResponse signIn(SignInRequest request) {
         log.info("User {} is signing in", request.getEmail());
 
@@ -91,7 +91,7 @@ public class AuthenticationService {
                 .subject(user.getEmail())
                 .issuer("dlearning")
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()))
+                .expirationTime(new Date(Instant.now().plus(validDuration, ChronoUnit.SECONDS).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", buildScope(user))
                 .build();
@@ -99,7 +99,7 @@ public class AuthenticationService {
         JWSObject jwsObject = new JWSObject(header, payload);
 
         try {
-            jwsObject.sign(new MACSigner(SECRET_KEY.getBytes()));
+            jwsObject.sign(new MACSigner(secretKey.getBytes()));
             return jwsObject.serialize();
         } catch (JOSEException e) {
             log.error("Cannot create token", e);
@@ -139,11 +139,11 @@ public class AuthenticationService {
         if (token == null || token.trim().isEmpty()) {
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
-        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+        JWSVerifier verifier = new MACVerifier(secretKey.getBytes());
 
             SignedJWT signedJWT = SignedJWT.parse(token);
             Date expiryTime = (isRefresh) ?
-                    new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESHABLE_DURATION, ChronoUnit.HOURS).toEpochMilli()) :
+                    new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(refreshableDuration, ChronoUnit.HOURS).toEpochMilli()) :
                     signedJWT.getJWTClaimsSet().getExpirationTime();
             if (expiryTime.before(new Date())) {
                 throw  new ExpiredTokenException();
@@ -188,7 +188,7 @@ public class AuthenticationService {
             }
         }catch (Exception e){
             log.error("Cannot logout", e);
-            throw new RuntimeException(e.getMessage());
+            throw new AppException(ErrorCode.LOGOUT_FAILED);
         }
     }
 }

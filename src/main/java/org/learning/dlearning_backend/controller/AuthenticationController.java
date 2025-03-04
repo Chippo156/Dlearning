@@ -1,6 +1,10 @@
 package org.learning.dlearning_backend.controller;
 
 import com.nimbusds.jose.JOSEException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.IntrospectRequest;
@@ -21,10 +25,15 @@ import java.text.ParseException;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/v1/auth")
+@RequestMapping(value = "/api/v1/auth",produces = "application/json")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
+
+    @Operation(summary = "Sign in", description = "Sign in to get access token")
+    @ApiResponse(responseCode = "200", description = "Sign in success",
+     content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))
+    )
     @PostMapping("/sign-in")
     ResponseData<AuthenticationResponse> signIn(@RequestBody SignInRequest request) {
         log.info("User {} is signing in", request.getEmail());

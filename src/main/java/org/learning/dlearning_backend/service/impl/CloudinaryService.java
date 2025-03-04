@@ -4,6 +4,8 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.learning.dlearning_backend.exception.AppException;
+import org.learning.dlearning_backend.exception.ErrorCode;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Map;
 
 @Service
@@ -31,7 +34,7 @@ public class CloudinaryService {
             return result.get("secure_url").toString();
         }catch (Exception e){
             log.error("Error while uploading image: ", e);
-            throw new RuntimeException("Image upload fail");
+            throw new AppException(ErrorCode.UPLOAD_IMAGE_ERROR);
         }
     }
     public Map<String,Object> uploadVideo(MultipartFile file, String folderName) throws IOException {
@@ -41,9 +44,8 @@ public class CloudinaryService {
                 "resource_type", "video",
                 "chunk_size",6000000
         ));
-        if(!tempFile.delete()){
-            log.error("Error while deleting temp file");
-        }
+        Files.delete(tempFile.toPath());
+        
         return uploadResult;
     }
     private File convertMultiPartFileToFile(MultipartFile file) throws IOException {

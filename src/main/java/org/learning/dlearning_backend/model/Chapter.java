@@ -3,11 +3,8 @@ package org.learning.dlearning_backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
-
 import java.util.List;
 import java.util.Set;
-
 @Entity
 @Table(name = "chapters")
 @Setter
@@ -17,10 +14,10 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Chapter extends AbstractEntity<Long> {
 
-    @Column(name="chapter_name", nullable = false)
+    @Column(name = "chapter_name", nullable = false)
     String chapterName;
 
-    @Column(name="description", columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -28,10 +25,10 @@ public class Chapter extends AbstractEntity<Long> {
     Course course;
 
     @OneToMany(mappedBy = "chapter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    Set<Lesson> lessons;
+    transient Set<Lesson> lessons;
 
     @OneToMany(mappedBy = "chapter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Review> reviews;
+    transient List<Review> reviews;
 
 
 }

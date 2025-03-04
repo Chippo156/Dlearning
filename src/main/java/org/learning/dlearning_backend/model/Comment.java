@@ -33,9 +33,7 @@ public class Comment extends AbstractEntity<Long> {
     @JoinColumn(name = "parent_comment_id")
     Comment parentComment;
 
-
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Comment> replies;
-
+    transient List<Comment> replies;
 
 }
