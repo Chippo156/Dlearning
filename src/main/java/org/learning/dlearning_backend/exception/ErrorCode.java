@@ -43,6 +43,8 @@ public enum ErrorCode {
     COMMENT_NOT_EXISTED(400, "Comment not existed", HttpStatus.NOT_FOUND),
     CONTENT_COMMENT_INVALID(400, "Content Comment cannot be null", HttpStatus.BAD_REQUEST),
     UPDATE_COMMENT_INVALID(403, "You can only update your own comments.", HttpStatus.FORBIDDEN),
+    LOGOUT_FAILED(400, "Logout failed", HttpStatus.BAD_REQUEST),
+    UPLOAD_IMAGE_ERROR(400, "An error occurred while uploading the image, please try again.", HttpStatus.BAD_REQUEST),
     ;
     private final int code;
     private final String message;

@@ -1,5 +1,7 @@
 package org.learning.dlearning_backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.BuyCourseRequest;
@@ -19,7 +21,11 @@ import java.io.IOException;
 public class CourseController {
     private final CourseService courseService;
 
-    @PostMapping("/create-course")
+    @Operation(summary = "Create Course", description = "Create Course")
+    @ApiResponse(responseCode = "201", description = "Create Course Successfully",
+            content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = CourseCreationResponse.class))
+    )
+    @PostMapping(value = "/create-course",produces = "application/json",consumes = {"multipart/form-data"})
     public ResponseData<CourseCreationResponse> createCourse(@RequestPart("course") CourseCreationRequest request,
                                                              @RequestPart(value = "file",required = false) MultipartFile file,
                                                              @RequestPart(value = "video",required = false) MultipartFile video

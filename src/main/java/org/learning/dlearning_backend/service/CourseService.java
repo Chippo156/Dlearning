@@ -3,7 +3,6 @@ package org.learning.dlearning_backend.service;
 import org.learning.dlearning_backend.dto.request.BuyCourseRequest;
 import org.learning.dlearning_backend.dto.request.CourseCreationRequest;
 import org.learning.dlearning_backend.dto.response.*;
-import org.learning.dlearning_backend.model.Course;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

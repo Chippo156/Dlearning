@@ -18,7 +18,6 @@ import org.learning.dlearning_backend.repository.EnrollmentRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.learning.dlearning_backend.service.EnrollmentService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

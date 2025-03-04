@@ -2,7 +2,6 @@ package org.learning.dlearning_backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.learning.dlearning_backend.common.PredefinedRole;
 import org.learning.dlearning_backend.dto.request.BuyCourseRequest;
 import org.learning.dlearning_backend.dto.request.CourseCreationRequest;
 import org.learning.dlearning_backend.dto.response.*;
@@ -11,7 +10,6 @@ import org.learning.dlearning_backend.exception.ErrorCode;
 import org.learning.dlearning_backend.mapper.CourseChapterAndLessonMapper;
 import org.learning.dlearning_backend.mapper.CourseMapper;
 import org.learning.dlearning_backend.mapper.EnrollmentMapper;
-import org.learning.dlearning_backend.mapper.UserMapper;
 import org.learning.dlearning_backend.model.Course;
 import org.learning.dlearning_backend.model.Enrollment;
 import org.learning.dlearning_backend.model.User;
@@ -19,7 +17,6 @@ import org.learning.dlearning_backend.repository.CourseRepository;
 import org.learning.dlearning_backend.repository.EnrollmentRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
 import org.learning.dlearning_backend.service.CourseService;
-import org.learning.dlearning_backend.service.EnrollmentService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,8 +47,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseCreationResponse createCourse(CourseCreationRequest request, MultipartFile file, MultipartFile video) throws IOException {
         String email = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AppException(ErrorCode.EMAIL_INVALID));
         User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-//        if(!Objects.equals(user.getRole().getName(), PredefinedRole.TEACHER_ROLE))
-//            throw new AppException(ErrorCode.ACCESS_DENIED);
+
         Course course = courseMapper.toCourse(request);
 
         String urlThumbnail = cloudinaryService.uploadImage(file);

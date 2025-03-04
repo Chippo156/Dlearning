@@ -5,7 +5,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "lessons")
@@ -34,7 +33,7 @@ public class Lesson extends AbstractEntity<Long> {
     Chapter chapter;
 
     @OneToMany(mappedBy = "lesson", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Review> reviews;
+    transient List<Review> reviews;
 
 
 }

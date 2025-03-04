@@ -1,9 +1,7 @@
 package org.learning.dlearning_backend.configuration;
 
 import com.nimbusds.jose.JOSEException;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
-import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.service.impl.AuthenticationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
