@@ -44,6 +44,10 @@ public class AuthenticationController {
                 .message("Sign in success")
                 .build();
     }
+    @Operation(summary = "Introspect", description = "Introspect token")
+    @ApiResponse(responseCode = "200", description = "Introspect success",
+            content = @Content(schema = @Schema(implementation = IntrospectResponse.class))
+    )
     @PostMapping("/introspect")
     ResponseData<IntrospectResponse> introspect(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
 
@@ -56,6 +60,10 @@ public class AuthenticationController {
 
 
     }
+    @Operation(summary = "Refresh token", description = "Refresh token")
+    @ApiResponse(responseCode = "200", description = "Refresh token success",
+            content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))
+    )
     @PostMapping("/refresh")
     ResponseData<AuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request) throws ParseException, JOSEException {
         log.info("Refresh token");
@@ -66,6 +74,11 @@ public class AuthenticationController {
                 .message("Refresh token success")
                 .build();
     }
+
+    @Operation(summary = "Logout", description = "Logout token")
+    @ApiResponse(responseCode = "200", description = "Logout success",
+            content = @Content(schema = @Schema(implementation = Void.class))
+    )
     @PostMapping("/logout")
     ResponseData<Void> logout(@RequestBody LogoutRequest request) {
         log.info("Logout token");

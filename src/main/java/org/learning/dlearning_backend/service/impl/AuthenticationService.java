@@ -5,6 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import io.micrometer.common.util.StringUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +26,7 @@ import org.learning.dlearning_backend.model.InvalidDateToken;
 import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.InvalidTokenRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
+import org.learning.dlearning_backend.service.RedisService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,6 +40,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,7 @@ public class AuthenticationService {
     InvalidTokenRepository invalidTokenRepository;
     KafkaTemplate<String,Object> kafkaTemplate;
 
+    RedisService redisService;
     @NonFinal
     @Value("${jwt.secretKey}")
     protected String secretKey;
@@ -85,9 +89,9 @@ public class AuthenticationService {
     }
 
     public String generateToken(User user) {
-         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
-         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getEmail())
                 .issuer("dlearning")
                 .issueTime(new Date())
@@ -141,22 +145,25 @@ public class AuthenticationService {
         }
         JWSVerifier verifier = new MACVerifier(secretKey.getBytes());
 
-            SignedJWT signedJWT = SignedJWT.parse(token);
-            Date expiryTime = (isRefresh) ?
-                    new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(refreshableDuration, ChronoUnit.HOURS).toEpochMilli()) :
-                    signedJWT.getJWTClaimsSet().getExpirationTime();
-            if (expiryTime.before(new Date())) {
-                throw  new ExpiredTokenException();
-            }
-            var verified = signedJWT.verify(verifier);
-            if (!verified) {
-                throw new InvalidTokenException();
-            }
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        if(StringUtils.isNotBlank(redisService.get(signedJWT.getJWTClaimsSet().getJWTID()))){
+            throw new InvalidTokenException();
+        }
+        Date expiryTime = (isRefresh) ?
+                new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(refreshableDuration, ChronoUnit.HOURS).toEpochMilli()) :
+                signedJWT.getJWTClaimsSet().getExpirationTime();
+        if (expiryTime.before(new Date())) {
+            throw  new ExpiredTokenException();
+        }
+        var verified = signedJWT.verify(verifier);
+        if (!verified) {
+            throw new InvalidTokenException();
+        }
 
-            if(invalidTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
-                throw new InvalidTokenException();
+        if(invalidTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
+            throw new InvalidTokenException();
 
-            return signedJWT;
+        return signedJWT;
     }
     public IntrospectResponse introspect(IntrospectRequest request) throws ParseException, JOSEException {
         var token = request.getToken();
@@ -175,17 +182,13 @@ public class AuthenticationService {
     }
     public void logout(LogoutRequest request){
         try{
-            var signedJWT = verification((request.getToken()),false);
-            String jid = signedJWT.getJWTClaimsSet().getJWTID();
-            if(!invalidTokenRepository.existsById(jid)){
-                invalidTokenRepository.save(InvalidDateToken.builder()
-                        .id(jid)
-                        .expiryTime(signedJWT.getJWTClaimsSet().getExpirationTime())
-                        .build());
-            }
-            else{
-               log.info("Token already invalidated");
-            }
+            var signToken = verification(request.getToken(),false);
+            long expirationTime = signToken.getJWTClaimsSet().getExpirationTime().getTime();
+            long currentTime = System.currentTimeMillis();
+            long remainingTime = expirationTime - currentTime;
+            String jwtId = signToken.getJWTClaimsSet().getJWTID();
+            redisService.save(jwtId,request.getToken(),remainingTime, TimeUnit.MILLISECONDS);
+            log.info("Access token added to blacklist : {}",redisService.get(jwtId));
         }catch (Exception e){
             log.error("Cannot logout", e);
             throw new AppException(ErrorCode.LOGOUT_FAILED);

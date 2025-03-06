@@ -75,3 +75,7 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
+
+upload-file:
+  base-uri: file:///D:/D-Learning/upload/
+
