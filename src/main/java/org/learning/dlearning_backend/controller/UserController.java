@@ -1,5 +1,9 @@
 package org.learning.dlearning_backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +26,12 @@ public class UserController {
     private final UserService userService;
     private final ChangePasswordService changePasswordService;
 
-    @PostMapping("/create-user")
+
+    @Operation(summary = "Create user")
+    @ApiResponse(responseCode = "200", description = "Create user successfully",
+            content = @Content(schema = @Schema(implementation = UserResponse.class))
+    )
+    @PostMapping(value = "/create-user" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request,@RequestParam String otp, BindingResult result){
         if(result.hasErrors()){
             log.error("Validation error: {}", result.getAllErrors());
@@ -40,6 +49,11 @@ public class UserController {
                 .build();
 
     }
+
+    @Operation(summary = "Check exist user")
+    @ApiResponse(responseCode = "200", description = "Check exist user successfully",
+            content = @Content(schema = @Schema(implementation = UserResponse.class))
+    )
     @GetMapping("/check-exist-user")
     public ResponseData<UserResponse> checkExistUser(@RequestParam String email){
         if(userService.findByUsername(email) != null){
@@ -56,6 +70,11 @@ public class UserController {
                     .build();
         }
     }
+
+    @Operation(summary = "Get my info")
+    @ApiResponse(responseCode = "200", description = "Get my info successfully",
+            content = @Content(schema = @Schema(implementation = UserResponse.class))
+    )
     @GetMapping("/my-info")
     public ResponseData<UserResponse> getMyInfo(){
         var data = userService.myProfile();
@@ -65,6 +84,12 @@ public class UserController {
                 .code(200)
                 .build();
     }
+
+
+    @Operation(summary = "upload Avatar")
+    @ApiResponse(responseCode = "200", description = "upload Avatar successfully",
+            content = @Content(schema = @Schema(implementation = UserResponse.class))
+    )
     @PostMapping(value = "/upload-avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseData<UserResponse> uploadAvatar(@RequestParam("avatar") MultipartFile file ){
         userService.uploadAvatar(file);
@@ -74,6 +99,8 @@ public class UserController {
                 .code(200)
                 .build();
     }
+
+
     @GetMapping("/get-avatar")
     public ResponseData<String> getAvatar(){
         var data = userService.getAvatar();

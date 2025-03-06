@@ -42,7 +42,10 @@ public class SecurityConfig {
             "/api/v1/user/verify-otp",
             "/api/v1/user/reset-password",
             "/actuator/**",
-            "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
+            "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+            "/upload/**",
+            "/ws/**",
+
     };
     @Bean
     public PasswordEncoder passwordEncoder(){

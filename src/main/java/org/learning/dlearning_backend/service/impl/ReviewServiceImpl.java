@@ -14,6 +14,7 @@ import org.learning.dlearning_backend.exception.ErrorCode;
 import org.learning.dlearning_backend.mapper.ReviewMapper;
 import org.learning.dlearning_backend.model.*;
 import org.learning.dlearning_backend.repository.*;
+import org.learning.dlearning_backend.service.BannedWordService;
 import org.learning.dlearning_backend.service.ReviewService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final CourseRepository courseRepository;
     private final LessonRepository lessonRepository;
     private final ChapterRepository chapterRepository;
+    private final BannedWordService bannedWordService;
 
 
     @Override
@@ -62,9 +64,9 @@ public class ReviewServiceImpl implements ReviewService {
         if (request.getRating() < 0 || request.getRating() > 5) {
             throw new AppException(ErrorCode.INVALID_RATING);
         }
-//        if(request.getContent() != null && bannedWordsService.checkBannedWords(request.getContent())){
-//            throw new AppException(ErrorCode.BANNED_WORDS);
-//        }
+        if (bannedWordService.containsBannedWord(request.getContent())) {
+            throw new AppException(ErrorCode.BANNED_WORD_EXISTED);
+        }
 
         Review newComment = Review.builder()
                 .user(user)
@@ -88,10 +90,13 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PARENT_COMMENT_NOT_EXISTED));
         if (Objects.equals(user.getId(), review.getUser().getId())) {
-          if(request.getContent() != null && !request.getContent().isEmpty()){
-              review.setContent(request.getContent());
-          }
-            if(request.getRating() != null){
+            if (request.getContent() != null && !request.getContent().isEmpty()) {
+                review.setContent(request.getContent());
+            }
+            if(bannedWordService.containsBannedWord(request.getContent())){
+                throw new AppException(ErrorCode.BANNED_WORD_EXISTED);
+            }
+            if (request.getRating() != null) {
                 review.setRating(request.getRating());
             }
             reviewRepository.save(review);
@@ -157,6 +162,7 @@ public class ReviewServiceImpl implements ReviewService {
         if ((request.getContent() == null || request.getContent().isEmpty())) {
             throw new AppException(ErrorCode.INVALID_COMMENT_CONTENT);
         }
+
         Review review = Review.builder()
                 .user(user)
                 .course(course)

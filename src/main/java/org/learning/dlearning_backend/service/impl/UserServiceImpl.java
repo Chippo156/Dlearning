@@ -84,6 +84,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendOtpRegister(EmailRequest request) {
+        if(userRepository.findByEmail(request.getEmail()).isPresent()){
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
         String otp = generateOtp();
         otpService.saveOtp(request.getEmail(), otp);
         StringBuilder content = new StringBuilder();
@@ -310,7 +313,6 @@ public class UserServiceImpl implements UserService {
                 .param(Map.of("otp", otp))
                 .build();
         kafkaTemplate.send("notification-send-otp", event);
-
     }
 
     @Override

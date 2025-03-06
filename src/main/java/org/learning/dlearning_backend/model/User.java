@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.Gender;
+import org.learning.dlearning_backend.common.RegistrationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -94,6 +95,13 @@ public class User extends AbstractEntity<Long>{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     Role role;
+
+    @Column(name = "refresh_token")
+    String refreshToken;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "registration_status")
+    RegistrationStatus registrationStatus;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
