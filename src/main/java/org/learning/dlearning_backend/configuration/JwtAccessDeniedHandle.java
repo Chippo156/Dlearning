@@ -12,6 +12,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.io.IOException;
 
+
+//Handle when user access denied
 public class JwtAccessDeniedHandle implements AccessDeniedHandler {
 
     @Override

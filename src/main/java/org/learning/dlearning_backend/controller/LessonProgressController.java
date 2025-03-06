@@ -1,5 +1,9 @@
 package org.learning.dlearning_backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.LessonProgressRequest;
@@ -18,6 +22,11 @@ public class LessonProgressController {
 
     private final LessonProgressService lessonProgressService;
 
+
+    @Operation(summary = "Calculate user completion for a course",description = "Calculate user completion for a course")
+    @ApiResponse(responseCode = "200", description = "User completion calculated successfully",
+          content = @Content(schema = @Schema(implementation = UserCompletionResponse.class))
+    )
     @GetMapping("/calculate-completion/{courseId}")
     public ResponseData<UserCompletionResponse> calculateCompletion(@PathVariable Long courseId) {
 
@@ -28,6 +37,10 @@ public class LessonProgressController {
                 .build();
     }
 
+    @Operation(summary = "Mark lesson as complete",description = "Mark lesson as complete")
+    @ApiResponse(responseCode = "200", description = "Lesson marked as complete successfully",
+          content = @Content(schema = @Schema(implementation = LessonProgressResponse.class))
+    )
     @PostMapping("/mark-lesson-as-complete")
     public ResponseData<LessonProgressResponse> markLessonAsComplete(@RequestBody LessonProgressRequest request) {
 

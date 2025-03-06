@@ -1,5 +1,9 @@
 package org.learning.dlearning_backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class LessonController {
     private final LessonService lessonService;
 
-    @PostMapping("/create-lesson")
+
+
+    @Operation(summary = "Create a lesson")
+    @ApiResponse(responseCode = "200", description = "Lesson created successfully",
+            content = @Content(schema = @Schema(implementation = LessonCreationResponse.class))
+    )
+    @PostMapping(value = "/create-lesson",consumes = {"multipart/form-data"},produces = "application/json")
     public ResponseData<LessonCreationResponse> createLesson(@Valid @RequestPart("request") LessonCreationRequest request,
                                                              @RequestPart("video") MultipartFile file) throws Exception {
 
@@ -31,6 +41,10 @@ public class LessonController {
                 .build();
     }
 
+    @Operation(summary = "Update a lesson")
+    @ApiResponse(responseCode = "200", description = "Lesson updated successfully",
+      content = @Content(schema = @Schema(implementation = UpdateLessonResponse.class))
+    )
     @PostMapping("/update-lesson")
     public ResponseData<UpdateLessonResponse> updateLesson(@Valid @RequestPart("request") UpdateLessonRequest request,
                                                            @RequestPart("video") MultipartFile file) throws Exception {
@@ -42,6 +56,10 @@ public class LessonController {
                 .build();
     }
 
+    @Operation(summary = "Delete a lesson")
+    @ApiResponse(responseCode = "200", description = "Lesson deleted successfully",
+            content = @Content(schema = @Schema(implementation = Void.class))
+    )
     @DeleteMapping("/delete-lesson/{lessonId}")
     public ResponseData<Void> deleteLesson(@PathVariable Long lessonId) throws Exception {
         lessonService.deleteLesson(lessonId);

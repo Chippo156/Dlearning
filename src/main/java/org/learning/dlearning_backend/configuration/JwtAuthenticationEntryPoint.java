@@ -11,6 +11,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
 
+
+// Handle exception when user is not authenticated
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
