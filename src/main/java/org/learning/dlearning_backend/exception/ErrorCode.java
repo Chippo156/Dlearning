@@ -45,7 +45,12 @@ public enum ErrorCode {
     UPDATE_COMMENT_INVALID(403, "You can only update your own comments.", HttpStatus.FORBIDDEN),
     LOGOUT_FAILED(400, "Logout failed", HttpStatus.BAD_REQUEST),
     UPLOAD_IMAGE_ERROR(400, "An error occurred while uploading the image, please try again.", HttpStatus.BAD_REQUEST),
+    EMAIL_EXISTED(400, "Email existed", HttpStatus.BAD_REQUEST),
+    BANNED_WORD_EXISTED(400, "Banned word existed", HttpStatus.BAD_REQUEST),
+    REGISTER_TEACHER_INVALID(400, "Your request is pending review, please do not resubmit.", HttpStatus.BAD_REQUEST),
+    NOTIFICATION_NOT_EXISTED(400, "Notification not existed", HttpStatus.NOT_FOUND),
     ;
+
     private final int code;
     private final String message;
     private final HttpStatusCode httpStatusCode;

@@ -37,6 +37,10 @@ public class CourseController {
                 .build();
     }
 
+    @Operation(summary = "Get All Courses", description = "Get All Courses")
+    @ApiResponse(responseCode = "200", description = "Get All Courses Successfully",
+            content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PageResponse.class))
+    )
     @GetMapping("/get-all-courses")
     public ResponseData<PageResponse<CourseResponse>> getAllCourses(@RequestParam(value = "page", defaultValue = "0") int page,
                                                                     @RequestParam(value = "size", defaultValue = "10") int size){
@@ -46,6 +50,11 @@ public class CourseController {
                 .data(courseService.getAllCourses(page,size))
                 .build();
     }
+
+    @Operation(summary = "Get Course By Id", description = "Get Course By Id")
+    @ApiResponse(responseCode = "200", description = "Get Course Successfully",
+            content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = CourseResponse.class))
+    )
     @GetMapping("/{id}")
     public ResponseData<CourseResponse> getCourseById(@PathVariable Long id){
         return ResponseData.<CourseResponse>builder()
@@ -55,6 +64,11 @@ public class CourseController {
                 .build();
     }
 
+
+    @Operation(summary = "Buy Course", description = "Buy Course")
+    @ApiResponse(responseCode = "201", description = "Buy Course Successfully",
+            content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = BuyCourseResponse.class))
+    )
     @PostMapping("/buy-course")
     public ResponseData<BuyCourseResponse> buyCourse(@RequestBody BuyCourseRequest request){
         return ResponseData.<BuyCourseResponse>builder()
@@ -64,6 +78,10 @@ public class CourseController {
                 .build();
     }
 
+    @Operation(summary = "Get All Courses By Author", description = "Get All Courses By Author")
+    @ApiResponse(responseCode = "200", description = "Get All Courses By Author Successfully",
+            content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PageResponse.class))
+    )
     @GetMapping("/get-info-course/{courseId}")
     public ResponseData<CourseChapterResponse> getInfoCourse(@PathVariable Long courseId){
         return ResponseData.<CourseChapterResponse>builder()

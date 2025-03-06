@@ -21,7 +21,6 @@ import java.util.Map;
 @Slf4j
 public class CloudinaryService {
     private final Cloudinary cloudinary;
-    private final UserRepository userRepository;
 
     @PreAuthorize("isAuthenticated()")
     public String uploadImage(MultipartFile file){
@@ -37,6 +36,19 @@ public class CloudinaryService {
             throw new AppException(ErrorCode.UPLOAD_IMAGE_ERROR);
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    public String uploadFile(MultipartFile file, String folderName) throws IOException {
+        File tempFile = convertMultiPartFileToFile(file);
+        Map<String,Object> uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.asMap(
+                "folder", folderName,
+                "resource_type", "auto"
+        ));
+        Files.delete(tempFile.toPath());
+
+        return uploadResult.get("secure_url").toString();
+    }
+
     public Map<String,Object> uploadVideo(MultipartFile file, String folderName) throws IOException {
         File tempFile = convertMultiPartFileToFile(file);
         Map<String,Object> uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.asMap(

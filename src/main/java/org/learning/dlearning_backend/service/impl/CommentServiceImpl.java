@@ -16,6 +16,7 @@ import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.CommentRepository;
 import org.learning.dlearning_backend.repository.PostRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
+import org.learning.dlearning_backend.service.BannedWordService;
 import org.learning.dlearning_backend.service.CommentService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentMapper commentMapper;
+    private final BannedWordService bannedWordsService;
 
 
     @Override
@@ -84,6 +86,9 @@ public class CommentServiceImpl implements CommentService {
         if(request.getContent() == null || request.getContent().isEmpty()){
             throw new AppException(ErrorCode.CONTENT_COMMENT_INVALID);
         }
+        if(bannedWordsService.containsBannedWord(request.getContent())){
+            throw new AppException(ErrorCode.BANNED_WORD_EXISTED);
+        }
 
         Comment comment = commentMapper.toComment(request);
         comment.setUser(user);
@@ -108,6 +113,12 @@ public class CommentServiceImpl implements CommentService {
 
         if(!Objects.equals(user.getId(), comment.getUser().getId())){
             throw new AppException(ErrorCode.UPDATE_COMMENT_INVALID);
+        }
+        if(request.getContent() == null || request.getContent().isEmpty()){
+            throw new AppException(ErrorCode.CONTENT_COMMENT_INVALID);
+        }
+        if(bannedWordsService.containsBannedWord(request.getContent())){
+            throw new AppException(ErrorCode.BANNED_WORD_EXISTED);
         }
         commentMapper.updateComment(request, comment);
         commentRepository.save(comment);
