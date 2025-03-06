@@ -3,9 +3,11 @@ package org.learning.dlearning_backend.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.PostCreationRequest;
+import org.learning.dlearning_backend.dto.request.UpdatePostRequest;
 import org.learning.dlearning_backend.dto.response.PageResponse;
 import org.learning.dlearning_backend.dto.response.PostCreationResponse;
 import org.learning.dlearning_backend.dto.response.PostResponse;
+import org.learning.dlearning_backend.dto.response.UpdatePostResponse;
 import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.exception.ErrorCode;
 import org.learning.dlearning_backend.mapper.PostMapper;
@@ -13,6 +15,7 @@ import org.learning.dlearning_backend.model.Post;
 import org.learning.dlearning_backend.model.User;
 import org.learning.dlearning_backend.repository.PostRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
+import org.learning.dlearning_backend.service.BannedWordService;
 import org.learning.dlearning_backend.service.PostService;
 import org.learning.dlearning_backend.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
@@ -35,6 +38,7 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final CloudinaryService cloudinaryService;
     private final PostMapper postMapper;
+    private final BannedWordService bannedWordService;
 
     @Override
     @PreAuthorize("isAuthenticated()")
@@ -49,6 +53,9 @@ public class PostServiceImpl implements PostService {
         if (file != null) {
             String image = cloudinaryService.uploadImage(file);
             request.setImage(image);
+        }
+        if(bannedWordService.containsBannedWord(request.getContent())){
+            throw new AppException(ErrorCode.BANNED_WORD_EXISTED);
         }
         Post post = postMapper.toPost(request);
         post.setUser(user);
@@ -131,5 +138,21 @@ public class PostServiceImpl implements PostService {
             throw new AppException(ErrorCode.USER_NOT_EXCITED);
         }
         postRepository.delete(post);
+    }
+
+    @Override
+    public UpdatePostResponse updatePost(Long postId, UpdatePostRequest request, MultipartFile file) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXISTED));
+        String image = post.getImage();
+        if (file != null) {
+            image = cloudinaryService.uploadImage(file);
+        }
+        if(request.getContent() != null && bannedWordService.containsBannedWord(request.getContent())){
+            throw new AppException(ErrorCode.BANNED_WORD_EXISTED);
+        }
+        post.setContent(request.getContent());
+        post.setImage(image);
+        postRepository.save(post);
+        return postMapper.toUpdatePostResponse(post);
     }
 }

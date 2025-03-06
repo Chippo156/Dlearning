@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 public class OtpServiceImpl {
 
     private final RedisTemplate<String,Object> redisTemplate;
-
     public void saveOtp(String email, String otp){
         redisTemplate.opsForValue().set(email, otp, 30, TimeUnit.MINUTES);
     }
