@@ -94,7 +94,6 @@ export const CommunityPage = () => {
             ),
           ]);
         }
-
         setHasMore(currentPage < response.data.totalPages);
       } else {
         setHasMore(false);

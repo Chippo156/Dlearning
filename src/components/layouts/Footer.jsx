@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 export const Footer = () => {
   return (
     <div>
-      <div
-        className="container-fluid position-relative bg-dark text-white-50 py-1"
-        style={{ marginTop: "90px" }}
-      >
+      <div className="container-fluid position-relative bg-dark text-white-50 py-1">
         <div className="container mt-5 pt-3">
           <div className="row">
             <div className="col-md-6 mb-5">

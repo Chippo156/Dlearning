@@ -21,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import LoadingSpinner from "./utils/LoadingSpinner";
 import { CommunityPage } from "./components/pages/CommunityPage/CommunityPage";
 import { MyPost } from "./components/pages/CommunityPage/MyPost";
+import { FavouritePage } from "./components/pages/FavouritePage/FavouritePage";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/my-post" element={<MyPost />} />
+          <Route path="/favourite" element={<FavouritePage />} />
         </Route>
         <Route path="/accessdenied" element={<AccessDenied />}></Route>
         <Route path="/*" element={<NotFound />}></Route>

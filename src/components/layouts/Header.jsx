@@ -1,4 +1,3 @@
-import { div } from "framer-motion/client";
 import { NavLink, useLocation } from "react-router-dom";
 import { NavigationMenu } from "../widgets/NavigationMenu";
 import { use, useContext, useEffect, useRef, useState } from "react";
@@ -10,12 +9,22 @@ import AuthContext from "../../context/AuthContext";
 import { useUserProfile } from "../../hooks/useUserProfile";
 import LoadingSpinner from "../../utils/LoadingSpinner";
 import { useAuthData } from "../../hooks/useAuthData";
+import { NotificationDropdown } from "../widgets/NotificationDropdown";
+import { useNotification } from "../../hooks/useNotification";
+import { useWebSocket } from "../../router/useWebSocket";
 export const Header = () => {
+  const wsClient = useWebSocket();
   const location = useLocation();
   const authContext = useContext(AuthContext);
   const { handleLogout } = HandleLogout();
   const { role, loading: roleLoading } = useAuthData();
   const { avatar, points, loading: profileLoading } = useUserProfile();
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    loading: notificationLoading,
+  } = useNotification(wsClient);
 
   useEffect(() => {
     const auth = localStorage.getItem("token");
@@ -24,7 +33,7 @@ export const Header = () => {
     }
   }, []);
 
-  const loading = profileLoading || roleLoading;
+  const loading = profileLoading || roleLoading || notificationLoading;
   const underlineRef = useRef(null);
 
   if (roleLoading) {
@@ -34,7 +43,7 @@ export const Header = () => {
   return (
     <div className="header-page">
       <div className="container-fluid p-0">
-        <nav className="navbar navbar-expand-lg bg-white navbar-light py-5 py-lg-0 px-lg-5">
+        <nav className="navbar navbar-expand-lg bg-white navbar-light py-lg-2 px-lg-5">
           <NavLink className="navbar-brand" to="/home">
             <div className="m-0 text-uppercase text-primary rounded">
               <motion.h1
@@ -70,6 +79,11 @@ export const Header = () => {
                   <i className="fa fa-coins"></i> {points}
                 </span>
               </div>
+              <NotificationDropdown
+                notifications={notifications}
+                unreadCount={unreadCount}
+                markAsRead={markAsRead}
+              />
               <Favourite role={role} />
               <ProfileDropdown
                 isTokenValid={authContext.authenticated}

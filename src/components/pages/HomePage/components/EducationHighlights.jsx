@@ -9,7 +9,10 @@ import {
 import CountUp from "react-countup";
 export const EducationHighlights = () => {
   return (
-    <div className="container-fluid py-5">
+    <div
+      className="container-fluid py-3"
+      style={{ backgroundColor: "#fff0e5" }}
+    >
       <div className="container py-5">
         <div className="row">
           <div className="col-lg-5 mb-5 mb-lg-0" style={{ minHeight: "500px" }}>

@@ -1,7 +1,7 @@
 import featureImage from "../../../../img/feature.jpg";
 export const IntroSection = () => {
   return (
-    <div className="container-fluid bg-image" style={{ margin: "90px 0" }}>
+    <div className="container-fluid bg-image">
       <div className="container">
         <div className="row">
           <div className="col-lg-7 my-5 pt-5 pb-lg-5">

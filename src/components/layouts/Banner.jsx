@@ -2,8 +2,8 @@ import { TypeAnimation } from "react-type-animation";
 
 export const Banner = () => {
   return (
-    <div className="content-page">
-      <div className="jumbotron jumbotron-fluid position-relative overlay-bottom overlay-top banner-container">
+    <div className="content-page ">
+      <div className="jumbotron  jumbotron-fluid position-relative overlay-bottom overlay-top banner-container">
         <div className="container text-center my-5 py-5 container-banner-text ">
           <h1 className="text-white mt-4 mb-4 banner-subheading">
             <TypeAnimation

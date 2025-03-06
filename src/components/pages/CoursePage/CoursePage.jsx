@@ -45,6 +45,7 @@ export const CoursePage = () => {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -50 }}
       transition={{ duration: 0.5 }}
+      style={{ backgroundColor: "#fff0e5", paddingBottom: "50px" }}
     >
       <div className="content-page container-fluid">
         <div className="container py-3">

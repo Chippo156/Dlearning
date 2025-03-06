@@ -190,11 +190,10 @@ export const ProfileDropdown = (props) => {
           src={avatar}
           alt="User Avatar"
           style={{
-            width: "10%",
-            height: "80px",
+            width: "40px",
+            height: "40px",
             flex: 1,
             borderRadius: "50%",
-            padding: "5px",
           }}
         />
       ) : (
