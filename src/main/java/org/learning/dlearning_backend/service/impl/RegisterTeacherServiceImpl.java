@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +55,9 @@ public class RegisterTeacherServiceImpl implements RegisterTeacherService {
                 .orElseThrow(() -> new AppException(ErrorCode.EMAIL_INVALID));
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXCITED));
+        if(!Objects.equals(user.getEmail(),request.getEmail())){
+            throw new AppException(ErrorCode.EMAIL_INVALID);
+        }
         if (user.getRegistrationStatus() == null || user.getRegistrationStatus().equals(RegistrationStatus.REJECTED)) {
 
             String cvFileName = fileService.storeFile(cv, "upload");

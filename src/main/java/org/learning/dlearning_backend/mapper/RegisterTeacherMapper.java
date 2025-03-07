@@ -8,6 +8,9 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface RegisterTeacherMapper {
+
+
+
     void toUpdateTeacher(UserRegisterTeacherRequest request, @MappingTarget User user);
 
     UserRegisterTeacherResponse toTeacherResponse(User user);

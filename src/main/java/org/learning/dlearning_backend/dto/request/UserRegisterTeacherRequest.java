@@ -2,15 +2,15 @@ package org.learning.dlearning_backend.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.learning.dlearning_backend.common.RegistrationStatus;
-
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRegisterTeacherRequest {
     String email;
-    String name;
-    String phone;
+    String fullName;
+    String phoneNumber;
     String expertise;
     Double yearsOfExperience;
     String bio;
