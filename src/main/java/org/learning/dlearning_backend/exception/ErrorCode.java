@@ -49,6 +49,8 @@ public enum ErrorCode {
     BANNED_WORD_EXISTED(400, "Banned word existed", HttpStatus.BAD_REQUEST),
     REGISTER_TEACHER_INVALID(400, "Your request is pending review, please do not resubmit.", HttpStatus.BAD_REQUEST),
     NOTIFICATION_NOT_EXISTED(400, "Notification not existed", HttpStatus.NOT_FOUND),
+    ADS_NOT_EXISTED(400, "Ads not existed", HttpStatus.NOT_FOUND),
+    PAYMENT_TYPE_INVALID(400, "Payment type invalid", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;

@@ -21,6 +21,7 @@ public class AdsCreationRequest {
     private String image;
     private String location;
     private String link;
+    private Long courseId;
 
     @NotBlank(message = "EMAIL_CONTACT_INVALID")
     private String contactEmail;
@@ -29,7 +30,7 @@ public class AdsCreationRequest {
     private String contactPhone;
 
     @Future(message = "START_DATE_INVALID")
-    private LocalDate localDate;
+    private LocalDate startDate;
     @FutureOrPresent(message = "START_END_INVALID")
     private LocalDate endDate;
 }

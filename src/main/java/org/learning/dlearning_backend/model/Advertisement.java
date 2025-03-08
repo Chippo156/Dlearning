@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Advertisement extends AbstractEntity<Long>{
 
     @Column(name = "title", nullable = false, length = 100)
@@ -36,8 +37,8 @@ public class Advertisement extends AbstractEntity<Long>{
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "course_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
     Course course;
 
     @Column(name = "image_ads")

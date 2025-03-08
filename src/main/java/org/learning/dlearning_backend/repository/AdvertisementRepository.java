@@ -1,5 +1,6 @@
 package org.learning.dlearning_backend.repository;
 
+import org.learning.dlearning_backend.common.AdsStatus;
 import org.learning.dlearning_backend.model.Advertisement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,5 +16,5 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     Page<Advertisement> findAdvertisementByUserId(Long userId, Pageable pageable);
 
     @Query("SELECT ads FROM Advertisement ads WHERE ads.adsStatus = :status")
-    List<Advertisement> findAdvertisementByApprovalStatusActive(@Param("status") String status);
+    List<Advertisement> findAdvertisementByApprovalStatusActive(@Param("status") AdsStatus status);
 }

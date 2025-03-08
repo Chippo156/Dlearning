@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class AdsApproveResponse {
     private Long id;
+    private Long courseId;
     private String title;
     private String description;
     private String image;
