@@ -20,7 +20,6 @@ import org.learning.dlearning_backend.repository.AdvertisementRepository;
 import org.learning.dlearning_backend.repository.PaymentMethodRepository;
 import org.learning.dlearning_backend.repository.PaymentRepository;
 import org.learning.dlearning_backend.repository.UserRepository;
-import org.learning.dlearning_backend.service.AdvertisementService;
 import org.learning.dlearning_backend.service.PaymentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

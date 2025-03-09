@@ -45,8 +45,8 @@ public class SecurityConfig {
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
             "/upload/**",
             "/ws/**",
-            "/payment/**"
-
+            "/api/v1/payment/vn-pay-callback",
+            "/api/v1/payment/vn-pay/**",
     };
     @Bean
     public PasswordEncoder passwordEncoder(){
