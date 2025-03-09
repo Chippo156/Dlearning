@@ -65,8 +65,6 @@ public class Course extends AbstractEntity<Long> {
     @JsonIgnore
     transient List<Review> reviews;
 
-
-
     @PrePersist
     private void prePersist() {
         if (this.quantity == null) {

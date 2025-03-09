@@ -1,5 +1,6 @@
 package org.learning.dlearning_backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.learning.dlearning_backend.dto.request.BuyCourseRequest;
 import org.learning.dlearning_backend.dto.request.CourseCreationRequest;
 import org.learning.dlearning_backend.dto.response.*;
+import org.learning.dlearning_backend.model.CourseElasticSearch;
 import org.learning.dlearning_backend.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -90,5 +92,28 @@ public class CourseController {
                 .data(courseService.getInfoCourse(courseId))
                 .build();
     }
+
+    @GetMapping("/get-course-elastic-search")
+    public ResponseData<PageResponse<CourseElasticSearch>> getCourseElasticSearch(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                                                  @RequestParam(value = "size", defaultValue = "10") int size,
+                                                                                  @RequestParam(value = "keyword", required = false) String keyword){
+        return ResponseData.<PageResponse<CourseElasticSearch>>builder()
+                .message("Get Course Elastic Search Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.searchCourse(keyword,page,size))
+                .build();
+    }
+    @GetMapping("/get-courses-caching")
+    public ResponseData<PageResponse<CourseResponse>> getCourseCaching(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) throws JsonProcessingException {
+        return ResponseData.<PageResponse<CourseResponse>>builder()
+                .message("Get Course Caching Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.getCoursesCache(page,size))
+                .build();
+    }
+
 
 }
