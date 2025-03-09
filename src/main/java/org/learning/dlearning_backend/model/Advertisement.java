@@ -56,6 +56,7 @@ public class Advertisement extends AbstractEntity<Long>{
     @Column(name = "end_date")
     LocalDate endDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "ads_status")
     AdsStatus adsStatus;
 }

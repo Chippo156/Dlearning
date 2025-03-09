@@ -89,7 +89,7 @@ public class User extends AbstractEntity<Long>{
     @Column(name = "facebook_url")
     String facebookUrl;
 
-    @Column(name = "points")
+    @Column(name = "points", columnDefinition = "BIGINT default 0")
     Long points;
 
     @ManyToOne(fetch = FetchType.EAGER)

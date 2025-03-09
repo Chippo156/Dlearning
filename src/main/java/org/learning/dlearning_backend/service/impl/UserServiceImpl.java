@@ -10,10 +10,7 @@ import org.learning.dlearning_backend.dto.request.EmailRequest;
 import org.learning.dlearning_backend.dto.request.ResetPasswordRequest;
 import org.learning.dlearning_backend.dto.request.UserCreationRequest;
 import org.learning.dlearning_backend.dto.request.VerifyOtpRequest;
-import org.learning.dlearning_backend.dto.response.ChangePasswordResponse;
-import org.learning.dlearning_backend.dto.response.PointsCurrentResponse;
-import org.learning.dlearning_backend.dto.response.UserResponse;
-import org.learning.dlearning_backend.dto.response.VerifyOtpResponse;
+import org.learning.dlearning_backend.dto.response.*;
 import org.learning.dlearning_backend.exception.AppException;
 import org.learning.dlearning_backend.exception.ErrorCode;
 import org.learning.dlearning_backend.mapper.UserMapper;
@@ -50,6 +47,7 @@ public class UserServiceImpl implements UserService {
     OtpServiceImpl otpService;
     EmailService emailService;
     KafkaTemplate<String,Object> kafkaTemplate;
+
     static Random random = new Random();  // Compliant
 
     private static final String EMAIL = "EMAIL";  // Compliant
@@ -427,6 +425,8 @@ public class UserServiceImpl implements UserService {
                 .success(true)
                 .build();
     }
+
+
 
     public static String generateOtp() {
         StringBuilder stringBuilder = new StringBuilder();
