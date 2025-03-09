@@ -1,5 +1,8 @@
 package org.learning.dlearning_backend.service;
 
+import org.learning.dlearning_backend.model.Course;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public interface RedisService {
