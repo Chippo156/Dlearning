@@ -51,6 +51,8 @@ public enum ErrorCode {
     NOTIFICATION_NOT_EXISTED(400, "Notification not existed", HttpStatus.NOT_FOUND),
     ADS_NOT_EXISTED(400, "Ads not existed", HttpStatus.NOT_FOUND),
     PAYMENT_TYPE_INVALID(400, "Payment type invalid", HttpStatus.BAD_REQUEST),
+    ALREADY_IN_FAVOURITES(400, "Already in favourites", HttpStatus.BAD_REQUEST),
+    FAVOURITE_NOT_EXISTED(400, "Favourite not existed", HttpStatus.NOT_FOUND),
     ;
 
     private final int code;
