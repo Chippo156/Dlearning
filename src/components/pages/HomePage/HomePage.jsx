@@ -12,6 +12,8 @@ import { OurCourse } from "./components/OurCourse";
 import LoadingSpinner from "../../../utils/LoadingSpinner";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
+import { getAdsActive } from "../../../service/AdvertisementService";
+import { PromoModal } from "../AdsPage/components/PromoModal";
 
 export const HomePage = () => {
   const [course, setCourse] = useState([]);
@@ -19,6 +21,38 @@ export const HomePage = () => {
   const [pageSize] = useState(4);
   const [hasMore, setHasMore] = useState(true); // Trạng thái có còn dữ liệu không
   const [loading, setLoading] = useState(true);
+
+  const [showPromoModal, setShowPromoModal] = useState(false);
+  const [ads, setAds] = useState([]);
+
+  useEffect(() => {
+    const fetchAds = async () => {
+      try {
+        const response = await getAdsActive();
+        console.log("====================================");
+        console.log(response);
+        console.log("====================================");
+        if (response) {
+          setAds(response.data);
+        } else {
+          setAds([]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchAds();
+  }, []);
+
+  const handleClosePromoModal = () => {
+    setShowPromoModal(false);
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPromoModal(true);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     document.title = "Home Page";
@@ -66,6 +100,10 @@ export const HomePage = () => {
       transition={{ duration: 0.5 }} // Thời gian chuyển động
       className="content-page"
     >
+      {showPromoModal && (
+        <PromoModal ads={ads} onClose={handleClosePromoModal} />
+      )}
+
       <EducationHighlights />
       <IntroSection />
       <OurCourse

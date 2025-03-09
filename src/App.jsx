@@ -22,6 +22,12 @@ import LoadingSpinner from "./utils/LoadingSpinner";
 import { CommunityPage } from "./components/pages/CommunityPage/CommunityPage";
 import { MyPost } from "./components/pages/CommunityPage/MyPost";
 import { FavouritePage } from "./components/pages/FavouritePage/FavouritePage";
+import { RegisterTeacher } from "./components/pages/RegisterPage/RegisterTeacher";
+import { PaymentSuccess } from "./components/pages/PaymentPage/PaymentSuccess";
+import { PaymentCancel } from "./components/pages/PaymentPage/PaymentCancel";
+import { PaymentFail } from "./components/pages/PaymentPage/PaymentFailed";
+import { DepositPage } from "./components/pages/DepositPage/DepositPage";
+import { AdsPage } from "./components/pages/AdsPage/Ads";
 
 function App() {
   return (
@@ -45,7 +51,15 @@ function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/my-post" element={<MyPost />} />
           <Route path="/favourite" element={<FavouritePage />} />
+          <Route path="/register-teacher" element={<RegisterTeacher />} />
+          <Route path="/deposit" element={<DepositPage />} />
+          <Route path="/my-ads" element={<AdsPage />}></Route>
         </Route>
+        <Route path="/payment-success" element={<PaymentSuccess />}></Route>
+        <Route path="/payment-cancel" element={<PaymentCancel />}></Route>
+
+        <Route path="/payment-fail" element={<PaymentFail />}></Route>
+
         <Route path="/accessdenied" element={<AccessDenied />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
         <Route path="/lesson-detail/:id" element={<LearningPage />} />

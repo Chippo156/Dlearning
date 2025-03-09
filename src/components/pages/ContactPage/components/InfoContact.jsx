@@ -26,7 +26,7 @@ export const InfoContact = () => {
           </div>
           <div className="mt-1">
             <h4>Email Us</h4>
-            <p className="m-0">ducdeptrai@gmail.com</p>
+            <p className="m-0">hiepdeptrai@gmail.com</p>
           </div>
         </div>
       </div>

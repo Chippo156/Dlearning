@@ -12,6 +12,7 @@ import { useAuthData } from "../../hooks/useAuthData";
 import { NotificationDropdown } from "../widgets/NotificationDropdown";
 import { useNotification } from "../../hooks/useNotification";
 import { useWebSocket } from "../../router/useWebSocket";
+import { Advertisement } from "../widgets/Advertisement";
 export const Header = () => {
   const wsClient = useWebSocket();
   const location = useLocation();
@@ -79,6 +80,8 @@ export const Header = () => {
                   <i className="fa fa-coins"></i> {points}
                 </span>
               </div>
+              <Advertisement />
+
               <NotificationDropdown
                 notifications={notifications}
                 unreadCount={unreadCount}

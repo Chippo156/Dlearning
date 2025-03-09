@@ -66,7 +66,7 @@ export const RegisterForm = (props) => {
                     </div>
                   </div>
                   <div className="col-12">
-                    <div className="form-floating  my-3">
+                    <div className="form-floating my-3">
                       <input
                         type="text"
                         className="form-control"

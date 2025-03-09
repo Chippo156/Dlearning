@@ -4,8 +4,9 @@ import { FaRegClock } from "react-icons/fa";
 import { GiTeacher } from "react-icons/gi";
 import { MdFavorite } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import { createFavourite } from "../../../../service/FavouriteService";
 
-export const ViewCourses = ({ courses }) => {
+export const ViewCourses = ({ courses, handleAddFavourite }) => {
   const navigate = useNavigate();
   const truncate = (text, maxWords) => {
     const words = text.split(" ");
@@ -13,6 +14,10 @@ export const ViewCourses = ({ courses }) => {
       ? words.slice(0, maxWords).join(" ") + "..."
       : text;
   };
+  const handleDetailCourse = (id) => {
+    navigate(`/course-detail/${id}`);
+  };
+
   return (
     <div className="row">
       {courses.map((course) => (
@@ -55,7 +60,7 @@ export const ViewCourses = ({ courses }) => {
                 </div>
                 <div
                   className="course-card-footer-item"
-                  //   onClick={() => handleAddToFavorites(course.id)}
+                  onClick={() => handleAddFavourite(course.id)}
                 >
                   <MdFavorite />
                   <span>Favorite</span>
