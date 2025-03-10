@@ -56,6 +56,7 @@ public class CourseServiceImpl implements CourseService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
+    private final SearchRepository searchRepository;
     private static final String PRODUCT_CACHE_KEY = "course_list";
 
     @Transactional
@@ -281,6 +282,16 @@ public class CourseServiceImpl implements CourseService {
                 .totalPages((int) Math.ceil(courses.size() / (double) size))
                 .result(courses)
                 .build();
+    }
+
+    @Override
+    public PageResponse<CourseResponse> getCourseWithSortMultiFieldAndSearch(int page, int size, String sortBy, String... search) {
+        return searchRepository.getCourseWithSortMultiFieldAndSearch(page, size, sortBy, search);
+    }
+
+    @Override
+    public PageResponse<CourseResponse> getCourseWithSortAndSpecification(int page, int size, String sortBy, String[] search) {
+       return searchRepository.getCourseWithSortAndSearchSpecification(page, size, sortBy, search);
     }
 
 

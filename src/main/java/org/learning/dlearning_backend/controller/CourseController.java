@@ -115,5 +115,30 @@ public class CourseController {
                 .build();
     }
 
-
+    @GetMapping("/filter-courses")
+    public ResponseData<PageResponse<CourseResponse>> filterCourses(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "search", required = false) String... search
+    ){
+        return ResponseData.<PageResponse<CourseResponse>>builder()
+                .message("Filter Courses Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.getCourseWithSortMultiFieldAndSearch(page,size,sortBy,search))
+                .build();
+    }
+    @GetMapping("/filter-courses-spec")
+    public ResponseData<PageResponse<CourseResponse>> filterCoursesSpec(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "search", required = false) String... search
+    ){
+        return ResponseData.<PageResponse<CourseResponse>>builder()
+                .message("Filter Courses Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.getCourseWithSortAndSpecification(page,size,sortBy,search))
+                .build();
+    }
 }

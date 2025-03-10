@@ -19,7 +19,9 @@ public interface CourseService {
     PageResponse<CourseElasticSearch> searchCourse(String keyword, int page, int size);
 
     void sysDataToElasticSearch();
-
     PageResponse<CourseResponse> getCoursesCache(int page, int size) throws JsonProcessingException;
+
+    PageResponse<CourseResponse> getCourseWithSortMultiFieldAndSearch(int page, int size, String sortBy ,String... search);
+    PageResponse<CourseResponse> getCourseWithSortAndSpecification(int page, int size, String sortBy ,String... search);
 
 }
