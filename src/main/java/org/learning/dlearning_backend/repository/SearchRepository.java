@@ -4,24 +4,21 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
-import org.learning.dlearning_backend.common.SearchOperation;
 import org.learning.dlearning_backend.dto.response.CourseResponse;
 import org.learning.dlearning_backend.dto.response.PageResponse;
 import org.learning.dlearning_backend.mapper.CourseMapper;
 import org.learning.dlearning_backend.model.Course;
 import org.learning.dlearning_backend.repository.criteria.SearchCriteria;
 import org.learning.dlearning_backend.repository.criteria.SearchCriteriaQueryConsumer;
-import org.learning.dlearning_backend.repository.specification.SpecSearchCriteria;
 import org.learning.dlearning_backend.repository.specification.SpecificationBuildQuery;
-import org.learning.dlearning_backend.repository.specification.SpecificationCourse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,6 +34,7 @@ public class SearchRepository {
     private CourseMapper courseMapper;
     @Autowired
     private CourseRepository courseRepository;
+
 
     public PageResponse<CourseResponse> getCourseWithSortMultiFieldAndSearch(int page, int size, String sortBy, String... search){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

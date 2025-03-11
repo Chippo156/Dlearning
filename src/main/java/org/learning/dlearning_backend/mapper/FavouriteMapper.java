@@ -20,5 +20,6 @@ public interface FavouriteMapper {
     @Mapping(target = "duration", source = "course.duration")
     @Mapping(target = "language", source = "course.language")
     @Mapping(target = "courseLevel", source = "course.courseLevel")
+    @Mapping(target = "typeCourse", source = "course.typeCourse")
     FavouriteResponse toFavouriteResponse(Favourite favourite);
 }

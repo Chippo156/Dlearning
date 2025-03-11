@@ -22,6 +22,7 @@ import org.learning.dlearning_backend.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -265,21 +266,32 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public PageResponse<CourseResponse> getCoursesCache(int page, int size) throws JsonProcessingException {
-
-        Object cachedData = redisTemplate.opsForValue().get(PRODUCT_CACHE_KEY);
+        String cacheKey = PRODUCT_CACHE_KEY + "_page_" + page + "_size_" + size;
+        Object cachedData = redisTemplate.opsForValue().get(cacheKey);
+        String totalCountKey = PRODUCT_CACHE_KEY + "_totalCount"; // Cache tổng số phần tử    Integer totalElements;
+        Integer totalElements;
+        Object cachedTotalElements = redisTemplate.opsForValue().get(totalCountKey);
         List<CourseResponse> courses;
-        if (cachedData == null) {
-            courses = courseRepository.findAll(PageRequest.of(page-1,size)).stream().map(courseMapper::toCourseResponse).toList();
-            redisTemplate.opsForValue().set(PRODUCT_CACHE_KEY, courses, Duration.ofMinutes(10));
+        log.info("cachedData: {}", cachedData);
+        if (cachedData == null || cachedTotalElements == null) {
+            log.info("Get data from database");
+            Page<Course> coursePage = courseRepository.findAll(PageRequest.of(page - 1, size, Sort.by("createdAt").ascending()));
+            courses = coursePage.getContent().stream().map(courseMapper::toCourseResponse).toList();
+            totalElements = (int) coursePage.getTotalElements();
+            // Lưu danh sách courses và tổng số phần tử vào Redis (TTL 10 phút)
+            redisTemplate.opsForValue().set(cacheKey, courses, Duration.ofMinutes(10));
+            redisTemplate.opsForValue().set(totalCountKey, totalElements, Duration.ofMinutes(10));
         } else {
-            // Chuyển đổi từ JSON String sang List<Course>
+            // Chan đổi từ JSON String sang List<Course>
+            log.info("Get data from cache");
             courses = objectMapper.convertValue(cachedData, new TypeReference<List<CourseResponse>>() {});
+            totalElements = (Integer) cachedTotalElements;
         }
         return PageResponse.<CourseResponse>builder()
                 .currentPage(page)
                 .pageSize(size)
-                .totalElements(courses.size())
-                .totalPages((int) Math.ceil(courses.size() / (double) size))
+                .totalElements(totalElements)
+                .totalPages((int) Math.ceil(totalElements / (double) size))
                 .result(courses)
                 .build();
     }
@@ -292,6 +304,71 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public PageResponse<CourseResponse> getCourseWithSortAndSpecification(int page, int size, String sortBy, String[] search) {
        return searchRepository.getCourseWithSortAndSearchSpecification(page, size, sortBy, search);
+    }
+
+    @Override
+    public PageResponse<CourseResponse> findCourseByOldest(int page, int size) {
+        String cacheKey = PRODUCT_CACHE_KEY + "_page_" + page + "_size_" + size;
+        List<CourseResponse> courses;
+        Object cachedData = redisTemplate.opsForValue().get(cacheKey);
+        String totalCountKey = PRODUCT_CACHE_KEY + "_totalCount"; // Cache tổng số phần tử    Integer totalElements;
+        Integer totalElements;
+        Object cachedTotalElements = redisTemplate.opsForValue().get(totalCountKey);
+        if (cachedData == null || cachedTotalElements == null) {
+            log.info("Get data from database");
+            Page<Course> coursePage = courseRepository.findAll(PageRequest.of(page - 1, size, Sort.by("createdAt").ascending()));
+            courses = coursePage.getContent().stream().map(courseMapper::toCourseResponse).toList();
+            totalElements = (int) coursePage.getTotalElements();
+            // Lưu danh sách courses và tổng số phần tử vào Redis (TTL 10 phút)
+            redisTemplate.opsForValue().set(cacheKey, courses, Duration.ofMinutes(10));
+            redisTemplate.opsForValue().set(totalCountKey, totalElements, Duration.ofMinutes(10));
+        } else {
+            log.info("Get data from cache");
+            courses = objectMapper.convertValue(cachedData, new TypeReference<List<CourseResponse>>() {});
+            totalElements = (Integer) cachedTotalElements;
+
+        }
+        courses.sort(Comparator.comparing(CourseResponse::getCreatedAt));
+        return PageResponse.<CourseResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalElements(totalElements)
+                .totalPages((int) Math.ceil(courses.size() / (double) size))
+                .result(courses)
+                .build();
+
+    }
+
+    @Override
+    public PageResponse<CourseResponse> findCourseByNewest(int page, int size) {
+        String cacheKey = PRODUCT_CACHE_KEY + "_page_" + page + "_size_" + size;
+        List<CourseResponse> courses;
+        Object cachedData = redisTemplate.opsForValue().get(cacheKey);
+        String totalCountKey = PRODUCT_CACHE_KEY + "_totalCount"; // Cache tổng số phần tử    Integer totalElements;
+        Integer totalElements;
+        Object cachedTotalElements = redisTemplate.opsForValue().get(totalCountKey);
+        if (cachedData == null || cachedTotalElements == null) {
+            log.info("Get data from database");
+            Page<Course> coursePage = courseRepository.findAll(PageRequest.of(page - 1, size, Sort.by("createdAt").ascending()));
+            courses = coursePage.getContent().stream().map(courseMapper::toCourseResponse).toList();
+            totalElements = (int) coursePage.getTotalElements();
+            // Lưu danh sách courses và tổng số phần tử vào Redis (TTL 10 phút)
+            redisTemplate.opsForValue().set(cacheKey, courses, Duration.ofMinutes(10));
+            redisTemplate.opsForValue().set(totalCountKey, totalElements, Duration.ofMinutes(10));
+        } else {
+            log.info("Get data from cache");
+            courses = objectMapper.convertValue(cachedData, new TypeReference<List<CourseResponse>>() {});
+            totalElements = (Integer) cachedTotalElements;
+
+        }
+        courses.sort(Comparator.comparing(CourseResponse::getCreatedAt).reversed());
+        return PageResponse.<CourseResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalElements(totalElements)
+                .totalPages((int) Math.ceil(courses.size() / (double) size))
+                .result(courses)
+                .build();
     }
 
 

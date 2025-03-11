@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.CourseLevel;
+import org.learning.dlearning_backend.common.TypeCourse;
 
 @Getter
 @Setter
@@ -21,6 +22,7 @@ public class FavouriteResponse {
     String description;
     Integer duration;
     String language;
+    TypeCourse typeCourse;
     CourseLevel courseLevel;
     String thumbnail;
     Double averageRating;

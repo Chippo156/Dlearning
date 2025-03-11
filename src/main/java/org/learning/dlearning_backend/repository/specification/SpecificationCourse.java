@@ -16,6 +16,10 @@ public class SpecificationCourse implements Specification<Course> {
         Predicate predicate;
         Class<?> fieldType = root.get(criteria.getKey()).getJavaType();
         Object value = criteria.getValue();
+
+        // Kiểm tra nếu value là số hay không
+        boolean isNumber = value.toString().matches("-?\\d+(\\.\\d+)?");
+
         switch (criteria.getOperation()) {
             case EQUALITY:
                 if (fieldType.equals(String.class)) {
@@ -27,38 +31,32 @@ public class SpecificationCourse implements Specification<Course> {
             case NEGATION:
                 predicate = criteriaBuilder.notEqual(root.get(criteria.getKey()), value);
                 break;
-
             case GREATER_THAN:
                 predicate = criteriaBuilder.greaterThanOrEqualTo(root.get(criteria.getKey()), (Comparable) value);
                 break;
-
             case LESS_THAN:
                 predicate = criteriaBuilder.lessThanOrEqualTo(root.get(criteria.getKey()), (Comparable) value);
                 break;
-
             case LIKE:
             case CONTAINS:
                 predicate = criteriaBuilder.like(root.get(criteria.getKey()), "%" + value + "%");
                 break;
-
             case STARTS_WITH:
                 predicate = criteriaBuilder.like(root.get(criteria.getKey()), value + "%");
                 break;
-
             case ENDS_WITH:
                 predicate = criteriaBuilder.like(root.get(criteria.getKey()), "%" + value);
                 break;
-
             default:
                 throw new IllegalStateException("Unexpected value: " + criteria.getOperation());
         }
 
-        // Nếu có điều kiện OR (nhiều giá trị trên cùng một field), áp dụng OR Predicate
-        if (criteria.getOrPredicate() != null && criteria.getOrPredicate()) {
+        // Nếu có điều kiện OR (chỉ áp dụng khi value là String)
+        if (criteria.getOrPredicate() != null && criteria.getOrPredicate() && !isNumber) {
             return criteriaBuilder.or(predicate);
         }
-
+        // Nếu là Number, áp dụng mặc định AND
         return predicate;
-
     }
+
 }

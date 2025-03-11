@@ -19,6 +19,8 @@ public class SpecificationBuildQuery {
 
     public SpecificationBuildQuery with(String orPredicate, String key, String operation, String value, String prefix, String suffix) {
         SearchOperation searchOperation = SearchOperation.getOperation(operation.charAt(0));
+
+        // Xác định loại tìm kiếm cho chuỗi (EQUALITY -> CONTAINS / STARTS_WITH / ENDS_WITH)
         if (searchOperation == SearchOperation.EQUALITY) {
             boolean startWith = prefix != null && prefix.equals(SearchOperation.ZERO_OR_MORE_REGEX);
             boolean endWith = suffix != null && suffix.equals(SearchOperation.ZERO_OR_MORE_REGEX);
@@ -30,13 +32,26 @@ public class SpecificationBuildQuery {
                 searchOperation = SearchOperation.STARTS_WITH;
             }
         }
-        if (criteria.stream().anyMatch(c -> c.getKey().equals(key))) {
-            criteria.add(new SpecSearchCriteria(key, searchOperation, value, SearchOperation.OR_PREDICATE));
+
+        // Kiểm tra nếu đã có key này trong danh sách
+        boolean keyExists = criteria.stream().anyMatch(c -> c.getKey().equals(key));
+
+        // Kiểm tra giá trị có phải là số không
+        boolean isNumber = value.matches("-?\\d+(\\.\\d+)?");
+
+        if (keyExists) {
+            // Nếu value là String, áp dụng OR_PREDICATE, nếu là Number thì giữ mặc định AND
+            if (!isNumber) {
+                criteria.add(new SpecSearchCriteria(key, searchOperation, value, SearchOperation.OR_PREDICATE));
+            } else {
+                criteria.add(new SpecSearchCriteria(key, searchOperation, value, orPredicate));
+            }
         } else {
             criteria.add(new SpecSearchCriteria(key, searchOperation, value, orPredicate));
         }
         return this;
     }
+
 
     public Specification<Course> buildQuery() {
         if (criteria.isEmpty()) return null;
