@@ -7,7 +7,7 @@ import Sider from "antd/es/layout/Sider";
 import { useState } from "react";
 import { useEffect } from "react";
 import LoadingSpinner from "../../../utils/LoadingSpinner";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import {
   LaptopOutlined,
   NotificationOutlined,
@@ -15,7 +15,10 @@ import {
 } from "@ant-design/icons";
 import React from "react";
 import { getAllCourses } from "../../../service/CourseService";
-import { getAllFavourite } from "../../../service/FavouriteService";
+import {
+  deleteFavourite,
+  getAllFavourite,
+} from "../../../service/FavouriteService";
 export const FavouritePage = () => {
   const { Header, Content, Sider } = Layout;
   const [courses, setCourses] = useState([]);
@@ -25,7 +28,7 @@ export const FavouritePage = () => {
   const [loading, setLoading] = useState(true);
   const [totalElements, setTotalElements] = useState(0);
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { borderRadiusLG },
   } = theme.useToken();
   useEffect(() => {
     document.title = "Home Page";
@@ -49,6 +52,21 @@ export const FavouritePage = () => {
     };
     fetchCourse();
   }, [currentPage, pageSize]);
+
+  const handleDeleteFavourite = async (courseId) => {
+    try {
+      await deleteFavourite(courseId);
+      const response = await getAllFavourite(currentPage, pageSize);
+      const { result, totalPages, totalElements } = response.data;
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+      setCourses(result);
+      toast.success("Delete successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -59,13 +77,15 @@ export const FavouritePage = () => {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -50 }}
       transition={{ duration: 0.5 }}
-      style={{ paddingBottom: "50px", backgroundColor: "#f5f5f5" }}
+      style={{ backgroundColor: "#f5f5f5" }}
     >
-      <Layout className="content-page container-fluid ">
-        <Layout className="layout-course">
+      <Layout className="content-page container">
+        <Layout className="layout-course bg-white rounded-4">
           <Layout
             style={{
               padding: "0 24px 24px",
+              backgroundColor: "white",
+              borderRadius: 20,
             }}
           >
             <Breadcrumb
@@ -97,7 +117,10 @@ export const FavouritePage = () => {
               <div className="container py-3">
                 <h1 className="text-center mb-5">Your Favourite Courses</h1>
                 <div className="row mx-0 justify-content-center ">
-                  <ViewFavourite courses={courses} />
+                  <ViewFavourite
+                    courses={courses}
+                    handleDeleteFavourite={handleDeleteFavourite}
+                  />
                   <div className="d-flex justify-content-center mt-5">
                     <Pagination
                       showTotal={(total) => `Total ${total} items`}

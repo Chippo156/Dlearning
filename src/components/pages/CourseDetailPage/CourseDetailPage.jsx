@@ -100,6 +100,7 @@ export const CourseDetailPage = () => {
               `You have successfully purchased this course: ${response.data.title}!`,
               "success"
             );
+            setIsPurchase(true);
           } else {
             Swal.fire({
               title: "Purchase fail!",

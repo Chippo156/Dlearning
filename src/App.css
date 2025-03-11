@@ -58,15 +58,7 @@
 .layout-course{
   padding: 0px 20px;
 }
-/* .card {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 16px;
-  width: 300px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-} */
+
 
 .card:hover {
   transform: translateY(-4px) translateX(5px);
@@ -75,7 +67,7 @@
 .card {
   background: white;
   border: 3px solid black;
-  padding: 10px;
+  padding: 1px 1px;
   top: -7px;
   left: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -85,7 +77,7 @@
   border: 2px solid gray !important;
 }
 .ant-card-body{
-  padding: 8px 0px !important;
+  padding: 8px 10px !important;
   
 }
 .ant-card-meta-title{
@@ -1508,4 +1500,59 @@
   height: auto;
   border-radius: 10px;
   box-shadow: none;
+}
+.course-card-badge{
+  padding:3px 20px;
+  padding-bottom: 5px;
+  font-size: 16px;
+  font-weight: 600; 
+}
+.career{
+  background: #10162f;
+  color: #fff;
+  
+}
+.course{
+  background: #EAFDC6;
+  color: #333;
+}
+.skill{
+  background-color: #D3F2FF;
+}
+.certificate{
+  background-color: #FFE8CC;
+}
+.filter-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffffb3;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+  display: block;
+}
+.filter-checkbox,
+.filter-radio {
+  font-size: 18px;
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+  padding: 5px;
+  border-radius: 6px;
+}
+.filter-checkbox:hover,
+.filter-radio:hover {
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+.filter-checkbox .ant-checkbox-inner,
+.filter-radio .ant-radio-inner {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+.filter-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background: #1890ff;
+  border-color: #1890ff;
+}
+.filter-radio .ant-radio-checked .ant-radio-inner {
+  border-color: #1890ff;
 }

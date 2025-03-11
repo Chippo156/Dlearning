@@ -7,7 +7,10 @@ import { InfoContact } from "../ContactPage/components/InfoContact";
 import { ContactSection } from "./components/ContactSection";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAllCourses } from "../../../service/CourseService";
+import {
+  getAllCourses,
+  getAllCoursesCaching,
+} from "../../../service/CourseService";
 import { OurCourse } from "./components/OurCourse";
 import LoadingSpinner from "../../../utils/LoadingSpinner";
 import { ToastContainer } from "react-toastify";
@@ -58,7 +61,9 @@ export const HomePage = () => {
     document.title = "Home Page";
     const fetchCourse = async () => {
       try {
-        const response = await getAllCourses(currentPage, pageSize);
+        const response = await getAllCoursesCaching(currentPage, pageSize);
+        console.log(response);
+
         const { result, totalPages } = response.data;
 
         if (currentPage === 1) {
