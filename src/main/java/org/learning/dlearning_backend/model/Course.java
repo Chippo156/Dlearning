@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.CourseLevel;
+import org.learning.dlearning_backend.common.TypeCourse;
 
 import java.util.List;
 import java.util.Set;
@@ -47,6 +48,10 @@ public class Course extends AbstractEntity<Long> {
 
     @Column(name = "quantity", columnDefinition = "BIGINT DEFAULT 0")
     Long quantity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_course")
+    TypeCourse typeCourse;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "author_id")

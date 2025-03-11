@@ -1,9 +1,14 @@
 package org.learning.dlearning_backend.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.CourseLevel;
+import org.learning.dlearning_backend.common.TypeCourse;
+
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,8 +24,11 @@ public class CourseResponse {
     Integer duration;
     String language;
     CourseLevel courseLevel;
+    TypeCourse typeCourse;
     String thumbnail;
     String videoUrl;
     Double averageRating;
     Long points;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime createdAt;
 }

@@ -114,7 +114,6 @@ public class CourseController {
                 .data(courseService.getCoursesCache(page,size))
                 .build();
     }
-
     @GetMapping("/filter-courses")
     public ResponseData<PageResponse<CourseResponse>> filterCourses(
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -139,6 +138,29 @@ public class CourseController {
                 .message("Filter Courses Successfully")
                 .code(HttpStatus.OK.value())
                 .data(courseService.getCourseWithSortAndSpecification(page,size,sortBy,search))
+                .build();
+    }
+
+    @GetMapping("/find-course-oldest")
+    public ResponseData<PageResponse<CourseResponse>> findCourseByOldest(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ){
+        return ResponseData.<PageResponse<CourseResponse>>builder()
+                .message("Find Course By Oldest Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.findCourseByOldest(page,size))
+                .build();
+    }
+    @GetMapping("/find-course-newest")
+    public ResponseData<PageResponse<CourseResponse>> findCourseByNewest(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ){
+        return ResponseData.<PageResponse<CourseResponse>>builder()
+                .message("Find Course By Newest Successfully")
+                .code(HttpStatus.OK.value())
+                .data(courseService.findCourseByNewest(page,size))
                 .build();
     }
 }

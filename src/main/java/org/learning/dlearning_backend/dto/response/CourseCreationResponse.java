@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.learning.dlearning_backend.common.CourseLevel;
+import org.learning.dlearning_backend.common.TypeCourse;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +21,7 @@ public class CourseCreationResponse {
     Integer duration;
     String language;
     CourseLevel courseLevel;
+    TypeCourse typeCourse;
     String thumbnail;
     String videoUrl;
     Long points;

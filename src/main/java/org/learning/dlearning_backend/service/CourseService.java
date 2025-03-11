@@ -24,4 +24,7 @@ public interface CourseService {
     PageResponse<CourseResponse> getCourseWithSortMultiFieldAndSearch(int page, int size, String sortBy ,String... search);
     PageResponse<CourseResponse> getCourseWithSortAndSpecification(int page, int size, String sortBy ,String... search);
 
+    PageResponse<CourseResponse> findCourseByOldest(int page, int size);
+    PageResponse<CourseResponse> findCourseByNewest(int page, int size);
+
 }
