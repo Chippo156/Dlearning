@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DLearning Certificate of Completion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans|Pinyon+Script|Rochester|Great+Vibes'); /* Thêm phông chữ Great Vibes */
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f4f4f4;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        .certificate-container {
+            width: 800px;
+            background: #618597;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .outer-border {
+            border: 2px solid #fff;
+            padding: 10px;
+        }
+
+        .inner-border {
+            border: 2px solid #555;
+            padding: 10px;
+        }
+
+        .certificate-content {
+            background-color: #fff;
+            border: 1px solid #E1E5F0;
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
+        }
+
+        h1 {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 34px;
+            color: #333;
+            margin-bottom: 0;
+        }
+
+        .certificate-title {
+            font-size: 18px;
+            color: #555;
+            margin: 10px 0 30px;
+            font-weight: 700;
+        }
+
+        .recipient-name {
+            font-size: 24px;
+            font-family: 'Pinyon Script', cursive;
+            color: #333;
+            border-bottom: 1px solid #777;
+            display: inline-block;
+            padding: 5px 20px;
+            margin: 20px 0;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .course-title {
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-bottom: 1px solid #777;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            margin-top: 40px;
+        }
+
+        .center-signature {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .center-signature .signature-line {
+            border-top: 1px solid #333;
+            padding-top: 5px;
+            width: 200px;
+            margin: 0 auto;
+        }
+
+        .signature, .date-completed {
+            text-align: center;
+            width: 40%;
+        }
+
+        .signature-line, .date-line {
+            border-top: 1px solid #333;
+            padding-top: 5px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .footer span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .signature .signature-line {
+            font-family: 'Great Vibes', cursive;
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="certificate-container">
+    <div class="outer-border">
+        <div class="inner-border">
+            <div class="certificate-content">
+
+                <div class="logo">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEg1auepYpgbQmgwOxAJVs9RVLB2LuwTqeyQ&s" alt="DLearning Logo">
+                </div>
+
+                <h1>DLearning Certificate of Completion</h1>
+                <p class="certificate-title">This certifies that</p>
+                <p class="recipient-name" th:text="${recipient}">[Recipient Name]</p>
+                <p class="description">has successfully completed the course</p>
+                <p class="course-title" th:text="${courseName}">[Course Name]</p>
+                <p class="description" th:text="${issueDate}">on [Completion Date]</p>
+
+                <div class="center-signature">
+                    <div class="signature-line">DLearning</div>
+                    <span>Official Website Signature</span>
+                </div>
+
+                <div class="footer">
+                    <div class="signature">
+                        <div class="signature-line" th:text="${author}">[Instructor Name]</div> <!-- Chữ ký giả với phông chữ viết tay -->
+                        <span>Instructor</span>
+                    </div>
+                    <div class="date-completed">
+                        <div class="date-line" th:text="${issueDate}">[Completion Date]</div>
+                        <span>Date</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
