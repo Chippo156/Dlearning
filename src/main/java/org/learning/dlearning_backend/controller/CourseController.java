@@ -163,4 +163,13 @@ public class CourseController {
                 .data(courseService.findCourseByNewest(page,size))
                 .build();
     }
+    @GetMapping("/sys-data-to-elastic-search")
+    public ResponseData<String> sysDataToElasticSearch(){
+        courseService.sysDataToElasticSearch();
+        return ResponseData.<String>builder()
+                .message("System Data To Elastic Search Successfully")
+                .code(HttpStatus.OK.value())
+                .data("System Data To Elastic Search Successfully")
+                .build();
+    }
 }

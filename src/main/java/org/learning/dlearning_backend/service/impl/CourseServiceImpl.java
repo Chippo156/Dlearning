@@ -32,6 +32,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -59,6 +60,7 @@ public class CourseServiceImpl implements CourseService {
     private final ObjectMapper objectMapper;
     private final SearchRepository searchRepository;
     private static final String PRODUCT_CACHE_KEY = "course_list";
+
 
     @Transactional
     @Override
@@ -259,6 +261,7 @@ public class CourseServiceImpl implements CourseService {
                         .language(course.getLanguage())
                         .courseLevel(course.getCourseLevel())
                         .duration(course.getDuration())
+                        .videoUrl(course.getVideoUrl())
                         .build())
                 .toList();
         courseElasticSearches.forEach(courseElasticSearch -> kafkaTemplate.send("save-to-elastic-search", courseElasticSearch));
@@ -370,6 +373,8 @@ public class CourseServiceImpl implements CourseService {
                 .result(courses)
                 .build();
     }
+
+
 
 
 }

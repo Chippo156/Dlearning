@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.learning.dlearning_backend.dto.request.BuyCourseRequest;
 import org.learning.dlearning_backend.dto.request.CourseCreationRequest;
 import org.learning.dlearning_backend.dto.response.*;
+import org.learning.dlearning_backend.model.Course;
 import org.learning.dlearning_backend.model.CourseElasticSearch;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 
@@ -26,5 +28,7 @@ public interface CourseService {
 
     PageResponse<CourseResponse> findCourseByOldest(int page, int size);
     PageResponse<CourseResponse> findCourseByNewest(int page, int size);
+
+
 
 }

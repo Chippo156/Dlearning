@@ -52,4 +52,7 @@ public class CourseElasticSearch implements Serializable {
 
     @Field(name = "quantity" , type = FieldType.Long)
     Long quantity;
+
+    @Field(name = "videoUrl" , type = FieldType.Text)
+    String videoUrl;
 }
