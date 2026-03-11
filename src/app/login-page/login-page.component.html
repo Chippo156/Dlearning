@@ -1,0 +1,5 @@
+<app-login-form
+  (loginSubmit)="loginUx.login($event)"
+  [loading]="loginUx.loading"
+></app-login-form>
+<app-login-ux #loginUx (loginSuccessEvent)="onLoginSuccess()"></app-login-ux>

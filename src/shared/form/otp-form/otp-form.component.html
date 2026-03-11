@@ -1,0 +1,16 @@
+<!-- OTP FORM -->
+<form
+  [formGroup]="otpForm"
+  (ngSubmit)="submitOtp()"
+  class="flex flex-col items-center gap-5"
+>
+  <input
+    nz-input
+    maxlength="6"
+    formControlName="otp"
+    class="text-center text-xl tracking-widest w-40"
+    placeholder="OTP"
+  />
+
+  <button nz-button nzType="primary">Verify OTP</button>
+</form>

@@ -1,0 +1,37 @@
+<div class="content-page">
+  <app-promo-modal
+    *ngIf="showPromoModal"
+    [ads]="ads"
+    (close)="closePromoModal()"
+  >
+  </app-promo-modal>
+
+  <app-education-highlights></app-education-highlights>
+
+  <app-intro-section></app-intro-section>
+
+  <app-our-courses
+    [courses]="courses"
+    [hasMore]="hasMore"
+    (loadMore)="loadMoreCourses()"
+  >
+  </app-our-courses>
+
+  <app-instructors-section></app-instructors-section>
+
+  <app-feedback-section></app-feedback-section>
+
+  <div class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <app-info-contact></app-info-contact>
+
+        <app-contact-section></app-contact-section>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="loading && currentPage === 1" class="flex justify-center py-20">
+    <nz-spin nzSize="large"></nz-spin>
+  </div> -->
+</div>

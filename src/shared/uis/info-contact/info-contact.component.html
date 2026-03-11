@@ -1,0 +1,24 @@
+<div class="space-y-10">
+  <div *ngFor="let contact of contacts" class="flex items-center gap-6">
+    <!-- ICON -->
+
+    <div
+      class="w-16 h-16 rounded-lg flex items-center justify-center text-white"
+      [ngClass]="contact.color"
+    >
+      <span nz-icon [nzType]="contact.icon"></span>
+    </div>
+
+    <!-- TEXT -->
+
+    <div>
+      <h4 class="font-semibold text-lg">
+        {{ contact.title }}
+      </h4>
+
+      <p class="text-gray-600">
+        {{ contact.value }}
+      </p>
+    </div>
+  </div>
+</div>

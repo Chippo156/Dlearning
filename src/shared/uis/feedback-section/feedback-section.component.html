@@ -1,0 +1,63 @@
+<div class="py-16 bg-cover bg-center my-24">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <!-- LEFT CONTENT -->
+
+      <div>
+        <h6 class="uppercase text-gray-500 mb-2">Feedback</h6>
+
+        <h1 class="text-4xl font-bold mb-4">What Our Students Say About Us</h1>
+
+        <p class="text-gray-600 mb-4">
+          Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam dolor
+          diam ipsum et tempor voluptua sit consetetur sit.
+        </p>
+
+        <p class="text-gray-600">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur
+          nobis ipsa alias quibusdam adipisci.
+        </p>
+      </div>
+
+      <!-- CAROUSEL -->
+
+      <div class="bg-white rounded-xl shadow-lg p-8">
+        <nz-carousel nzAutoPlay nzAutoPlaySpeed="3000">
+          <div nz-carousel-content *ngFor="let feedback of feedbacks">
+            <div class="text-center">
+              <span nz-icon class="text-3xl text-blue-500"></span>
+
+              <div class="flex items-center gap-4 mt-6">
+                <img
+                  [src]="feedback.image"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+
+                <div class="text-left">
+                  <h4 class="font-semibold">
+                    {{ feedback.name }}
+                  </h4>
+
+                  <span class="text-gray-500 text-sm">
+                    {{ feedback.role }}
+                  </span>
+                </div>
+              </div>
+
+              <p class="text-gray-600 mt-4">
+                {{ feedback.message }}
+              </p>
+
+              <div class="flex justify-end mt-4">
+                <span
+                  nz-icon
+                  class="text-3xl text-blue-500"
+                ></span>
+              </div>
+            </div>
+          </div>
+        </nz-carousel>
+      </div>
+    </div>
+  </div>
+</div>
