@@ -1,0 +1,13 @@
+export enum CourseLevel {
+  BEGINNER = 'BEGINNER',
+  INTERMEDIATE = 'INTERMEDIATE',
+  ADVANCED = 'ADVANCED',
+  EXPERT = 'EXPERT',
+}
+
+export enum TypeCourse {
+  CAREER = 'CAREER',
+  SKILL = 'SKILL',
+  CERTIFICATION = 'CERTIFICATION',
+  COURSE = 'COURSE',
+}
