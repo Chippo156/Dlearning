@@ -58,7 +58,16 @@ export class AuthService extends HttpBaseService {
 
   introspect(token: string) {
     const url = `${this.baseUrl}/auth/introspect`;
-    return this.http.post<ApiResponse<UserCredentials>>(url, { token });
+    return this.http.post<ApiResponse<UserCredentials>>(url, { token }).pipe(
+      tap((res) => {
+        if (res.data.valid) {
+          this.saveUserProfile(res.data);
+          this.isLogin$.next(true);
+        } else {
+          this.isLogin$.next(false);
+        }
+      }),
+    );
   }
 
   saveUserProfile(userProfile: UserCredentials): void {
@@ -73,6 +82,7 @@ export class AuthService extends HttpBaseService {
   logout(token: string): void {
     const url = `${this.baseUrl}/auth/logout`;
     this.http.post(url, { token }).subscribe(() => {
+      this.authStore.resetCredentials();
       this.isLogin$.next(false);
     });
   }

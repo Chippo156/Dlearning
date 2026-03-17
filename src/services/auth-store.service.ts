@@ -17,6 +17,10 @@ export class AuthStore {
     return this.credentials?.token;
   }
 
+  resetCredentials() {
+    window.localStorage.removeItem(LocalStorageKey.CREDENTIALS);
+  }
+
   clearUserLogin() {
     localStorage.removeItem(LocalStorageKey.CREDENTIALS);
     localStorage.removeItem(LocalStorageKey.USER_INFO);

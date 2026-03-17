@@ -24,7 +24,7 @@ export class ApiInterceptor implements HttpInterceptor {
 
     if (
       token &&
-      !req.url.includes('/login') &&
+      !req.url.includes('/sign-in') &&
       !req.url.includes('/register')
     ) {
       req = req.clone({
