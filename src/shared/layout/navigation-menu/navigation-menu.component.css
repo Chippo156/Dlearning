@@ -1,0 +1,30 @@
+.nav-link {
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #1677ff;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -4px;
+  background: #1677ff;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.active-link {
+  color: #1677ff;
+}
+
+.active-link::after {
+  width: 100%;
+}

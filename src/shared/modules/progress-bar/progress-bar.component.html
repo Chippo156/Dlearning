@@ -1,0 +1,46 @@
+<div
+  class="w-full bg-gray-900 text-white px-4 py-2 flex items-center justify-between"
+>
+  <!-- Left section -->
+  <div class="flex items-center gap-3">
+    <!-- Back button -->
+    <button
+      nz-button
+      nzShape="circle"
+      nzType="default"
+      class="bg-gray-700 border-none"
+      (click)="goHome()"
+    >
+      <span nz-icon nzType="left"></span>
+    </button>
+
+    <!-- Course title -->
+    <div class="font-semibold text-sm">
+      {{ courseTitle }}
+    </div>
+  </div>
+
+  <!-- Right section -->
+  <div class="flex items-center gap-6">
+    <!-- Progress -->
+    <div class="flex items-center gap-3">
+      <nz-progress
+        nzType="circle"
+        [nzPercent]="completionPercentage"
+        [nzWidth]="40"
+        [nzFormat]="progressFormat"
+      ></nz-progress>
+
+      <div class="text-sm">
+        {{ totalLessonComplete }}/{{ totalLessons }} Lessons
+      </div>
+    </div>
+
+    <!-- Extra options -->
+    <div class="flex items-center gap-4 text-sm text-gray-300">
+      <div class="cursor-pointer hover:text-white">📝 Note</div>
+
+      <div class="cursor-pointer hover:text-white">❓ Instruct</div>
+    </div>
+  </div>
+</div>

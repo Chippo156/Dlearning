@@ -1,0 +1,85 @@
+<nz-modal
+  *ngIf="ads?.length"
+  [nzOkLoading]="loading"
+  [(nzVisible)]="visible"
+  (nzOnCancel)="close.emit()"
+  [nzFooter]="null"
+  [nzWidth]="520"
+  nzCentered
+  [nzBodyStyle]="{ padding: '0' }"
+>
+  <ng-container *nzModalContent>
+    <div class="relative w-full bg-white rounded-lg overflow-hidden">
+      <!-- LEFT BUTTON -->
+
+      <button
+        nz-button
+        nzShape="circle"
+        class="absolute left-3 top-1/2 -translate-y-1/2 z-20 shadow-md"
+        (click)="prev()"
+      >
+        <span nz-icon nzType="left"></span>
+      </button>
+
+      <!-- CAROUSEL -->
+
+      <nz-carousel *ngIf="ads?.length" #carousel nzAutoPlay nzEffect="scrollx">
+        <div nz-carousel-content *ngFor="let ad of ads">
+          <div class="flex flex-col items-center text-center px-6 py-6">
+            <!-- IMAGE -->
+
+            <div class="w-full flex justify-center mb-4">
+              <img
+                [src]="ad.image"
+                class="max-h-[220px] w-auto object-contain rounded-md shadow"
+              />
+            </div>
+
+            <!-- TITLE -->
+
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">
+              {{ ad.title }}
+            </h3>
+
+            <!-- DESCRIPTION -->
+
+            <p class="text-gray-500 text-sm mb-3 line-clamp-2">
+              {{ ad.description }}
+            </p>
+
+            <!-- PRICE -->
+
+            <!-- DATE -->
+
+            <p class="text-xs text-gray-400 mb-4">
+              {{ ad.startDate }} - {{ ad.endDate }}
+            </p>
+
+            <!-- BUTTON -->
+
+            <a
+              nz-button
+              nzType="primary"
+              class="px-6"
+              [href]="ad.link"
+              target="_blank"
+            >
+              Enroll Now
+            </a>
+          </div>
+        </div>
+      </nz-carousel>
+
+      <!-- RIGHT BUTTON -->
+
+      <button
+        nz-button
+        nzShape="circle"
+        class="absolute right-3 top-1/2 -translate-y-1/2 z-20 shadow-md"
+        (click)="next()"
+      >
+        <span nz-icon nzType="right"></span>
+      </button>
+    </div>
+  </ng-container>
+</nz-modal>

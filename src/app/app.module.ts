@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -43,6 +43,7 @@ const ngZorroConfig: NzConfig = {
     FooterComponent,
     BannerComponent,
     NzIconTestModule,
+    CommonModule,
   ],
   bootstrap: [AppComponent],
   providers: [

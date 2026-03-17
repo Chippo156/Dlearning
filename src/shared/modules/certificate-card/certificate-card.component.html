@@ -1,0 +1,58 @@
+<div
+  class="w-full md:w-1/4 p-3 cursor-pointer"
+  (click)="handleDownload()"
+  [id]="'certificate-' + certificate.certificateId"
+>
+  <div class="bg-white border-[6px] border-yellow-600 shadow-md p-4">
+    <div class="border-[3px] border-yellow-400 p-4 text-center">
+      <!-- LOGO -->
+
+      <div class="flex justify-center mb-3">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEg1auepYpgbQmgwOxAJVs9RVLB2LuwTqeyQ&s"
+          class="h-10"
+        />
+      </div>
+
+      <!-- TITLE -->
+
+      <h2 class="text-sm font-bold text-gray-800 mb-1">
+        DLearning Certificate
+      </h2>
+
+      <p class="text-xs text-gray-500">This certifies that</p>
+
+      <!-- USER -->
+
+      <p class="font-semibold text-blue-700 text-sm my-1">
+        {{ certificate.username }}
+      </p>
+
+      <p class="text-xs text-gray-500">has completed</p>
+
+      <!-- COURSE -->
+
+      <p class="font-semibold text-gray-800 text-sm my-1">
+        {{ certificate.courseName }}
+      </p>
+
+      <p class="text-xs text-gray-500">on {{ certificate.issueDate }}</p>
+
+      <!-- SIGNATURE -->
+
+      <div class="flex justify-between mt-4 text-[10px]">
+        <div class="text-center">
+          <div class="border-t w-16 mx-auto"></div>
+          <p class="mt-1">{{ certificate.author }}</p>
+          <span class="text-gray-400">Instructor</span>
+        </div>
+
+        <div class="text-center">
+          <div class="border-t w-16 mx-auto"></div>
+          <p class="mt-1">{{ certificate.issueDate }}</p>
+          <span class="text-gray-400">Issue Date</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

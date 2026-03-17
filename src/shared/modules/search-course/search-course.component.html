@@ -1,0 +1,87 @@
+<div
+  nzWidth="300"
+  class="bg-white h-screen sticky top-0 border-r border-gray-200 p-6 overflow-y-auto"
+>
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-2 font-semibold text-lg">
+      <span nz-icon nzType="filter"></span>
+      Filters ({{ countSearch }})
+    </div>
+
+    <button
+      nz-button
+      nzType="default"
+      nzSize="small"
+      class="text-gray-500"
+      (click)="clearFilter()"
+    >
+      Clear
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="mb-6">
+    <p class="text-sm font-medium text-gray-600 mb-2">Search</p>
+
+    <input
+      nz-input
+      placeholder="Search courses..."
+      class="rounded-lg"
+      [formControl]="searchControl"
+    />
+  </div>
+
+  <!-- Level -->
+  <div class="mb-6">
+    <p class="text-sm font-medium text-gray-600 mb-3">Level</p>
+
+    <div class="flex flex-col gap-2">
+      <label
+        nz-checkbox
+        *ngFor="let lvl of levels"
+        [ngModel]="level.includes(lvl)"
+        (ngModelChange)="toggleLevel(lvl)"
+      >
+        {{ lvl | titlecase }}
+      </label>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <nz-divider></nz-divider>
+
+  <!-- Type -->
+  <div class="mb-6">
+    <p class="text-sm font-medium text-gray-600 mb-3">Type</p>
+
+    <div class="flex flex-col gap-2">
+      <label
+        nz-checkbox
+        *ngFor="let t of types"
+        [ngModel]="type.includes(t)"
+        (ngModelChange)="toggleType(t)"
+      >
+        {{ t }}
+      </label>
+    </div>
+  </div>
+
+  <nz-divider></nz-divider>
+
+  <!-- Duration -->
+  <div>
+    <p class="text-sm font-medium text-gray-600 mb-3">Duration</p>
+
+    <nz-radio-group [(ngModel)]="duration">
+      <label
+        nz-radio
+        *ngFor="let d of durations"
+        [nzValue]="d.value"
+        class="block mb-2"
+      >
+        {{ d.label }}
+      </label>
+    </nz-radio-group>
+  </div>
+</div>

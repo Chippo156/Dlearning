@@ -11,11 +11,19 @@
       Chippo Learning
     </a>
 
+    <app-navigation-menu></app-navigation-menu>
+
     <!-- MENU -->
     <!-- <app-navigation-menu class="hidden lg:flex"></app-navigation-menu> -->
 
     <!-- RIGHT SIDE -->
     <div class="flex items-center gap-10">
+      <a
+        routerLink="/ads"
+        class="text-gray-600 hover:text-gray-900 transition-colors duration-300"
+      >
+        Advertisements
+      </a>
       <!-- POINTS -->
       <div class="flex items-center gap-1 text-yellow-500 font-semibold">
         <i nz-icon nzType="dollar-circle"></i>
@@ -41,7 +49,7 @@
       </nz-dropdown-menu>
 
       <!-- FAVOURITE -->
-      <button nz-button nzType="text">
+      <button nz-button nzType="text" routerLink="/favourites" class="relative">
         <i nz-icon nzType="heart"></i>
       </button>
 

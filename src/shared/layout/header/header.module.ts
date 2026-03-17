@@ -6,14 +6,20 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { HeaderComponent } from './header.component';
 import { CommonModule } from '@angular/common';
+import { NavigationMenuComponent } from '../navigation-menu/navigation-menu.component';
+import { AdsPageModule } from '@app/ads-page/ads-page.module';
+import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
+    RouterModule,
     NzIconModule,
     NzAvatarModule,
     NzBadgeModule,
     NzDropDownModule,
     NzButtonModule,
     CommonModule,
+    NavigationMenuComponent,
+    AdsPageModule,
   ],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],

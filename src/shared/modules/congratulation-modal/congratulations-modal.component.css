@@ -1,0 +1,23 @@
+.confetti {
+  position: absolute;
+  top: -10px;
+  width: 6px;
+  height: 10px;
+  background: red;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+.confetti:nth-child(odd) {
+  background: yellow;
+}
+
+.confetti:nth-child(even) {
+  background: blue;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}

@@ -1,0 +1,91 @@
+<!-- Loading -->
+<app-get-advertisements-current-login-ux
+  init
+  #ux
+></app-get-advertisements-current-login-ux>
+<div class="p-4 bg-white rounded-lg shadow">
+  <nz-table
+    [nzLoading]="ux?.loading"
+    #table
+    [nzData]="ux?.result?.result || []"
+    [nzBordered]="true"
+    [nzSize]="'middle'"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="80px">ID</th>
+        <th nzShowSort nzSortKey="title">Title</th>
+        <th nzWidth="120px">Image</th>
+        <th>Description</th>
+        <th>Email</th>
+        <th nzShowSort nzSortKey="startDate">Start Date</th>
+        <th>End Date</th>
+        <th>Phone</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let ad of table.data">
+        <td>
+          <a class="text-blue-500 font-medium">
+            {{ ad.id }}
+          </a>
+        </td>
+
+        <td>
+          {{ ad.title }}
+        </td>
+
+        <td>
+          <nz-avatar nzWidth="100px" [nzSrc]="ad.image"></nz-avatar>
+        </td>
+
+        <td class="max-w-[250px] truncate">
+          {{ ad.description }}
+        </td>
+
+        <td>
+          {{ ad.contactEmail }}
+        </td>
+
+        <td>
+          {{ ad.startDate }}
+        </td>
+
+        <td>
+          {{ ad.endDate }}
+        </td>
+
+        <td>
+          {{ ad.contactPhone }}
+        </td>
+
+        <td>
+          <nz-tag [nzColor]="ad.adsStatus === 'ACTIVE' ? 'green' : 'volcano'">
+            {{ ad.adsStatus }}
+          </nz-tag>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <!-- Pagination -->
+
+  <div class="flex justify-end mt-4">
+    <nz-pagination
+      [nzPageIndex]="currentPage"
+      [nzTotal]="ux?.result?.totalElements"
+      [nzPageSize]="ux?.pagination?.pageSize"
+      [nzShowSizeChanger]="false"
+      (nzPageIndexChange)="pageChange.emit($event)"
+      [nzShowTotal]="totalTemplate"
+    >
+    </nz-pagination>
+
+    <ng-template #totalTemplate let-total>
+      Total {{ total }} items | Page {{ currentPage }} of
+      {{ ux?.result?.totalPages }}
+    </ng-template>
+  </div>
+</div>

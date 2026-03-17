@@ -1,0 +1,35 @@
+<div class="course-content-container">
+  <h2 class="text-xl font-semibold mb-2">Course Content</h2>
+
+  <p class="text-gray-500 mb-4">
+    {{ chapters.length }} Chapter • {{ totalLessons }} Lessons
+  </p>
+
+  <nz-collapse nzAccordion="false">
+    <nz-collapse-panel
+      *ngFor="let chapter of chapters"
+      [nzHeader]="chapter.chapterName"
+      class="mb-4"
+    >
+      <ul *ngIf="chapter.lessonDto?.length > 0; else noLesson">
+        <li
+          *ngFor="let lesson of chapter.lessonDto"
+          class="flex items-center gap-2 py-1"
+        >
+          <span class="text-gray-500">
+            <i nz-icon nzType="video-camera"></i>
+          </span>
+
+          {{ lesson.lessonName || "No Title" }}
+        </li>
+      </ul>
+
+      <ng-template #noLesson>
+        <li class="flex items-center gap-2 text-gray-400">
+          <i nz-icon nzType="play-circle"></i>
+          No lesson available
+        </li>
+      </ng-template>
+    </nz-collapse-panel>
+  </nz-collapse>
+</div>

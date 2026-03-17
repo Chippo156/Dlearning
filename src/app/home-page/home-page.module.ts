@@ -13,8 +13,9 @@ import { InfoContactComponent } from '../../shared/uis/info-contact/info-contact
 import { InstructorsSectionComponent } from '../../shared/uis/instructors-section/instructors-section.component';
 import { IntroSectionComponent } from '../../shared/uis/intro-section/intro-section.component';
 import { OurCoursesComponent } from '../../shared/uis/our-courses/our-courses.component';
-import { PromoModalComponent } from '../../shared/uis/promo-modal/promo-modal.component';
+import { PromoModalComponent } from '../../shared/modules/promo-modal/promo-modal.component';
 import { CommonModule } from '@angular/common';
+import { GetActiveAdvertisementsUx } from '@uxs/advertisement-uxs/get-active-advertisements/get-active-advertisements.ux';
 
 const routes: Routes = [
   {
@@ -39,6 +40,7 @@ const routes: Routes = [
     IntroSectionComponent,
     OurCoursesComponent,
     PromoModalComponent,
+    GetActiveAdvertisementsUx
   ],
   declarations: [HomePageComponent],
 })

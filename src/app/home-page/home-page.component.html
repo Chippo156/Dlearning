@@ -1,7 +1,14 @@
+<app-get-active-advertisements-ux
+  init
+  #getActiveAdsUx
+  (success)="showPromoModal = true"
+></app-get-active-advertisements-ux>
 <div class="content-page">
   <app-promo-modal
     *ngIf="showPromoModal"
-    [ads]="ads"
+    [loading]="(getActiveAdsUx.loading$ | async) ?? false"
+    [visible]="showPromoModal"
+    [ads]="(getActiveAdsUx?.result$ | async) ?? []"
     (close)="closePromoModal()"
   >
   </app-promo-modal>
@@ -10,12 +17,7 @@
 
   <app-intro-section></app-intro-section>
 
-  <app-our-courses
-    [courses]="courses"
-    [hasMore]="hasMore"
-    (loadMore)="loadMoreCourses()"
-  >
-  </app-our-courses>
+  <app-our-courses> </app-our-courses>
 
   <app-instructors-section></app-instructors-section>
 
@@ -30,8 +32,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div *ngIf="loading && currentPage === 1" class="flex justify-center py-20">
-    <nz-spin nzSize="large"></nz-spin>
-  </div> -->
 </div>

@@ -1,0 +1,93 @@
+<div>
+  <!-- New comment -->
+  <div class="flex items-center gap-3 mb-4">
+    <img [src]="avatar" class="w-10 h-10 rounded-full object-cover" />
+
+    <input
+      nz-input
+      [(ngModel)]="newCommentLesson"
+      (ngModelChange)="handleNewCommentChange($event)"
+      placeholder="Enter your new comment"
+      class="flex-1"
+    />
+
+    <button
+      nz-button
+      nzType="primary"
+      (click)="handleAddCommentLesson(newCommentLesson)"
+    >
+      <span nz-icon nzType="send"></span>
+    </button>
+  </div>
+
+  <!-- Comment list -->
+  <ng-container *ngIf="comments?.length; else noComment">
+    <ng-container
+      *ngTemplateOutlet="
+        commentTemplate;
+        context: { $implicit: comments, depth: 0 }
+      "
+    >
+    </ng-container>
+  </ng-container>
+
+  <ng-template #noComment>
+    <p class="text-gray-500">No comments yet. Be the first to comment!</p>
+  </ng-template>
+</div>
+
+<!-- Recursive template -->
+<ng-template #commentTemplate let-commentList let-depth="depth">
+  <div *ngFor="let comment of commentList" class="flex gap-3 mb-4">
+    <!-- Avatar -->
+    <img [src]="avatar" class="w-8 h-8 rounded-full object-cover" />
+
+    <div class="flex-1">
+      <!-- Name -->
+      <div class="font-semibold text-sm">
+        {{ comment.name }}
+      </div>
+
+      <!-- Content -->
+      <div class="text-gray-700 text-sm">
+        {{ comment.content }}
+      </div>
+
+      <!-- Actions -->
+      <div
+        class="text-xs text-blue-500 cursor-pointer mt-1"
+        (click)="toggleReplyInput(comment.id)"
+      >
+        Reply
+      </div>
+
+      <!-- Reply input -->
+      <div *ngIf="activeReply === comment.id" class="flex gap-2 mt-2">
+        <input
+          nz-input
+          [(ngModel)]="replyContent[comment.id]"
+          placeholder="Write a reply..."
+        />
+
+        <button
+          nz-button
+          nzType="primary"
+          (click)="handleReplySubmit(comment.id, replyContent[comment.id])"
+        >
+          <span nz-icon nzType="send"></span>
+        </button>
+      </div>
+
+      <!-- Replies -->
+      <div *ngIf="comment.replies?.length" class="ml-6 mt-3 border-l pl-3">
+        <ng-container
+          *ngTemplateOutlet="
+            commentTemplate;
+            context: { $implicit: comment.replies, depth: depth + 1 }
+          "
+        >
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>

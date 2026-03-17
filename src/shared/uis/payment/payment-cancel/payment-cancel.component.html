@@ -1,0 +1,39 @@
+<div
+  class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-50 to-orange-50 p-4"
+>
+  <!-- VNPay Logo -->
+  <img
+    src="https://www.nbk.vn/upload/khoungdung/vn-pay.jpg"
+    alt="VNPay"
+    class="w-32 h-auto mb-8 drop-shadow-md"
+  />
+
+  <!-- Title -->
+  <h1 class="text-4xl font-bold text-gray-800 mb-6">Payment canceled</h1>
+
+  <!-- Failed Status Icon (ng-zorro) -->
+  <i
+    nz-icon
+    nzType="close-circle"
+    nzTheme="fill"
+    class="text-red-500 mb-8"
+    [ngStyle]="{ 'font-size': '80px' }"
+  ></i>
+
+  <!-- Message -->
+  <p class="text-gray-600 text-center max-w-md mb-10 text-lg">
+    Your transaction was canceled. If you have questions, please contact
+    customer support.
+  </p>
+
+  <!-- Back to Home Button (ng-zorro) -->
+  <button
+    nz-button
+    nzType="primary"
+    nzSize="large"
+    (click)="goHome()"
+    class="px-12 py-2"
+  >
+    Back to home
+  </button>
+</div>

@@ -1,0 +1,102 @@
+<div class="lg:col-span-4 mt-5 lg:mt-0">
+  <div class="bg-gray-800 rounded-lg shadow-lg mb-5">
+    <!-- Title -->
+    <h3 class="bg-gray-900 text-white py-3 px-4 font-semibold">
+      Course Features
+    </h3>
+
+    <!-- Instructor -->
+    <div
+      class="flex justify-between border-b border-gray-700 px-4 py-2 text-white"
+    >
+      <span class="flex items-center gap-2">
+        <i nz-icon nzType="user" nzTheme="outline" class="text-sky-400"></i>
+        Instructor
+      </span>
+      <span>{{ course?.author }}</span>
+    </div>
+
+    <!-- Lectures -->
+    <div
+      class="flex justify-between border-b border-gray-700 px-4 py-2 text-white"
+    >
+      <span class="flex items-center gap-2">
+        <i nz-icon nzType="book" class="text-green-400"></i>
+        Lectures
+      </span>
+      <span>{{ totalLessons }}</span>
+    </div>
+
+    <!-- Duration -->
+    <div
+      class="flex justify-between border-b border-gray-700 px-4 py-2 text-white"
+    >
+      <span class="flex items-center gap-2">
+        <i nz-icon nzType="clock-circle" class="text-red-400"></i>
+        Duration
+      </span>
+      <span>{{ course?.duration }} hours</span>
+    </div>
+
+    <!-- Level -->
+    <div
+      class="flex justify-between border-b border-gray-700 px-4 py-2 text-white"
+    >
+      <span class="flex items-center gap-2">
+        <i nz-icon nzType="bar-chart" class="text-yellow-400"></i>
+        Skill level
+      </span>
+      <span>{{ course?.courseLevel }}</span>
+    </div>
+
+    <!-- Language -->
+    <div class="flex justify-between px-4 py-2 text-white">
+      <span class="flex items-center gap-2">
+        <i nz-icon nzType="global" class="text-purple-400"></i>
+        Language
+      </span>
+      <span>{{ course?.language }}</span>
+    </div>
+
+    <!-- Price -->
+    <div
+      class="bg-gray-900 text-white py-3 px-4 font-semibold flex justify-between items-center"
+    >
+      <span class="flex items-center gap-2">
+        <i nz-icon nzType="dollar-circle" class="text-yellow-400"></i>
+        Course Price
+      </span>
+
+      <span class="flex items-center gap-1">
+        {{ course?.points }}
+        <i nz-icon nzType="gold"></i>
+      </span>
+    </div>
+
+    <!-- Button -->
+    <div class="py-3 px-4">
+      <ng-container *ngIf="isLogin$ | async; else loginPrompt">
+        <button
+          nz-button
+          nzType="primary"
+          nzSize="large"
+          class="w-full font-bold uppercase"
+          (click)="handleAction()"
+        >
+          {{ isPurchase ? "Learn Now" : "Enroll Now" }}
+        </button>
+      </ng-container>
+      <ng-template #loginPrompt>
+        <button
+          nz-button
+          nzType="primary"
+          nzSize="large"
+          class="w-full font-bold uppercase"
+          [routerLink]="['/login']"
+        >
+          Login to Enroll
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>

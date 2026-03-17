@@ -1,0 +1,170 @@
+<div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+  <div class="lg:col-span-5">
+    <nz-card
+      class="h-full"
+      [nzCover]="coverTemplate"
+      [nzActions]="[avatarAction, editAction, passwordAction]"
+    >
+      <nz-card-meta
+        [nzAvatar]="metaAvatar"
+        [nzTitle]="fullName"
+        [nzDescription]="profileData?.description || 'No description yet.'"
+      ></nz-card-meta>
+    </nz-card>
+
+    <ng-template #coverTemplate>
+      <img
+        [src]="coverImage"
+        alt="Profile cover"
+        class="h-[420px] w-full rounded-lg object-cover"
+      />
+    </ng-template>
+
+    <ng-template #metaAvatar>
+      <nz-avatar
+        nzSrc="https://api.dicebear.com/7.x/miniavs/svg?seed=8"
+      ></nz-avatar>
+    </ng-template>
+
+    <ng-template #avatarAction>
+      <button nz-button nzType="text" (click)="openUploadModal()">
+        <span nz-icon nzType="picture"></span>
+      </button>
+    </ng-template>
+
+    <ng-template #editAction>
+      <button nz-button nzType="text" (click)="toggleEdit()">
+        <span nz-icon nzType="edit"></span>
+      </button>
+    </ng-template>
+
+    <ng-template #passwordAction>
+      <button nz-button nzType="text" (click)="openPasswordModal()">
+        <span nz-icon nzType="lock"></span>
+      </button>
+    </ng-template>
+  </div>
+
+  <div class="lg:col-span-7">
+    <form
+      nz-form
+      nzLayout="vertical"
+      [formGroup]="profileForm"
+      (ngSubmit)="submitProfile()"
+      class="space-y-4"
+    >
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">First name</nz-form-label>
+        <nz-form-control nzErrorTip="First name is required">
+          <input nz-input formControlName="firstName" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">Last name</nz-form-label>
+        <nz-form-control nzErrorTip="Last name is required">
+          <input nz-input formControlName="lastName" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Gender</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="gender" class="w-full">
+            <nz-option nzValue="MALE" nzLabel="Male"></nz-option>
+            <nz-option nzValue="FEMALE" nzLabel="Female"></nz-option>
+            <nz-option nzValue="OTHER" nzLabel="Other"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Phone number</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="phoneNumber" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Date of birth</nz-form-label>
+        <nz-form-control>
+          <input nz-input type="date" formControlName="dateOfBirth" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Address</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="address" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Description</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="description" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <div class="pt-2">
+        <button nz-button nzType="primary" [disabled]="isFormDisabled">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<nz-modal
+  nzTitle="Upload avatar"
+  [(nzVisible)]="isUploadModalOpen"
+  (nzOnCancel)="closeUploadModal()"
+  [nzFooter]="null"
+>
+  <app-upload-file
+    (updateAvatar)="handleAvatarUpdated($event)"
+  ></app-upload-file>
+</nz-modal>
+
+<nz-modal
+  nzTitle="Update password"
+  [(nzVisible)]="isPasswordModalOpen"
+  (nzOnCancel)="closePasswordModal()"
+  [nzFooter]="null"
+>
+  <form
+    nz-form
+    nzLayout="vertical"
+    [formGroup]="passwordForm"
+    (ngSubmit)="submitPassword()"
+    class="space-y-4"
+  >
+    <nz-form-item>
+      <nz-form-label [nzRequired]="true">Current password</nz-form-label>
+      <nz-form-control nzErrorTip="Password is required">
+        <input nz-input type="password" formControlName="password" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzRequired]="true">New password</nz-form-label>
+      <nz-form-control nzErrorTip="New password is required">
+        <input nz-input type="password" formControlName="newPassword" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzRequired]="true">Confirm password</nz-form-label>
+      <nz-form-control nzErrorTip="Confirmation is required">
+        <input nz-input type="password" formControlName="confirmPassword" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <div class="flex items-center gap-3">
+      <button nz-button nzType="primary">Update</button>
+      <button nz-button nzType="default" (click)="closePasswordModal()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</nz-modal>

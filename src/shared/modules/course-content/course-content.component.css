@@ -1,0 +1,3 @@
+.course-content-container {
+  @apply bg-white p-4 rounded-lg shadow-sm;
+}

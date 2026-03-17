@@ -1,0 +1,69 @@
+<div class="flex items-center justify-center bg-gray-100 py-10">
+  <div class="bg-white w-[900px] p-8 border-[12px] border-yellow-600 shadow-lg">
+    <div class="border-[6px] border-yellow-400 p-10 text-center">
+      <!-- LOGO -->
+
+      <div class="flex justify-center mb-6">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEg1auepYpgbQmgwOxAJVs9RVLB2LuwTqeyQ&s"
+          alt="DLearning Logo"
+          class="h-20"
+        />
+      </div>
+
+      <!-- TITLE -->
+
+      <h1 class="text-4xl font-serif font-bold text-gray-800 mb-6">
+        DLearning Certificate of Completion
+      </h1>
+
+      <p class="text-lg text-gray-600">This certifies that</p>
+
+      <!-- RECIPIENT -->
+
+      <h2
+        class="text-3xl font-serif font-semibold text-blue-700 my-4 border-b-2 border-gray-300 inline-block px-6 pb-2"
+      >
+        {{ recipientName }}
+      </h2>
+
+      <p class="text-lg text-gray-600 mt-4">
+        has successfully completed the course
+      </p>
+
+      <!-- COURSE -->
+
+      <h3 class="text-2xl font-semibold text-gray-800 my-4">
+        {{ courseName }}
+      </h3>
+
+      <p class="text-gray-600">on {{ completionDate }}</p>
+
+      <!-- SIGNATURE -->
+
+      <div class="flex justify-between mt-12 px-20">
+        <div class="text-center">
+          <div class="border-t border-gray-400 w-40 mx-auto"></div>
+          <p class="mt-2 font-medium">
+            {{ instructorName }}
+          </p>
+          <span class="text-sm text-gray-500"> Instructor </span>
+        </div>
+
+        <div class="text-center">
+          <div class="border-t border-gray-400 w-40 mx-auto"></div>
+          <p class="mt-2 font-medium">DLearning</p>
+          <span class="text-sm text-gray-500"> Official Signature </span>
+        </div>
+
+        <div class="text-center">
+          <div class="border-t border-gray-400 w-40 mx-auto"></div>
+          <p class="mt-2 font-medium">
+            {{ completionDate }}
+          </p>
+          <span class="text-sm text-gray-500"> Date </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

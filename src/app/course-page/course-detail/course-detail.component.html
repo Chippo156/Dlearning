@@ -1,0 +1,78 @@
+<div class="container mx-auto py-10">
+  <!-- Loading -->
+  <nz-spin *ngIf="loading" nzTip="Loading..."></nz-spin>
+
+  <ng-container *ngIf="!loading && course">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- LEFT -->
+      <div class="lg:col-span-8">
+        <!-- Title -->
+        <div
+          class="bg-white rounded-lg shadow p-4 flex flex-col gap-3 items-center"
+        >
+          <h1 class="text-2xl font-semibold">
+            {{ course.title }}
+          </h1>
+
+          <img
+            class="w-full object-cover rounded"
+            style="height: 300px"
+            [src]="course.thumbnail"
+          />
+
+          <p class="text-gray-500">
+            {{ course.description }}
+          </p>
+        </div>
+
+        <!-- Video -->
+        <div class="bg-white rounded-lg shadow mt-4">
+          <video width="100%" height="400" controls>
+            <source [src]="course.videoUrl" type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- Tabs -->
+        <nz-tabset class="mt-6">
+          <nz-tab nzTitle="Course Content">
+            <app-course-content [chapters]="chapters"> </app-course-content>
+          </nz-tab>
+
+          <nz-tab nzTitle="Instructor">
+            <h3 class="text-xl font-semibold mb-3">Instructor</h3>
+
+            <p class="text-gray-600">Instructor information here...</p>
+          </nz-tab>
+
+          <nz-tab nzTitle="Reviews">
+            <nz-table [nzData]="reviews" [nzBordered]="true">
+              <thead>
+                <tr>
+                  <th nzWidth="200px">Name</th>
+                  <th>Review</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let r of reviews">
+                  <td>{{ r.name }}</td>
+                  <td>{{ r.review }}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+        </nz-tabset>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="lg:col-span-4">
+        <app-course-feature
+          [course]="course"
+          [courseId]="courseId"
+          [isPurchase]="isPurchase"
+        >
+        </app-course-feature>
+      </div>
+    </div>
+  </ng-container>
+</div>
