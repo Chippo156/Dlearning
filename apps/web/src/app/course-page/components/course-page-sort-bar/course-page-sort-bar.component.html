@@ -1,0 +1,28 @@
+<div
+  class="flex flex-wrap justify-between items-center gap-4 mb-8 bg-white text-slate-900 rounded-2xl p-4 shadow-lg"
+>
+  <div class="flex items-center gap-4">
+    <div
+      class="px-4 py-2 bg-slate-900 text-white rounded-full font-semibold text-sm"
+    >
+      {{ totalElements }} Courses Available
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <label class="text-gray-700 font-medium">Sort by:</label>
+    <nz-select
+      [(ngModel)]="option"
+      (ngModelChange)="onOptionChanged($event)"
+      class="w-[200px]"
+      nzSize="large"
+      nzPlaceHolder="Select sorting option"
+    >
+      <nz-option nzValue="0" nzLabel="All Courses"></nz-option>
+      <nz-option nzValue="1" nzLabel="Most Popular"></nz-option>
+      <nz-option nzValue="2" nzLabel="Highest Rated"></nz-option>
+      <nz-option nzValue="3" nzLabel="Newest"></nz-option>
+      <nz-option nzValue="4" nzLabel="Oldest"></nz-option>
+    </nz-select>
+  </div>
+</div>

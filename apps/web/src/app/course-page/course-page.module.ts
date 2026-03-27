@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { FormsModule } from '@angular/forms';
 import { CoursePageComponent } from './course-page.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -11,6 +8,9 @@ import { SearchCourseComponent } from '@modules/search-course/search-course.comp
 import { CommonModule } from '@angular/common';
 import { GetCourseElasticSearchUx } from '@uxs/course-uxs/get-course-elastic-search.ux';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { CoursePageHeaderComponent } from './components/course-page-header/course-page-header.component';
+import { CoursePageSortBarComponent } from './components/course-page-sort-bar/course-page-sort-bar.component';
+import { CoursePageResultsComponent } from './components/course-page-results/course-page-results.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,7 +20,7 @@ const routes: Routes = [
     path: ':id',
     loadChildren: () =>
       import('./course-detail/course-detail.module').then(
-        (m) => m.CourseDetailModule,
+        (m) => m.CourseDetailModule
       ),
   },
 ];
@@ -29,15 +29,14 @@ const routes: Routes = [
     NzSpinModule,
     RouterModule.forChild(routes),
     FormsModule,
-    NzSelectModule,
-    NzPaginationModule,
     NzToolTipModule,
     CommonModule,
     NzIconModule,
-    NzLayoutModule,
     SearchCourseComponent,
-    NzLayoutModule,
     GetCourseElasticSearchUx,
+    CoursePageHeaderComponent,
+    CoursePageSortBarComponent,
+    CoursePageResultsComponent,
   ],
   declarations: [CoursePageComponent],
 })

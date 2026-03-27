@@ -11,6 +11,7 @@ import {
   PaginationResponse,
 } from '@shared/models/request/pagination.model';
 import { CourseResponse } from '@shared/models/course-response.model';
+import { CourseListCardComponent } from '../course-list-card/course-list-card.component';
 
 @Component({
   selector: 'app-our-courses',
@@ -23,6 +24,7 @@ import { CourseResponse } from '@shared/models/course-response.model';
     FormsModule,
     CommonModule,
     GetCourseCachingUx,
+    CourseListCardComponent,
   ],
 })
 export class OurCoursesComponent {
@@ -38,19 +40,12 @@ export class OurCoursesComponent {
 
   constructor(private router: Router) {}
 
-  handleDetailCourse(id: number) {
-    this.router.navigate(['/courses', id]);
+  handleDetailCourse(course: CourseResponse) {
+    this.router.navigate(['/courses', course.id]);
   }
 
-  truncate(text: string, maxWords: number): string {
-    const words = text.split(' ');
-    return words.length > maxWords
-      ? words.slice(0, maxWords).join(' ') + '...'
-      : text;
-  }
-
-  handleAddFavourite(id: number) {
-    console.log('Favourite course:', id);
+  handleAddFavourite(course: CourseResponse) {
+    console.log('Favourite course:', course.id);
   }
 
   loadMoreCourses() {

@@ -1,0 +1,113 @@
+<div
+  class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col group"
+>
+  <div class="relative overflow-hidden h-48 bg-slate-100">
+    <img
+      [src]="course.thumbnail || 'assets/img/instructor3.jpg'"
+      [alt]="course.title"
+      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+    />
+
+    <div
+      *ngIf="showTypeBadge && course.typeCourse"
+      class="absolute top-3 left-3 bg-slate-900/80 text-white text-xs font-semibold px-3 py-1 rounded-full shadow"
+    >
+      {{ course.typeCourse }}
+    </div>
+
+    <div
+      class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold"
+      [ngClass]="getLevelBadgeClass(course.courseLevel)"
+    >
+      {{ course.courseLevel }}
+    </div>
+
+    <div
+      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100"
+    >
+      <button
+        (click)="onViewDetail()"
+        class="px-6 py-2 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+      >
+        View Course
+      </button>
+    </div>
+
+    <div
+      class="absolute bottom-3 left-3 bg-white px-3 py-1 rounded-lg flex items-center gap-1 shadow-md"
+    >
+      <svg
+        class="w-4 h-4 text-yellow-400"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <polygon
+          points="10 15 3.09 19.545 4.83 11.73 0 7.27 8.07 6.57 10 0 11.93 6.57 20 7.27 15.17 11.73 16.91 19.545"
+        />
+      </svg>
+      <span class="text-sm font-semibold text-gray-700">
+        {{ course.averageRating || 4.5 }}
+      </span>
+    </div>
+  </div>
+
+  <div class="p-5 flex flex-col flex-grow">
+    <h3
+      (click)="onViewDetail()"
+      class="text-base font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-cyan-600 transition-colors cursor-pointer"
+    >
+      {{ course.title }}
+    </h3>
+
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-lg">👨‍🏫</span>
+      <p class="text-sm text-slate-600">{{ course.author }}</p>
+    </div>
+
+    <div class="flex items-center gap-4 mb-4 text-sm text-slate-500">
+      <div class="flex items-center gap-1">
+        <span>⏱</span>
+        <span>{{ course.duration }} hrs</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span>🌐</span>
+        <span>{{ course.language }}</span>
+      </div>
+    </div>
+
+    <p class="text-sm text-slate-600 mb-4 line-clamp-2 flex-grow">
+      {{ course.description }}
+    </p>
+
+    <div
+      class="flex items-center justify-between pt-4 border-t border-slate-200"
+    >
+      <div class="flex items-center" *ngIf="showPoints">
+        <span class="text-lg font-bold text-slate-900">
+          {{ course.points }}
+        </span>
+        <span class="text-xs text-slate-500 ml-1">points</span>
+      </div>
+
+      <button
+        (click)="onAddFavourite()"
+        class="p-2 rounded-full hover:bg-rose-50 transition-colors text-rose-500 hover:text-rose-600"
+        title="Add to favorites"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

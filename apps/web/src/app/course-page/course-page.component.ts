@@ -94,18 +94,4 @@ export class CoursePageComponent {
       },
     });
   }
-
-  getLevelBadgeClass(level?: string): string {
-    const normalized = (level || '').toLowerCase();
-    if (normalized.includes('beginner')) {
-      return 'bg-emerald-100 text-emerald-700';
-    }
-    if (normalized.includes('intermediate')) {
-      return 'bg-amber-100 text-amber-700';
-    }
-    if (normalized.includes('advanced')) {
-      return 'bg-rose-100 text-rose-700';
-    }
-    return 'bg-slate-100 text-slate-600';
-  }
 }
