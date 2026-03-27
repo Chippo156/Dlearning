@@ -8,11 +8,33 @@ import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../models/api-response.model';
 import { CourseResponse } from '../models/course-response.model';
 import { CourseChapter } from '@shared/models/data/course-chapter.model';
+import { CourseCreationRequest } from '@shared/models/request/course-creation.request';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService extends HttpBaseService {
+  private toCourseFormData(
+    request: CourseCreationRequest,
+    file?: File | null,
+    video?: File | null
+  ): FormData {
+    const formData = new FormData();
+    formData.append(
+      'course',
+      new Blob([JSON.stringify(request)], { type: 'application/json' })
+    );
+
+    if (file) {
+      formData.append('file', file);
+    }
+    if (video) {
+      formData.append('video', video);
+    }
+
+    return formData;
+  }
+
   getCoursesCaching(
     Pagination: Pagination
   ): Observable<ApiResponse<PaginationResponse<CourseResponse>>> {
@@ -53,5 +75,35 @@ export class CourseService extends HttpBaseService {
   checkPurchase(courseId: number): Observable<ApiResponse<any>> {
     const url = `${this.baseUrl}/enrollments/check-course-purchased/${courseId}`;
     return this.http.get<ApiResponse<any>>(url);
+  }
+
+  createCourse(
+    request: CourseCreationRequest,
+    file?: File | null,
+    video?: File | null
+  ): Observable<ApiResponse<CourseResponse>> {
+    const url = `${this.baseUrl}/courses/create-course`;
+    return this.http.post<ApiResponse<CourseResponse>>(
+      url,
+      this.toCourseFormData(request, file, video)
+    );
+  }
+
+  updateCourse(
+    id: number,
+    request: CourseCreationRequest,
+    file?: File | null,
+    video?: File | null
+  ): Observable<ApiResponse<CourseResponse>> {
+    const url = `${this.baseUrl}/courses/update-course/${id}`;
+    return this.http.put<ApiResponse<CourseResponse>>(
+      url,
+      this.toCourseFormData(request, file, video)
+    );
+  }
+
+  deleteCourse(id: number): Observable<ApiResponse<void>> {
+    const url = `${this.baseUrl}/courses/delete-course/${id}`;
+    return this.http.delete<ApiResponse<void>>(url);
   }
 }

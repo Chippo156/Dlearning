@@ -1,9 +1,9 @@
 {
   "name": "web-admin",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "web-admin/src",
+  "sourceRoot": "apps/web-admin/src",
   "tags": [],
   "targets": {
     "build": {
@@ -11,12 +11,22 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/web-admin",
-        "index": "web-admin/src/index.html",
-        "browser": "web-admin/src/main.ts",
+        "index": "apps/web-admin/src/index.html",
+        "browser": "apps/web-admin/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "web-admin/tsconfig.app.json",
-        "assets": ["web-admin/src/favicon.ico", "web-admin/src/assets"],
-        "styles": ["web-admin/src/styles.css"],
+        "tsConfig": "apps/web-admin/tsconfig.app.json",
+        "assets": [
+          "apps/web-admin/src/favicon.ico", "apps/web-admin/src/assets",
+          {
+            "glob": "**/*",
+            "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+            "output": "/assets/img/"
+          }
+        ],
+        "styles": [
+           "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+          "apps/web-admin/src/styles.css"],
+        
         "scripts": []
       },
       "configurations": {

@@ -1,2 +1,38 @@
-<app-nx-welcome></app-nx-welcome>
-<router-outlet></router-outlet>
+<div class="min-h-screen bg-slate-100 text-slate-900">
+  <div class="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+    <aside
+      class="relative overflow-hidden bg-slate-950 px-5 py-6 text-slate-100"
+    >
+      <div
+        class="pointer-events-none absolute -top-16 -left-16 h-48 w-48 rounded-full bg-cyan-400/30 blur-3xl"
+      ></div>
+      <div
+        class="pointer-events-none absolute bottom-0 right-0 h-40 w-40 rounded-full bg-amber-300/20 blur-3xl"
+      ></div>
+
+      <div class="relative">
+        <p class="text-xs uppercase tracking-[0.22em] text-cyan-200">
+          Admin Panel
+        </p>
+        <h1 class="mt-2 text-2xl font-semibold text-white">DLearning</h1>
+        <p class="mt-1 text-sm text-slate-300">Web administration workspace</p>
+      </div>
+
+      <nav class="relative mt-8 flex flex-col gap-2">
+        <a
+          *ngFor="let item of navItems"
+          [routerLink]="item.route"
+          routerLinkActive="bg-white text-slate-950 shadow"
+          [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
+          class="rounded-xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/20"
+        >
+          {{ item.label }}
+        </a>
+      </nav>
+    </aside>
+
+    <main class="min-w-0">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

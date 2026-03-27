@@ -1,0 +1,263 @@
+<section class="min-h-screen bg-slate-100">
+  <div class="mx-auto max-w-7xl px-6 py-8">
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">
+          Course Management
+        </p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate-900">
+          Course CRUD Workspace
+        </h1>
+        <p class="mt-2 text-slate-600">
+          Create, update, and delete courses with optional thumbnail and video
+          uploads.
+        </p>
+      </div>
+      <div
+        class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+      >
+        Total: {{ totalElements }} Courses
+      </div>
+    </div>
+
+    <div class="mb-4" *ngIf="message">
+      <nz-alert nzType="success" [nzMessage]="message" nzShowIcon></nz-alert>
+    </div>
+    <div class="mb-4" *ngIf="error">
+      <nz-alert nzType="error" [nzMessage]="error" nzShowIcon></nz-alert>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-[1.15fr_1fr]">
+      <nz-card [nzBordered]="false" class="rounded-2xl shadow-sm">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">
+            {{ isEditing ? 'Edit Course' : 'Create New Course' }}
+          </h2>
+          <button
+            nz-button
+            nzType="default"
+            (click)="resetForm()"
+            [disabled]="submitting"
+          >
+            Reset
+          </button>
+        </div>
+
+        <form
+          [formGroup]="form"
+          (ngSubmit)="submit()"
+          class="grid grid-cols-1 gap-4 md:grid-cols-2"
+        >
+          <label
+            class="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2"
+          >
+            Title
+            <input
+              type="text"
+              formControlName="title"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+            />
+          </label>
+
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Duration (Hours)
+            <input
+              type="number"
+              min="1"
+              formControlName="duration"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+            />
+          </label>
+
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Points
+            <input
+              type="number"
+              min="0"
+              formControlName="points"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+            />
+          </label>
+
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Language
+            <input
+              type="text"
+              formControlName="language"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+            />
+          </label>
+
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Level
+            <select
+              formControlName="courseLevel"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+            >
+              <option *ngFor="let level of courseLevels" [value]="level">
+                {{ level }}
+              </option>
+            </select>
+          </label>
+
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Thumbnail File (optional)
+            <input
+              type="file"
+              accept="image/*"
+              (change)="onFileChange($event)"
+              class="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2"
+            />
+          </label>
+
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Video File (optional)
+            <input
+              type="file"
+              accept="video/*"
+              (change)="onVideoChange($event)"
+              class="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2"
+            />
+          </label>
+
+          <label
+            class="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2"
+          >
+            Description
+            <textarea
+              rows="4"
+              formControlName="description"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+            ></textarea>
+          </label>
+
+          <div class="md:col-span-2 flex items-center gap-3">
+            <button
+              nz-button
+              nzType="primary"
+              [disabled]="submitting"
+              [nzLoading]="submitting"
+              htmlType="submit"
+            >
+              {{ isEditing ? 'Update Course' : 'Create Course' }}
+            </button>
+            <button
+              nz-button
+              nzType="default"
+              type="button"
+              (click)="resetForm()"
+              [disabled]="submitting"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </nz-card>
+
+      <nz-card [nzBordered]="false" class="rounded-2xl shadow-sm">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-lg font-semibold text-slate-900">Course List</h2>
+          <div class="flex items-center gap-2">
+            <button
+              nz-button
+              nzType="default"
+              (click)="goToPage(pagination.currentPage - 1)"
+              [disabled]="pagination.currentPage <= 1 || loading"
+            >
+              Prev
+            </button>
+            <span class="text-sm text-slate-500"
+              >Page {{ pagination.currentPage }}</span
+            >
+            <button
+              nz-button
+              nzType="default"
+              (click)="goToPage(pagination.currentPage + 1)"
+              [disabled]="loading || courses.length < pagination.pageSize"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div class="py-12" *ngIf="loading">
+          <nz-spin nzTip="Loading courses..."></nz-spin>
+        </div>
+
+        <ng-container *ngIf="!loading && courses.length === 0">
+          <nz-empty nzNotFoundContent="No courses found"></nz-empty>
+        </ng-container>
+
+        <nz-table
+          *ngIf="!loading && courses.length > 0"
+          #courseTable
+          [nzData]="courses"
+          [nzFrontPagination]="false"
+          [nzShowPagination]="false"
+          [nzBordered]="true"
+          [nzSize]="'middle'"
+        >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Level</th>
+              <th>Language</th>
+              <th>Duration</th>
+              <th>Points</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let course of courseTable.data">
+              <td>{{ course.id }}</td>
+              <td>
+                <p class="max-w-[220px] truncate font-medium text-slate-800">
+                  {{ course.title }}
+                </p>
+              </td>
+              <td>
+                <nz-tag
+                  [nzColor]="
+                    course.courseLevel === 'BEGINNER'
+                      ? 'green'
+                      : course.courseLevel === 'INTERMEDIATE'
+                      ? 'gold'
+                      : course.courseLevel === 'ADVANCED'
+                      ? 'volcano'
+                      : 'geekblue'
+                  "
+                >
+                  {{ course.courseLevel }}
+                </nz-tag>
+              </td>
+              <td>{{ course.language }}</td>
+              <td>{{ course.duration }}h</td>
+              <td>{{ course.points }}</td>
+              <td>
+                <div class="flex items-center gap-2">
+                  <button
+                    nz-button
+                    nzType="default"
+                    nzSize="small"
+                    (click)="editCourse(course)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    nz-button
+                    nzDanger
+                    nzSize="small"
+                    (click)="deleteCourse(course)"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-card>
+    </div>
+  </div>
+</section>
