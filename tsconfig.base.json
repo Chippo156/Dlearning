@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["libs/assets/src/lib/*"],
+      "@logics/*": ["libs/logics/src/lib/*"],
+      "@modules/*": ["libs/modules/src/lib/*"],
+      "@shared/*": ["libs/shared/src/lib/*"],
+      "@uis/*": ["libs/uis/src/lib/*"],
+      "@uxs/*": ["libs/uxs/src/lib/*"]
+    }
+  }
+}
