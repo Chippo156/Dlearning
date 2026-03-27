@@ -1,0 +1,171 @@
+:host {
+	display: block;
+}
+
+.ads-page-shell {
+	border: 1px solid #dbe4ee;
+	border-radius: 24px;
+	background: linear-gradient(140deg, #f8fbff 0%, #ffffff 45%, #f4faf5 100%);
+	padding: 18px;
+	box-shadow: 0 16px 40px rgba(11, 34, 57, 0.08);
+}
+
+.ads-page-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.ads-kicker {
+	margin: 0;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	color: #5f7b95;
+}
+
+.ads-title {
+	margin: 4px 0 0;
+	font-size: 28px;
+	line-height: 1.15;
+	color: #102a43;
+}
+
+.ads-subtitle {
+	margin: 8px 0 0;
+	max-width: 620px;
+	color: #486581;
+}
+
+.ads-stats {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(110px, 1fr));
+	gap: 10px;
+	min-width: 340px;
+}
+
+.ads-stat-card {
+	border-radius: 14px;
+	border: 1px solid #d7e4f0;
+	background: #ffffff;
+	padding: 10px 12px;
+}
+
+.ads-stat-card p {
+	margin: 0;
+	font-size: 12px;
+	color: #5f7b95;
+}
+
+.ads-stat-card strong {
+	display: block;
+	margin-top: 4px;
+	font-size: 20px;
+	color: #102a43;
+}
+
+.ads-table-wrap {
+	overflow: hidden;
+	border-radius: 18px;
+	border: 1px solid #d7e4f0;
+	background: #ffffff;
+}
+
+.ads-id-pill {
+	display: inline-block;
+	border-radius: 999px;
+	background: #e7f0ff;
+	color: #0f4c81;
+	padding: 4px 10px;
+	font-weight: 700;
+	font-size: 12px;
+}
+
+.ads-title-cell {
+	color: #102a43;
+	font-weight: 700;
+	max-width: 260px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ads-description {
+	display: inline-block;
+	max-width: 300px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #334e68;
+}
+
+.ads-muted {
+	color: #486581;
+}
+
+.ads-pagination-row {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 16px;
+}
+
+:host ::ng-deep .ads-table .ant-table {
+	border-radius: 18px;
+}
+
+:host ::ng-deep .ads-table .ant-table-container table > thead > tr > th {
+	background: #f3f8fd;
+	color: #243b53;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	border-bottom: 1px solid #d7e4f0;
+}
+
+:host ::ng-deep .ads-table .ant-table-tbody > tr > td {
+	border-bottom: 1px solid #e6edf5;
+	vertical-align: middle;
+}
+
+:host ::ng-deep .ads-table .ant-table-tbody > tr:hover > td {
+	background: #f8fbff;
+}
+
+:host ::ng-deep .ads-pagination-row .ant-pagination-total-text {
+	margin-right: 14px;
+	color: #486581;
+}
+
+@media (max-width: 992px) {
+	.ads-page-shell {
+		border-radius: 18px;
+		padding: 14px;
+	}
+
+	.ads-page-header {
+		flex-direction: column;
+	}
+
+	.ads-title {
+		font-size: 24px;
+	}
+
+	.ads-stats {
+		min-width: 0;
+		width: 100%;
+	}
+}
+
+@media (max-width: 640px) {
+	.ads-stats {
+		grid-template-columns: 1fr;
+	}
+
+	.ads-pagination-row {
+		justify-content: center;
+	}
+}

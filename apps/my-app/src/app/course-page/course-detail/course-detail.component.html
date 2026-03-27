@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/courses"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Course Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="course-detail">
+    <div class="loader" *ngIf="loading">
+      <nz-spin nzTip="Loading..."></nz-spin>
+    </div>
+
+    <ng-container *ngIf="!loading && course">
+      <section class="hero">
+        <div class="hero-media">
+          <img [src]="course.thumbnail" [alt]="course.title" />
+          <div class="hero-gradient"></div>
+        </div>
+        <div class="hero-content">
+          <div class="hero-pill">Course Detail</div>
+          <h1>{{ course.title }}</h1>
+          <p class="hero-desc">{{ course.description }}</p>
+          <div class="hero-tags">
+            <span>{{ course.courseLevel || 'All Levels' }}</span>
+            <span>{{ course.duration || 0 }} hrs</span>
+            <span>{{ course.language || 'Global' }}</span>
+          </div>
+          <div class="hero-quick">
+            <div>
+              <p>Rating</p>
+              <strong>{{ course.averageRating || 4.8 }}</strong>
+            </div>
+            <div>
+              <p>Points</p>
+              <strong>{{ course.points || 0 }}</strong>
+            </div>
+            <div>
+              <p>Level</p>
+              <strong>{{ course.courseLevel || 'All' }}</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section card">
+        <app-course-feature
+          [course]="course"
+          [courseId]="courseId"
+          [isPurchase]="isPurchase"
+          (onEnrollSuccess)="getPointsCurrent()"
+        >
+        </app-course-feature>
+      </section>
+
+      <section class="section card">
+        <div class="section-title">Course Preview</div>
+        <div class="video-shell">
+          <video controls>
+            <source [src]="course.videoUrl" type="video/mp4" />
+          </video>
+        </div>
+      </section>
+
+      <section class="section card">
+        <nz-tabset>
+          <nz-tab nzTitle="Content">
+            <app-course-content [chapters]="chapters"> </app-course-content>
+          </nz-tab>
+          <nz-tab nzTitle="Instructor">
+            <p class="section-text">Instructor information here...</p>
+          </nz-tab>
+          <nz-tab nzTitle="Reviews">
+            <div class="review-list">
+              <div *ngFor="let r of reviews" class="review-item">
+                <div class="review-avatar">{{ r.name[0] }}</div>
+                <div>
+                  <p class="review-name">{{ r.name }}</p>
+                  <p class="review-body">{{ r.review }}</p>
+                  <span class="review-rating">★★★★☆</span>
+                </div>
+              </div>
+            </div>
+          </nz-tab>
+        </nz-tabset>
+      </section>
+
+      <section class="section card">
+        <div class="section-title">What you will build</div>
+        <ul class="build-list">
+          <li>Capstone project portfolio-ready</li>
+          <li>Reusable templates and checklists</li>
+          <li>Weekly feedback loop with mentors</li>
+        </ul>
+      </section>
+    </ng-container>
+  </div>
+</ion-content>

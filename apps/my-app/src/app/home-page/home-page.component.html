@@ -1,0 +1,92 @@
+<ion-header>
+  <app-header></app-header>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="home-page">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="hero-pill">Chippo Learning</div>
+          <h1 class="hero-title">
+            Learn faster, with a studio-built learning experience.
+          </h1>
+          <p class="hero-subtitle">
+            Cohort-style courses, real mentors, and a community that keeps your
+            momentum strong. Pick a path and start building today.
+          </p>
+          <div class="hero-actions">
+            <a routerLink="/courses" class="btn-primary">Explore Courses</a>
+            <a routerLink="/register" class="btn-ghost">Start Free</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-card">
+              <p class="stat-label">Learners</p>
+              <p class="stat-value">32k+</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Mentors</p>
+              <p class="stat-value">120+</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Tracks</p>
+              <p class="stat-value">48</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card hero-card-main">
+            <img
+              src="assets/img/feature.jpg"
+              alt="Learning"
+              class="hero-image"
+            />
+            <div class="hero-card-footer">
+              <div>
+                <p class="stat-label">Live Cohort</p>
+                <p class="stat-value">Starts in 3 days</p>
+              </div>
+              <div>
+                <p class="stat-label">Rating</p>
+                <p class="stat-value">4.9</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card hero-card-float">
+            <p class="stat-label">Weekly projects</p>
+            <p class="stat-value">Build 6 apps</p>
+          </div>
+
+          <div class="hero-card hero-card-float second">
+            <p class="stat-label">Feedback</p>
+            <p class="stat-value">Within 24h</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <app-education-highlights></app-education-highlights>
+    </section>
+
+    <section class="section">
+      <app-our-courses> </app-our-courses>
+    </section>
+
+    <section class="section">
+      <app-instructors-section></app-instructors-section>
+    </section>
+
+    <section class="section contact-shell">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+          <app-info-contact></app-info-contact>
+
+          <app-contact-section></app-contact-section>
+        </div>
+      </div>
+    </section>
+  </div>
+</ion-content>

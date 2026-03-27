@@ -1,0 +1,118 @@
+<!-- Loading -->
+<app-get-advertisements-current-login-ux
+  init
+  #ux
+></app-get-advertisements-current-login-ux>
+<section class="ads-page-shell">
+  <div class="ads-page-header">
+    <div>
+      <p class="ads-kicker">Advertisement Management</p>
+      <h2 class="ads-title">Your Ads Overview</h2>
+      <p class="ads-subtitle">
+        Track campaign details, contact data, and status from one place.
+      </p>
+    </div>
+
+    <div class="ads-stats">
+      <div class="ads-stat-card">
+        <p>Total ads</p>
+        <strong>{{ ux?.result?.totalElements || 0 }}</strong>
+      </div>
+      <div class="ads-stat-card">
+        <p>Current page</p>
+        <strong>{{ currentPage }}</strong>
+      </div>
+      <div class="ads-stat-card">
+        <p>Total pages</p>
+        <strong>{{ ux?.result?.totalPages || 0 }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="ads-table-wrap">
+    <nz-table
+      class="ads-table"
+      [nzLoading]="ux?.loading"
+      #table
+      [nzData]="ux?.result?.result || []"
+      [nzBordered]="false"
+      [nzSize]="'middle'"
+      [nzScroll]="{ x: '1150px' }"
+    >
+      <thead>
+        <tr>
+          <th nzWidth="90px">ID</th>
+          <th nzShowSort nzSortKey="title">Title</th>
+          <th nzWidth="120px">Image</th>
+          <th>Description</th>
+          <th>Email</th>
+          <th nzShowSort nzSortKey="startDate">Start Date</th>
+          <th>End Date</th>
+          <th>Phone</th>
+          <th nzWidth="120px">Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let ad of table.data">
+          <td>
+            <span class="ads-id-pill">#{{ ad.id }}</span>
+          </td>
+
+          <td>
+            <div class="ads-title-cell">{{ ad.title }}</div>
+          </td>
+
+          <td>
+            <nz-avatar [nzSize]="56" [nzSrc]="ad.image"></nz-avatar>
+          </td>
+
+          <td>
+            <span class="ads-description" [title]="ad.description">{{
+              ad.description
+            }}</span>
+          </td>
+
+          <td>
+            <span class="ads-muted">{{ ad.contactEmail }}</span>
+          </td>
+
+          <td>
+            <span class="ads-muted">{{ ad.startDate }}</span>
+          </td>
+
+          <td>
+            <span class="ads-muted">{{ ad.endDate }}</span>
+          </td>
+
+          <td>
+            <span class="ads-muted">{{ ad.contactPhone }}</span>
+          </td>
+
+          <td>
+            <nz-tag [nzColor]="ad.adsStatus === 'ACTIVE' ? 'green' : 'volcano'">
+              {{ ad.adsStatus }}
+            </nz-tag>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <div class="ads-pagination-row">
+    <nz-pagination
+      [nzPageIndex]="currentPage"
+      [nzTotal]="ux?.result?.totalElements"
+      [nzPageSize]="ux?.pagination?.pageSize"
+      [nzShowSizeChanger]="false"
+      (nzPageIndexChange)="changePage($event); pageChange.emit($event)"
+      [nzShowTotal]="totalTemplate"
+    >
+    </nz-pagination>
+
+    <ng-template #totalTemplate let-total>
+      Total {{ total }} items | Page {{ currentPage }} of
+      {{ ux?.result?.totalPages }}
+    </ng-template>
+  </div>
+</section>

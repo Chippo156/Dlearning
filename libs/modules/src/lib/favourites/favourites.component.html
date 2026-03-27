@@ -1,0 +1,61 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div
+    *ngFor="let favourite of favourites"
+    class="bg-white rounded-lg shadow hover:shadow-lg transition"
+  >
+    <nz-card nzHoverable>
+      <!-- Image -->
+      <div class="relative">
+        <!-- Badge -->
+        <div
+          *ngIf="favourite.typeCourse"
+          class="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded"
+        >
+          {{ favourite.typeCourse | titlecase }} path
+        </div>
+
+        <img
+          class="w-full h-[120px] object-cover rounded"
+          [src]="favourite.thumbnail || defaultImage"
+        />
+      </div>
+
+      <!-- Title + Description -->
+      <div class="cursor-pointer mt-3" (click)="goToDetail(favourite.id)">
+        <h3 class="font-semibold text-sm line-clamp-2">
+          {{ favourite.title }}
+        </h3>
+
+        <p class="text-gray-500 text-xs mt-1">
+          {{ truncate(favourite.description, 12) }}
+        </p>
+      </div>
+
+      <!-- Rating -->
+      <div class="flex justify-center mt-2">
+        <nz-rate [ngModel]="4" nzAllowHalf></nz-rate>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex justify-between items-center mt-3 text-xs text-gray-600">
+        <div class="flex items-center gap-1">
+          <span nz-icon nzType="user"></span>
+          {{ favourite.author }}
+        </div>
+
+        <div class="flex items-center gap-1">
+          <span nz-icon nzType="clock-circle"></span>
+          {{ favourite.duration }} hrs
+        </div>
+
+        <div
+          class="flex items-center gap-1 text-red-500 cursor-pointer"
+          (click)="deleteFavourite(favourite.favouriteId)"
+        >
+          <span nz-icon nzType="heart"></span>
+          Remove
+        </div>
+      </div>
+    </nz-card>
+  </div>
+</div>

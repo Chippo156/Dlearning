@@ -1,0 +1,50 @@
+<nav class="flex items-center justify-center gap-6 relative">
+  <a
+    nz-button
+    nzType="link"
+    [routerLink]="['/home']"
+    routerLinkActive="active-link"
+    class="nav-link text-gray-600 text-base font-medium px-2 py-1 transition-all duration-300"
+  >
+    Home
+  </a>
+  <ng-container *ngIf="userCredential$ | async as user">
+    <a
+      *ngIf="user?.role === 'USER'"
+      nz-button
+      nzType="link"
+      [routerLink]="['/certificates']"
+      routerLinkActive="active-link"
+      class="nav-link text-gray-600 text-base font-medium px-2 py-1 transition-all duration-300"
+    >
+      Certificate
+    </a>
+  </ng-container>
+  <a
+    nz-button
+    nzType="link"
+    [routerLink]="['/courses']"
+    routerLinkActive="active-link"
+    class="nav-link text-gray-600 text-base font-medium px-2 py-1 transition-all duration-300"
+  >
+    Courses
+  </a>
+  <a
+    nz-button
+    nzType="link"
+    [routerLink]="['/community']"
+    routerLinkActive="active-link"
+    class="nav-link text-gray-600 text-base font-medium px-2 py-1 transition-all duration-300"
+  >
+    Community
+  </a>
+  <a
+    nz-button
+    nzType="link"
+    [routerLink]="['/about']"
+    routerLinkActive="active-link"
+    class="nav-link text-gray-600 text-base font-medium px-2 py-1 transition-all duration-300"
+  >
+    About
+  </a>
+</nav>

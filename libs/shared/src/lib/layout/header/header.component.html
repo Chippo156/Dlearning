@@ -1,0 +1,170 @@
+<header class="w-full shadow bg-white">
+  <div
+    class="max-w-[1400px] mx-auto flex items-center justify-between px-6 py-3"
+  >
+    <!-- LOGO -->
+    <a
+      routerLink="/home"
+      class="flex items-center gap-2 text-xl font-bold text-blue-600"
+    >
+      <i nz-icon nzType="book" nzTheme="outline"></i>
+      Chippo Learning
+    </a>
+
+    <!-- DESKTOP NAV -->
+    <div class="hidden lg:flex items-center gap-10">
+      <app-navigation-menu></app-navigation-menu>
+
+      <!-- RIGHT SIDE -->
+      <ng-container *ngIf="userCredential$ | async as user">
+        <a
+          *ngIf="user?.role === 'TEACHER' || user?.role === 'ADMIN'"
+          routerLink="/ads"
+          class="text-gray-600 hover:text-gray-900 transition-colors duration-300"
+        >
+          Advertisements
+        </a>
+      </ng-container>
+
+      <!-- POINTS -->
+      <ng-container *ngIf="userProfile$ | async as user">
+        <a
+          [routerLink]="['/deposit']"
+          class="text-gray-600 hover:text-gray-900 transition-colors duration-300"
+        >
+          <i nz-icon nzType="dollar-circle"></i>
+
+          {{ user?.points }} Points
+        </a>
+      </ng-container>
+
+      <!-- NOTIFICATION -->
+      <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="notification">
+        <nz-badge [nzCount]="unreadCount">
+          <i nz-icon nzType="bell"></i>
+        </nz-badge>
+      </a>
+      <nz-dropdown-menu #notification="nzDropdownMenu">
+        <ul nz-menu>
+          <li
+            nz-menu-item
+            *ngFor="let noti of notifications"
+            (click)="markAsRead(noti.id)"
+          >
+            {{ noti.message }}
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+
+      <!-- FAVOURITE -->
+      <button nz-button nzType="text" routerLink="/favourites" class="relative">
+        <i nz-icon nzType="heart"></i>
+      </button>
+
+      <!-- PROFILE -->
+      <a
+        *ngIf="isLogin$ | async; else loginLink"
+        nz-dropdown
+        nzTrigger="click"
+        [nzDropdownMenu]="profile"
+        nzType="text"
+        class="flex items-center gap-2"
+      >
+        <nz-avatar [nzSrc]="avatar" nzSize="default"></nz-avatar>
+      </a>
+      <nz-dropdown-menu #profile="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item routerLink="/profile">
+            <i nz-icon nzType="user"></i>
+            Profile
+          </li>
+
+          <li nz-menu-item routerLink="/settings">
+            <i nz-icon nzType="setting"></i>
+            Settings
+          </li>
+
+          <li nz-menu-divider></li>
+
+          <li nz-menu-item (click)="logout()">
+            <i nz-icon nzType="logout"></i>
+            Logout
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+      <ng-template #loginLink>
+        <a
+          routerLink="/login"
+          class="text-gray-600 hover:text-gray-900 transition-colors duration-300"
+        >
+          Login
+        </a>
+        <a
+          routerLink="/register"
+          class="text-gray-600 hover:text-gray-900 transition-colors duration-300"
+        >
+          Register
+        </a>
+      </ng-template>
+    </div>
+
+    <!-- MOBILE TOGGLE -->
+    <div class="lg:hidden flex items-center gap-3">
+      <button
+        nz-button
+        nzType="text"
+        class="text-gray-700"
+        (click)="toggleMenu()"
+      >
+        <i nz-icon nzType="menu"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div
+    *ngIf="isMenuOpen"
+    class="lg:hidden border-t border-gray-100 px-6 py-4 bg-white"
+  >
+    <nav class="flex flex-col gap-3 text-gray-700">
+      <a routerLink="/home" (click)="toggleMenu()">Home</a>
+      <ng-container *ngIf="userCredential$ | async as user">
+        <a
+          *ngIf="user?.role === 'USER'"
+          routerLink="/certificates"
+          (click)="toggleMenu()"
+        >
+          Certificate
+        </a>
+      </ng-container>
+      <a routerLink="/courses" (click)="toggleMenu()">Courses</a>
+      <a routerLink="/community" (click)="toggleMenu()">Community</a>
+      <a routerLink="/about" (click)="toggleMenu()">About</a>
+    </nav>
+
+    <div class="mt-4 flex flex-col gap-3 text-gray-700">
+      <ng-container *ngIf="userProfile$ | async as user">
+        <a
+          [routerLink]="['/deposit']"
+          class="flex items-center gap-2"
+          (click)="toggleMenu()"
+        >
+          <i nz-icon nzType="dollar-circle"></i>
+          {{ user?.points }} Points
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="isLogin$ | async; else mobileLogin">
+        <a routerLink="/profile" (click)="toggleMenu()">Profile</a>
+        <a routerLink="/settings" (click)="toggleMenu()">Settings</a>
+        <button nz-button nzType="text" (click)="logout(); toggleMenu()">
+          Logout
+        </button>
+      </ng-container>
+      <ng-template #mobileLogin>
+        <a routerLink="/login" (click)="toggleMenu()">Login</a>
+        <a routerLink="/register" (click)="toggleMenu()">Register</a>
+      </ng-template>
+    </div>
+  </div>
+</header>

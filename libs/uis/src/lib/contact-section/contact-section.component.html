@@ -1,0 +1,82 @@
+<div class="lg:col-span-7">
+  <div class="relative mb-6">
+    <div
+      class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white"
+    >
+      Need help?
+    </div>
+    <h1 class="display text-4xl font-semibold text-slate-900 mt-4">
+      Send Us A Message
+    </h1>
+    <p class="text-slate-600 mt-2">
+      Tell us what you need and our team will reply within 24 hours.
+    </p>
+  </div>
+
+  <form
+    nz-form
+    [formGroup]="contactForm"
+    (ngSubmit)="onSubmit()"
+    class="space-y-4 rounded-3xl border border-white bg-white p-6 shadow-xl"
+  >
+    <!-- NAME & EMAIL ROW -->
+    <div class="grid grid-cols-2 gap-4">
+      <nz-form-item class="mb-0">
+        <nz-form-control nzErrorTip="Name is required">
+          <input
+            nz-input
+            formControlName="name"
+            placeholder="Your name"
+            class="rounded-xl"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="mb-0">
+        <nz-form-control nzErrorTip="Valid email is required">
+          <input
+            nz-input
+            formControlName="email"
+            placeholder="Email"
+            class="rounded-xl"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <!-- SUBJECT -->
+    <nz-form-item class="mb-0">
+      <nz-form-control>
+        <textarea
+          nz-input
+          rows="4"
+          formControlName="subject"
+          placeholder="Subject"
+          class="rounded-xl"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- MESSAGE -->
+    <nz-form-item class="mb-0">
+      <nz-form-control>
+        <textarea
+          nz-input
+          rows="5"
+          formControlName="message"
+          placeholder="Message"
+          class="rounded-xl"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button
+      nz-button
+      nzType="primary"
+      class="px-10 h-12 rounded-full"
+      type="submit"
+    >
+      Send Message
+    </button>
+  </form>
+</div>

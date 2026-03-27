@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Courses</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-get-courses-elastic-search-ux
+    #ux
+    [init]="true"
+    [pagination]="pagination"
+    [keyword]="keyword"
+    (onSuccess)="onCoursesLoaded($event)"
+  ></app-get-courses-elastic-search-ux>
+
+  <div @pageAnimation class="course-page" *ngIf="paginationResponse">
+    <section class="course-header">
+      <div class="header-inner">
+        <div class="header-pill">Courses</div>
+        <h1 class="header-title">Find your next learning track</h1>
+        <p class="header-subtitle">
+          Explore short, focused courses crafted for mobile-first learning.
+        </p>
+
+        <div class="search-box">
+          <input nz-input type="text" placeholder="Search courses" />
+          <span class="search-icon">🔎</span>
+        </div>
+
+        <div class="filter-row">
+          <div class="filter-chip">
+            {{ paginationResponse.totalElements }} courses
+          </div>
+          <div class="filter-select">
+            <label>Sort</label>
+            <nz-select [(ngModel)]="option" nzSize="small" nzPlaceHolder="Sort">
+              <nz-option nzValue="0" nzLabel="All"></nz-option>
+              <nz-option nzValue="1" nzLabel="Popular"></nz-option>
+              <nz-option nzValue="2" nzLabel="Top Rated"></nz-option>
+              <nz-option nzValue="3" nzLabel="Newest"></nz-option>
+              <nz-option nzValue="4" nzLabel="Oldest"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="course-list">
+      <div
+        *ngIf="
+          !paginationResponse.result || paginationResponse.result.length === 0
+        "
+        class="empty-state"
+      >
+        <p>No courses found</p>
+        <span>Try another keyword</span>
+      </div>
+
+      <div class="course-card" *ngFor="let course of paginationResponse.result">
+        <div class="card-thumb" (click)="viewCourseDetail(course)">
+          <img
+            [src]="course.thumbnail || 'assets/img/instructor3.jpg'"
+            [alt]="course.title"
+          />
+          <span
+            class="level-badge"
+            [ngClass]="getLevelBadgeClass(course.courseLevel)"
+          >
+            {{ course.courseLevel || 'All' }}
+          </span>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <h3>{{ course.title }}</h3>
+            <button class="fav-btn" (click)="handleAddFavourite(course)">
+              ❤
+            </button>
+          </div>
+          <p class="card-meta">
+            {{ course.author }} · {{ course.duration }} hrs
+          </p>
+          <p class="card-desc">{{ course.description }}</p>
+          <div class="card-footer">
+            <span class="rating">★ {{ course.averageRating || 4.5 }}</span>
+            <span class="points">{{ course.points }} pts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pager">
+        <nz-pagination
+          [nzTotal]="paginationResponse.totalElements"
+          [(nzPageIndex)]="paginationResponse.currentPage"
+          [nzPageSize]="paginationResponse.pageSize"
+          [nzShowSizeChanger]="false"
+          (nzPageIndexChange)="setCurrentPage($event)"
+          nzSize="default"
+        ></nz-pagination>
+      </div>
+    </section>
+  </div>
+</ion-content>

@@ -1,0 +1,156 @@
+<ion-content>
+  <ion-accordion-group>
+    <ion-accordion
+      *ngFor="let chapter of chapters; let i = index"
+      value="chapter-{{ i }}"
+    >
+      <ion-item slot="header" color="light" class="ion-text-wrap">
+        <ion-badge color="primary" class="mr-2">{{ i + 1 }}</ion-badge>
+        <ion-label>{{ chapter.chapterName }}</ion-label>
+      </ion-item>
+      <div slot="content">
+        <ion-list lines="none">
+          <ion-item
+            *ngFor="let lesson of chapter.lessonDto"
+            button
+            (click)="handleMenuClick(lesson, chapter)"
+            [color]="
+              lesson.lessonId === currentLesson?.lessonId ? 'primary' : ''
+            "
+            class="ion-text-wrap"
+          >
+            <ion-icon
+              slot="start"
+              [name]="
+                lesson.lessonId === currentLesson?.lessonId
+                  ? 'play-circle'
+                  : isLessonCompleted(lesson.lessonId)
+                  ? 'checkmark-circle'
+                  : 'ellipse'
+              "
+            ></ion-icon>
+            <ion-label>
+              <div class="text-sm">{{ lesson.lessonName }}</div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>
+
+<div class="ion-page" id="learning-content">
+
+  <ion-content [fullscreen]="true">
+    <app-progress-bar
+      [courseTitle]="courseTitle"
+      [completionData]="completionData"
+    ></app-progress-bar>
+
+    <div class="ion-padding">
+      <div class="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <p class="text-sm text-gray-500">
+            {{ currentChapter?.chapterName }}
+          </p>
+          <h2 class="text-2xl font-semibold text-gray-900">
+            {{ currentLesson?.lessonName || 'Select a lesson' }}
+          </h2>
+        </div>
+        <ion-chip color="success" *ngIf="hasUpdatedCompletion">
+          <ion-label>Completed</ion-label>
+        </ion-chip>
+        <ion-chip color="warning" *ngIf="!hasUpdatedCompletion">
+          <ion-label>In progress</ion-label>
+        </ion-chip>
+      </div>
+
+      <ion-card *ngIf="learningUx?.loadingCourse">
+        <ion-card-content class="text-center text-gray-500">
+          Loading lesson data...
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="!learningUx?.loadingCourse && !currentLesson">
+        <ion-card-content class="text-center text-gray-500">
+          No lesson available yet.
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <div
+          class="relative w-full overflow-hidden rounded-xl bg-black cursor-pointer"
+          style="padding-bottom: 56.25%"
+        >
+          <ng-container *ngIf="!isPlaying; else videoTpl">
+            <div
+              class="absolute inset-0 flex items-center justify-center group"
+              (click)="playVideo()"
+            >
+              <img
+                [src]="getThumbnailFromVideo(currentLesson?.videoUrl || '')"
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+
+              <div
+                class="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-50"
+              ></div>
+
+              <div
+                class="absolute z-10 w-16 h-16 bg-danger rounded-full flex items-center justify-center text-white text-xl"
+              >
+                ▶
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template #videoTpl>
+            <video
+              #videoPlayer
+              class="absolute inset-0 w-full h-full"
+              controls
+              autoplay
+              (timeupdate)="handleTimeUpdate()"
+              (seeking)="handleSeeking()"
+            >
+              <source [src]="currentLesson?.videoUrl" type="video/mp4" />
+            </video>
+          </ng-template>
+        </div>
+      </ion-card>
+
+      <ion-card *ngIf="!hasVideoUrl && currentLesson" color="warning">
+        <ion-card-content>
+          Video source is missing. Please contact support.
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Nhận xét bài học</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <app-review-lesson
+            [comments]="commentLesson"
+            [avatar]="avatar"
+            [newCommentLesson]="newCommentLesson"
+            [replyContent]="replyContent"
+            [activeReply]="activeReply"
+            (addComment)="handleAddCommentLesson()"
+          >
+          </app-review-lesson>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-content>
+</div>
+
+<app-learning-page-ux
+  #learningUx
+  (courseLoaded)="onCourseLoaded($event)"
+  (courseFailed)="onCourseFailed($event)"
+  (completionLoaded)="onCompletionLoaded($event)"
+  (completionFailed)="onCompletionFailed($event)"
+  (lessonCompleted)="onLessonCompleted($event)"
+  (lessonCompleteFailed)="onLessonCompleteFailed($event)"
+></app-learning-page-ux>

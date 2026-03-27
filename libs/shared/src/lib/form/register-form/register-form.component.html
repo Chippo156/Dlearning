@@ -1,0 +1,106 @@
+<section class="register-shell">
+  <div class="register-card">
+    <div class="register-header">
+      <p class="register-kicker">Create Profile</p>
+      <h2>Start your learning account</h2>
+      <p>
+        Use your details to create an account and personalize your experience.
+      </p>
+    </div>
+
+    <form
+      *ngIf="!isOtpSent"
+      [formGroup]="registerForm"
+      (ngSubmit)="submitRegister()"
+      class="register-form"
+    >
+      <nz-form-item class="form-item">
+        <nz-form-control nzErrorTip="Invalid email">
+          <input
+            nz-input
+            formControlName="email"
+            placeholder="Email"
+            class="form-input"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <div class="name-grid">
+        <nz-form-item class="form-item">
+          <nz-form-control nzErrorTip="Required">
+            <input
+              nz-input
+              formControlName="firstName"
+              placeholder="First name"
+              class="form-input"
+            />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="form-item">
+          <nz-form-control nzErrorTip="Required">
+            <input
+              nz-input
+              formControlName="lastName"
+              placeholder="Last name"
+              class="form-input"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <nz-form-item class="form-item">
+        <nz-form-control nzErrorTip="Required">
+          <input
+            nz-input
+            type="date"
+            formControlName="date_of_birth"
+            class="form-input"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="form-item">
+        <nz-form-control nzErrorTip="Password required">
+          <input
+            nz-input
+            type="password"
+            formControlName="password"
+            placeholder="Password"
+            class="form-input"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="form-item">
+        <nz-form-control nzErrorTip="Confirm password">
+          <input
+            nz-input
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Confirm password"
+            class="form-input"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <button
+        [nzLoading]="loading"
+        nz-button
+        nzType="primary"
+        class="submit-btn"
+      >
+        Create account
+      </button>
+
+      <p class="helper-text">
+        Already have an account?
+        <a routerLink="/login">Sign in</a>
+      </p>
+
+      <p *ngIf="errorMessage" class="error-text">
+        {{ errorMessage }}
+      </p>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,138 @@
+<div class="py-20 bg-gradient-to-br from-[#fff2e8] via-white to-[#eef7f1]">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- IMAGE -->
+
+      <div class="h-[520px] relative">
+        <div
+          class="absolute -top-6 left-6 h-full w-full rounded-3xl border border-amber-200/60"
+        ></div>
+        <img
+          src="assets/img/teacher.png"
+          class="absolute w-full h-full object-cover rounded-3xl shadow-2xl"
+          alt="About Us"
+        />
+        <div
+          class="absolute -bottom-6 left-10 rounded-2xl bg-white/90 px-5 py-3 text-sm text-slate-700 shadow-xl"
+        >
+          Trusted by 30,000+ learners globally
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+
+      <div>
+        <div class="mb-8">
+          <div
+            class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-xs uppercase tracking-[0.25em] text-amber-700"
+          >
+            About Us
+          </div>
+
+          <h1
+            class="display text-4xl md:text-5xl font-semibold mb-4 text-slate-900"
+          >
+            The most supportive place to learn online, anywhere.
+          </h1>
+
+          <p class="text-slate-600 leading-relaxed max-w-xl">
+            Learn in a space built for momentum: curated resources, daily
+            feedback, and a community that keeps you moving forward.
+          </p>
+        </div>
+
+        <!-- COUNTER -->
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <!-- SUBJECTS -->
+
+          <div
+            class="bg-white text-center p-6 rounded-2xl text-slate-900 shadow-lg border border-emerald-100"
+          >
+            <span
+              nz-icon
+              nzType="book"
+              nzTheme="outline"
+              class="text-3xl mb-2 block text-emerald-600"
+            ></span>
+
+            <h1 class="text-3xl font-bold">
+              {{ subjects }}
+            </h1>
+
+            <p class="uppercase text-xs tracking-[0.2em] text-slate-500">
+              Available <br />
+              Subjects
+            </p>
+          </div>
+
+          <!-- COURSES -->
+
+          <div
+            class="bg-white text-center p-6 rounded-2xl text-slate-900 shadow-lg border border-cyan-100"
+          >
+            <span
+              nz-icon
+              nzType="code"
+              nzTheme="outline"
+              class="text-3xl mb-2 block text-cyan-600"
+            ></span>
+
+            <h1 class="text-3xl font-bold">
+              {{ courses }}
+            </h1>
+
+            <p class="uppercase text-xs tracking-[0.2em] text-slate-500">
+              Online <br />
+              Courses
+            </p>
+          </div>
+
+          <!-- TEACHERS -->
+
+          <div
+            class="bg-white text-center p-6 rounded-2xl text-slate-900 shadow-lg border border-rose-100"
+          >
+            <span
+              nz-icon
+              nzType="team"
+              nzTheme="outline"
+              class="text-3xl mb-2 block text-rose-600"
+            ></span>
+
+            <h1 class="text-3xl font-bold">
+              {{ teachers }}
+            </h1>
+
+            <p class="uppercase text-xs tracking-[0.2em] text-slate-500">
+              Expert <br />
+              Teachers
+            </p>
+          </div>
+
+          <!-- STUDENTS -->
+
+          <div
+            class="bg-white text-center p-6 rounded-2xl text-slate-900 shadow-lg border border-amber-100"
+          >
+            <span
+              nz-icon
+              nzType="smile"
+              nzTheme="outline"
+              class="text-3xl mb-2 block text-amber-600"
+            ></span>
+
+            <h1 class="text-3xl font-bold">
+              {{ students }}
+            </h1>
+
+            <p class="uppercase text-xs tracking-[0.2em] text-slate-500">
+              Happy <br />
+              Students
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

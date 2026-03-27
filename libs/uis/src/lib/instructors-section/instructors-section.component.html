@@ -1,0 +1,81 @@
+<div class="py-20 bg-[#f7f3ee]">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- TITLE -->
+
+    <div class="text-center mb-12">
+      <div
+        class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs uppercase tracking-[0.25em] text-slate-600"
+      >
+        The Faculty
+      </div>
+
+      <h1
+        class="display text-3xl md:text-4xl font-semibold text-slate-900 mt-4"
+      >
+        Meet the mentors behind your next breakthrough.
+      </h1>
+
+      <h5 class="text-lg text-slate-600 max-w-2xl mx-auto mt-3">
+        Experts who bring real-world context, live feedback, and daily momentum
+        to every cohort.
+      </h5>
+    </div>
+
+    <!-- INSTRUCTOR GRID -->
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <nz-card
+        *ngFor="let instructor of instructors"
+        nzHoverable
+        class="text-left shadow-xl rounded-2xl overflow-hidden border border-white"
+      >
+        <div class="relative">
+          <img
+            nz-card-cover
+            [src]="instructor.image"
+            alt="Instructor"
+            class="h-[360px] w-full object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent"
+          ></div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <h3 class="font-semibold text-lg">
+              {{ instructor.name }}
+            </h3>
+            <p class="text-sm text-slate-200">
+              {{ instructor.role }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center px-4 py-4 text-lg">
+          <div class="text-xs uppercase tracking-[0.2em] text-slate-500">
+            Follow
+          </div>
+          <div class="flex gap-3 text-slate-500">
+            <a routerLink="/" class="hover:text-slate-900">
+              <span nz-icon nzType="twitter"></span>
+            </a>
+
+            <a routerLink="/" class="hover:text-slate-900">
+              <span nz-icon nzType="facebook"></span>
+            </a>
+
+            <a routerLink="/" class="hover:text-slate-900">
+              <span nz-icon nzType="linkedin"></span>
+            </a>
+
+            <a routerLink="/" class="hover:text-slate-900">
+              <span nz-icon nzType="instagram"></span>
+            </a>
+
+            <a routerLink="/" class="hover:text-slate-900">
+              <span nz-icon nzType="youtube"></span>
+            </a>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</div>
