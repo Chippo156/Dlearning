@@ -1,0 +1,162 @@
+<div class="course-detail">
+  <!-- Loading -->
+  <div class="max-w-7xl mx-auto px-4 py-12" *ngIf="loading">
+    <nz-spin nzTip="Loading..."></nz-spin>
+  </div>
+
+  <ng-container *ngIf="!loading && course">
+    <!-- Hero -->
+    <section class="course-hero">
+      <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <div class="hero-pill">Course Detail</div>
+            <h1 class="display text-3xl md:text-5xl font-semibold mt-5">
+              {{ course.title }}
+            </h1>
+            <p class="hero-subtitle">
+              {{ course.description }}
+            </p>
+
+            <div class="hero-meta">
+              <span class="hero-tag">
+                {{ course.courseLevel || 'All Levels' }}
+              </span>
+              <span class="hero-tag"> {{ course.duration || 0 }} hrs </span>
+              <span class="hero-tag">
+                {{ course.language || 'Global' }}
+              </span>
+            </div>
+
+            <div class="hero-actions">
+              <button
+                nz-button
+                nzType="primary"
+                class="hero-cta"
+                (click)="getPointsCurrent()"
+              >
+                Start Learning
+              </button>
+              <button nz-button nzType="default" class="hero-ghost">
+                Preview Syllabus
+              </button>
+            </div>
+            <div class="hero-streak">
+              <div class="hero-chip">
+                <span class="chip-label">Rating</span>
+                <span class="chip-value">{{
+                  course.averageRating || 4.8
+                }}</span>
+              </div>
+              <div class="hero-chip">
+                <span class="chip-label">Learners</span>
+                <span class="chip-value">20k+</span>
+              </div>
+              <div class="hero-chip">
+                <span class="chip-label">Points</span>
+                <span class="chip-value">{{ course.points || 0 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="hero-card">
+              <img
+                class="hero-image"
+                [src]="course.thumbnail"
+                [alt]="course.title"
+              />
+              <div class="hero-overlay">
+                <div>
+                  <p class="stat-label">Category</p>
+                  <p class="stat-value">
+                    {{ course.typeCourse || 'General' }}
+                  </p>
+                </div>
+                <div>
+                  <p class="stat-label">Level</p>
+                  <p class="stat-value">
+                    {{ course.courseLevel || 'All' }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 pb-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- LEFT -->
+        <div class="lg:col-span-8">
+          <!-- Video -->
+          <div class="content-card">
+            <div class="card-title-row">
+              <div class="card-title">Course Preview</div>
+              <div class="card-pill">Updated weekly</div>
+            </div>
+            <div class="video-shell">
+              <video class="w-full" controls>
+                <source [src]="course.videoUrl" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <div class="content-card mt-6">
+            <nz-tabset>
+              <nz-tab nzTitle="Course Content">
+                <app-course-content [chapters]="chapters"> </app-course-content>
+              </nz-tab>
+
+              <nz-tab nzTitle="Instructor">
+                <h3 class="text-xl font-semibold mb-3">Instructor</h3>
+
+                <p class="text-slate-600">Instructor information here...</p>
+              </nz-tab>
+
+              <nz-tab nzTitle="Reviews">
+                <div class="review-grid">
+                  <div *ngFor="let r of reviews" class="review-card">
+                    <div class="review-avatar">{{ r.name[0] }}</div>
+                    <div>
+                      <p class="font-semibold text-slate-900">{{ r.name }}</p>
+                      <p class="text-slate-600 text-sm">{{ r.review }}</p>
+                      <div class="review-stars">
+                        <span>★ ★ ★ ★</span>
+                        <span class="review-muted">4.0</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nz-tab>
+            </nz-tabset>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="lg:col-span-4">
+          <div class="sticky top-6 space-y-6">
+            <app-course-feature
+              [course]="course"
+              [courseId]="courseId"
+              [isPurchase]="isPurchase"
+              (onEnrollSuccess)="getPointsCurrent()"
+            >
+            </app-course-feature>
+
+            <div class="content-card">
+              <div class="card-title">What you will build</div>
+              <ul class="list-disc pl-5 text-slate-600 space-y-2">
+                <li>Capstone project portfolio-ready</li>
+                <li>Reusable templates and checklists</li>
+                <li>Weekly feedback loop with mentors</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

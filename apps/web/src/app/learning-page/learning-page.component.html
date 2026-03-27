@@ -1,0 +1,180 @@
+<app-progress-bar [courseTitle]="courseTitle" [completionData]="completionData">
+</app-progress-bar>
+
+<nz-layout class="min-h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <nz-sider nzWidth="280" class="bg-white shadow-sm">
+    <div class="p-4 border-b border-gray-200">
+      <h3 class="font-bold text-lg text-gray-800">Nội dung bài học</h3>
+    </div>
+    <div class="overflow-y-auto" style="height: calc(100vh - 200px)">
+      <div *ngFor="let chapter of chapters; let i = index" class="mb-2">
+        <div
+          class="px-4 py-3 bg-blue-50 font-semibold text-sm text-blue-900 sticky top-0 z-10"
+        >
+          <span
+            class="inline-block bg-blue-500 text-white rounded-full w-6 h-6 text-center text-xs leading-6 mr-2"
+            >{{ i + 1 }}</span
+          >
+          {{ chapter.chapterName }}
+        </div>
+
+        <ul class="space-y-1 px-2 py-2">
+          <li
+            *ngFor="let lesson of chapter.lessonDto"
+            (click)="handleMenuClick(lesson, chapter)"
+            class="cursor-pointer px-3 py-2 rounded-lg mx-1 transition-all duration-200 text-sm text-gray-700 flex items-center gap-2"
+            [class.bg-blue-500]="lesson.lessonId === currentLesson?.lessonId"
+            [class.text-white]="lesson.lessonId === currentLesson?.lessonId"
+            [class.hover:bg-blue-100]="
+              lesson.lessonId !== currentLesson?.lessonId
+            "
+            [title]="lesson.lessonName"
+          >
+            <span
+              *ngIf="lesson.lessonId === currentLesson?.lessonId"
+              class="inline-block mr-2"
+              >▶</span
+            >
+            <span
+              *ngIf="isLessonCompleted(lesson.lessonId)"
+              class="text-green-600 text-xs font-semibold"
+              [class.text-white]="lesson.lessonId === currentLesson?.lessonId"
+              >✔</span
+            >
+            {{ lesson.lessonName }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nz-sider>
+
+  <!-- Content -->
+  <nz-layout class="bg-gray-50">
+    <nz-content class="p-8">
+      <div class="max-w-4xl mx-auto">
+        <div class="mb-6 flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-gray-500">
+              {{ currentChapter?.chapterName }}
+            </p>
+            <h2 class="text-2xl font-semibold text-gray-900">
+              {{ currentLesson?.lessonName || 'Select a lesson' }}
+            </h2>
+          </div>
+          <div
+            class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold"
+            [class.bg-green-100]="hasUpdatedCompletion"
+            [class.text-green-700]="hasUpdatedCompletion"
+            [class.bg-yellow-100]="!hasUpdatedCompletion"
+            [class.text-yellow-700]="!hasUpdatedCompletion"
+          >
+            <span *ngIf="hasUpdatedCompletion">Completed</span>
+            <span *ngIf="!hasUpdatedCompletion">In progress</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="learningUx?.loadingCourse"
+          class="mb-6 rounded-xl border border-gray-200 bg-white p-6 text-center text-gray-500"
+        >
+          Loading lesson data...
+        </div>
+
+        <div
+          *ngIf="!learningUx?.loadingCourse && !currentLesson"
+          class="mb-6 rounded-xl border border-gray-200 bg-white p-6 text-center text-gray-500"
+        >
+          No lesson available yet.
+        </div>
+
+        <!-- Video Section -->
+        <div
+          class="relative w-full overflow-hidden rounded-xl shadow-lg bg-black cursor-pointer"
+          style="padding-bottom: 56.25%"
+        >
+          <!-- THUMBNAIL -->
+          <ng-container *ngIf="!isPlaying; else videoTpl">
+            <div
+              class="absolute inset-0 flex items-center justify-center group"
+              (click)="playVideo()"
+            >
+              <img
+                [src]="getThumbnailFromVideo(currentLesson?.videoUrl || '')"
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+
+              <div
+                class="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-50"
+              ></div>
+
+              <div
+                class="absolute z-10 w-20 h-20 bg-red-600 rounded-full flex items-center justify-center"
+              >
+                ▶
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- VIDEO -->
+          <ng-template #videoTpl>
+            <video
+              #videoPlayer
+              class="absolute inset-0 w-full h-full"
+              controls
+              autoplay
+              (timeupdate)="handleTimeUpdate()"
+              (seeking)="handleSeeking()"
+            >
+              <source [src]="currentLesson?.videoUrl" type="video/mp4" />
+            </video>
+          </ng-template>
+        </div>
+
+        <div
+          *ngIf="!hasVideoUrl && currentLesson"
+          class="mt-4 rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-700"
+        >
+          Video source is missing. Please contact support.
+        </div>
+
+        <!-- Comments Section -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+            <svg
+              class="w-6 h-6 mr-2 text-blue-500"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z"
+              />
+              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0z" opacity=".5" />
+              <path d="M15 9a1 1 0 11-2 0 1 1 0 012 0z" opacity=".5" />
+            </svg>
+            Nhận xét bài học
+          </h3>
+          <app-review-lesson
+            [comments]="commentLesson"
+            [avatar]="avatar"
+            [newCommentLesson]="newCommentLesson"
+            [replyContent]="replyContent"
+            [activeReply]="activeReply"
+            (addComment)="handleAddCommentLesson()"
+          >
+          </app-review-lesson>
+        </div>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+
+<app-learning-page-ux
+  #learningUx
+  (courseLoaded)="onCourseLoaded($event)"
+  (courseFailed)="onCourseFailed($event)"
+  (completionLoaded)="onCompletionLoaded($event)"
+  (completionFailed)="onCompletionFailed($event)"
+  (lessonCompleted)="onLessonCompleted($event)"
+  (lessonCompleteFailed)="onLessonCompleteFailed($event)"
+></app-learning-page-ux>

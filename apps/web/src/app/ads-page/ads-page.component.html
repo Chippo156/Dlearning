@@ -1,0 +1,38 @@
+<div class="ads-page-screen animate-fade">
+  <section class="ads-hero">
+    <div class="ads-hero-content">
+      <p class="ads-hero-kicker">Marketing Workspace</p>
+      <h1>Manage Your Advertisements</h1>
+      <p>
+        Monitor campaign visibility, keep contact channels accurate, and stay in
+        control of your ad lifecycle.
+      </p>
+    </div>
+
+    <div class="ads-hero-visual" aria-hidden="true">
+      <img
+        src="/assets/img/advertisement.png"
+        alt="Advertising dashboard visual"
+      />
+    </div>
+  </section>
+
+  <section class="ads-controls">
+    <div class="ads-controls-title-wrap">
+      <h2>Ad Listings</h2>
+      <p>Use sorting to quickly inspect recently updated campaigns.</p>
+    </div>
+
+    <div class="ads-sort">
+      <label for="ads-sort-select">Sort by date</label>
+      <select id="ads-sort-select" class="ads-sort-select">
+        <option value="desc">Newest</option>
+        <option value="asc">Oldest</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="ads-table-section">
+    <app-ads-table></app-ads-table>
+  </section>
+</div>

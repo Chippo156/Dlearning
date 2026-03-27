@@ -1,0 +1,52 @@
+<div class="bg-gray-100 min-h-screen p-6">
+  <div class="max-w-7xl mx-auto bg-white rounded-xl shadow p-6">
+    <!-- Breadcrumb -->
+    <nz-breadcrumb class="mb-4">
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+      <nz-breadcrumb-item>Course</nz-breadcrumb-item>
+      <nz-breadcrumb-item>Favourite</nz-breadcrumb-item>
+    </nz-breadcrumb>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center py-20">
+      <nz-spin nzSize="large"></nz-spin>
+    </div>
+
+    <!-- Course list -->
+    <div
+      *ngIf="!loading && courses.length > 0; else emptyList"
+      class="text-center text-gray-500 py-20"
+    >
+      <h1 class="text-2xl font-semibold text-center mb-6">
+        Your Favourite Courses
+      </h1>
+      <app-favourites
+        [favourites]="courses"
+        [handleDeleteFavourite]="handleDeleteFavourite.bind(this)"
+      >
+      </app-favourites>
+
+      <!-- Pagination -->
+      <div class="flex justify-center mt-8">
+        <nz-pagination
+          [nzTotal]="totalElements"
+          [(nzPageIndex)]="currentPage"
+          [nzPageSize]="pageSize"
+          [nzShowQuickJumper]="true"
+          [nzShowSizeChanger]="true"
+          (nzPageIndexChange)="changePage($event)"
+        >
+        </nz-pagination>
+      </div>
+    </div>
+    <ng-template #emptyList>
+      <div class="flex flex-col items-center gap-4 py-10">
+        <i nz-icon nzType="heart" class="text-4xl text-gray-400"></i>
+        <p class="text-gray-500">You have no favourite courses yet.</p>
+        <a routerLink="/courses" nz-button nzType="primary">
+          Explore Courses
+        </a>
+      </div>
+    </ng-template>
+  </div>
+</div>
