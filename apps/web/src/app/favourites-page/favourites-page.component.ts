@@ -73,4 +73,10 @@ export class FavouritePageComponent implements OnInit {
       },
     });
   };
+
+  changePageSize(size: number) {
+    this.pageSize = size;
+    this.currentPage = 1;
+    this.fetchCourses();
+  }
 }

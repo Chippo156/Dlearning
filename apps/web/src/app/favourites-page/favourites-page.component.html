@@ -1,52 +1,97 @@
-<div class="bg-gray-100 min-h-screen p-6">
-  <div class="max-w-7xl mx-auto bg-white rounded-xl shadow p-6">
-    <!-- Breadcrumb -->
-    <nz-breadcrumb class="mb-4">
-      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
-      <nz-breadcrumb-item>Course</nz-breadcrumb-item>
-      <nz-breadcrumb-item>Favourite</nz-breadcrumb-item>
-    </nz-breadcrumb>
+<div
+  @pageAnimation
+  class="min-h-screen bg-slate-950 text-slate-100 flex justify-center relative overflow-hidden"
+>
+  <div
+    class="pointer-events-none absolute -top-40 -left-40 h-[420px] w-[420px] rounded-full bg-cyan-500/20 blur-[120px]"
+  ></div>
+  <div
+    class="pointer-events-none absolute bottom-0 -right-24 h-[520px] w-[520px] rounded-full bg-amber-400/20 blur-[140px]"
+  ></div>
 
-    <!-- Loading -->
-    <div *ngIf="loading" class="flex justify-center py-20">
-      <nz-spin nzSize="large"></nz-spin>
-    </div>
-
-    <!-- Course list -->
-    <div
-      *ngIf="!loading && courses.length > 0; else emptyList"
-      class="text-center text-gray-500 py-20"
-    >
-      <h1 class="text-2xl font-semibold text-center mb-6">
-        Your Favourite Courses
-      </h1>
-      <app-favourites
-        [favourites]="courses"
-        [handleDeleteFavourite]="handleDeleteFavourite.bind(this)"
+  <div class="w-full max-w-[1400px] px-4 py-8">
+    <div class="mb-10">
+      <div
+        class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.2em] text-cyan-200"
       >
-      </app-favourites>
+        Saved Courses
+      </div>
 
-      <!-- Pagination -->
-      <div class="flex justify-center mt-8">
-        <nz-pagination
-          [nzTotal]="totalElements"
-          [(nzPageIndex)]="currentPage"
-          [nzPageSize]="pageSize"
-          [nzShowQuickJumper]="true"
-          [nzShowSizeChanger]="true"
-          (nzPageIndexChange)="changePage($event)"
-        >
-        </nz-pagination>
+      <h1 class="mt-4 text-4xl md:text-5xl font-semibold text-white">
+        Your favourite courses, ready when you are.
+      </h1>
+
+      <p class="mt-3 text-lg text-slate-300 max-w-2xl">
+        Keep track of the courses you love and continue your learning journey
+        from one place.
+      </p>
+
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+          <p class="text-xs uppercase tracking-[0.18em] text-slate-300">
+            Saved Courses
+          </p>
+          <p class="mt-2 text-2xl font-semibold text-white">
+            {{ totalElements }}
+          </p>
+        </div>
+
+        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+          <p class="text-xs uppercase tracking-[0.18em] text-slate-300">
+            Current Page
+          </p>
+          <p class="mt-2 text-base font-semibold text-white">
+            {{ currentPage }} / {{ totalPages || 1 }}
+          </p>
+        </div>
+
+        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+          <p class="text-xs uppercase tracking-[0.18em] text-slate-300">
+            Page Size
+          </p>
+          <p class="mt-2 text-base font-semibold text-white">{{ pageSize }}</p>
+        </div>
       </div>
     </div>
-    <ng-template #emptyList>
-      <div class="flex flex-col items-center gap-4 py-10">
-        <i nz-icon nzType="heart" class="text-4xl text-gray-400"></i>
-        <p class="text-gray-500">You have no favourite courses yet.</p>
-        <a routerLink="/courses" nz-button nzType="primary">
-          Explore Courses
-        </a>
+
+    <div class="bg-white rounded-3xl shadow-2xl p-6 text-slate-900">
+      <div *ngIf="loading" class="flex justify-center py-20">
+        <nz-spin nzSize="large"></nz-spin>
       </div>
-    </ng-template>
+
+      <div *ngIf="!loading && courses.length > 0; else emptyList">
+        <app-favourites
+          [favourites]="courses"
+          [handleDeleteFavourite]="handleDeleteFavourite.bind(this)"
+        >
+        </app-favourites>
+
+        <div
+          class="flex justify-center items-center mt-12 pt-8 border-t border-gray-200"
+        >
+          <nz-pagination
+            [nzTotal]="totalElements"
+            [(nzPageIndex)]="currentPage"
+            [nzPageSize]="pageSize"
+            [nzShowQuickJumper]="true"
+            [nzShowSizeChanger]="true"
+            [nzPageSizeOptions]="[8, 12, 16, 20]"
+            (nzPageIndexChange)="changePage($event)"
+            (nzPageSizeChange)="changePageSize($event)"
+          >
+          </nz-pagination>
+        </div>
+      </div>
+
+      <ng-template #emptyList>
+        <div class="flex flex-col items-center gap-4 py-16">
+          <i nz-icon nzType="heart" class="text-4xl text-slate-400"></i>
+          <p class="text-slate-500">You have no favourite courses yet.</p>
+          <a routerLink="/courses" nz-button nzType="primary">
+            Explore Courses
+          </a>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

@@ -1,0 +1,298 @@
+<section class="min-h-screen bg-slate-100">
+  <div class="mx-auto max-w-7xl px-6 py-8">
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">
+          Lesson Management
+        </p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate-900">
+          Lesson CRUD Workspace
+        </h1>
+        <p class="mt-2 text-slate-600">
+          Create, update, delete lessons and upload lesson videos.
+        </p>
+      </div>
+      <div
+        class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+      >
+        Showing {{ lessons.length }} / {{ allLessons.length }} Lessons
+      </div>
+    </div>
+
+    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div
+        class="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm"
+      >
+        <p class="text-xs uppercase tracking-[0.16em] text-slate-500">
+          Visible Lessons
+        </p>
+        <p class="mt-1 text-2xl font-semibold text-slate-900">
+          {{ lessons.length }}
+        </p>
+      </div>
+      <div
+        class="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm"
+      >
+        <p class="text-xs uppercase tracking-[0.16em] text-slate-500">
+          With Video
+        </p>
+        <p class="mt-1 text-2xl font-semibold text-slate-900">
+          {{ lessonsWithVideoCount }}
+        </p>
+      </div>
+      <div
+        class="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm"
+      >
+        <p class="text-xs uppercase tracking-[0.16em] text-slate-500">
+          Active Filters
+        </p>
+        <p class="mt-1 text-2xl font-semibold text-slate-900">
+          {{ activeFilterCount }}
+        </p>
+      </div>
+    </div>
+
+    <div class="mb-4" *ngIf="message">
+      <nz-alert nzType="success" [nzMessage]="message" nzShowIcon></nz-alert>
+    </div>
+    <div class="mb-4" *ngIf="error">
+      <nz-alert nzType="error" [nzMessage]="error" nzShowIcon></nz-alert>
+    </div>
+
+    <nz-card [nzBordered]="false" class="rounded-2xl shadow-sm">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 class="text-lg font-semibold text-slate-900">Lesson List</h2>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <nz-select
+            class="min-w-[220px]"
+            [ngModel]="selectedCourseFilterId"
+            (ngModelChange)="onFilterCourseChange($event)"
+            [ngModelOptions]="{ standalone: true }"
+            nzPlaceHolder="Filter by course"
+            nzShowSearch
+            [nzLoading]="loadingCourses"
+            nzAllowClear
+          >
+            <nz-option
+              *ngFor="let course of courseOptions"
+              [nzValue]="course.id"
+              [nzLabel]="course.courseName"
+            ></nz-option>
+          </nz-select>
+
+          <nz-select
+            class="min-w-[220px]"
+            [ngModel]="selectedChapterFilterId"
+            (ngModelChange)="onFilterChapterChange($event)"
+            [ngModelOptions]="{ standalone: true }"
+            nzPlaceHolder="Filter by chapter"
+            nzShowSearch
+            [nzLoading]="loadingChapters"
+            nzAllowClear
+          >
+            <nz-option
+              *ngFor="let chapter of chapterOptions"
+              [nzValue]="chapter.chapterId"
+              [nzLabel]="chapter.chapterName"
+            ></nz-option>
+          </nz-select>
+
+          <button
+            nz-button
+            nzType="default"
+            (click)="clearFilters()"
+            [disabled]="activeFilterCount === 0"
+          >
+            Clear Filters
+          </button>
+
+          <button nz-button nzType="primary" (click)="openCreateModal()">
+            Add Lesson
+          </button>
+        </div>
+      </div>
+
+      <div class="py-12" *ngIf="loading">
+        <nz-spin nzTip="Loading lessons..."></nz-spin>
+      </div>
+
+      <ng-container *ngIf="!loading && lessons.length === 0">
+        <nz-empty
+          [nzNotFoundContent]="
+            activeFilterCount > 0
+              ? 'No lessons match current filters'
+              : 'No lessons found'
+          "
+        ></nz-empty>
+      </ng-container>
+
+      <nz-table
+        *ngIf="!loading && lessons.length > 0"
+        #lessonTable
+        [nzData]="lessons"
+        [nzFrontPagination]="false"
+        [nzShowPagination]="false"
+        [nzBordered]="true"
+        [nzSize]="'middle'"
+      >
+        <thead>
+          <tr>
+            <th>Lesson ID</th>
+            <th>Course</th>
+            <th>Chapter</th>
+            <th>Lesson Name</th>
+            <th>Description</th>
+            <th>Video Url</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lesson of lessonTable.data">
+            <td>{{ lesson.lessonId }}</td>
+            <td>{{ getCourseTitle(lesson.courseId) }}</td>
+            <td>{{ getChapterName(lesson) }}</td>
+            <td>
+              <p class="max-w-[220px] truncate font-medium text-slate-800">
+                {{ lesson.lessonName }}
+              </p>
+            </td>
+            <td>
+              <p class="max-w-[280px] truncate text-slate-600">
+                {{ lesson.description || lesson.lessonDescription || '-' }}
+              </p>
+            </td>
+            <td>
+              <a
+                *ngIf="lesson.videoUrl"
+                [href]="lesson.videoUrl"
+                target="_blank"
+                rel="noopener"
+                class="text-cyan-700 hover:text-cyan-500"
+                >Open</a
+              >
+              <span *ngIf="!lesson.videoUrl">-</span>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <button
+                  nz-button
+                  nzType="default"
+                  nzSize="small"
+                  (click)="editLesson(lesson)"
+                >
+                  Edit
+                </button>
+                <button
+                  nz-button
+                  nzDanger
+                  nzSize="small"
+                  (click)="deleteLesson(lesson)"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+
+    <nz-modal
+      [nzVisible]="isModalVisible"
+      [nzTitle]="isEditing ? 'Edit Lesson' : 'Create New Lesson'"
+      [nzFooter]="null"
+      [nzMaskClosable]="false"
+      (nzOnCancel)="closeModal()"
+    >
+      <form
+        *nzModalContent
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+        class="grid grid-cols-1 gap-4"
+      >
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Course
+          <nz-select
+            formControlName="courseId"
+            nzPlaceHolder="Select course"
+            nzShowSearch
+          >
+            <nz-option
+              *ngFor="let course of courseOptions"
+              [nzValue]="course.id"
+              [nzLabel]="course.courseName"
+            ></nz-option>
+          </nz-select>
+        </label>
+
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Chapter
+          <nz-select
+            formControlName="chapterId"
+            nzPlaceHolder="Select chapter"
+            nzShowSearch
+          >
+            <nz-option
+              *ngFor="let chapter of chapterOptions"
+              [nzValue]="chapter.chapterId"
+              [nzLabel]="chapter.chapterName"
+            ></nz-option>
+          </nz-select>
+        </label>
+
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Lesson Name
+          <input
+            type="text"
+            formControlName="lessonName"
+            class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+          />
+        </label>
+
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Description
+          <textarea
+            rows="4"
+            formControlName="description"
+            class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+          ></textarea>
+        </label>
+
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Video File {{ isEditing ? '(optional)' : '' }}
+          <input
+            type="file"
+            accept="video/*"
+            (change)="onVideoChange($event)"
+            class="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2"
+          />
+          <span *ngIf="selectedVideo" class="text-xs text-slate-500">
+            Selected: {{ selectedVideo.name }}
+          </span>
+        </label>
+
+        <div class="flex items-center justify-end gap-3">
+          <button
+            nz-button
+            nzType="default"
+            type="button"
+            (click)="closeModal()"
+            [disabled]="submitting"
+          >
+            Cancel
+          </button>
+          <button
+            nz-button
+            nzType="primary"
+            [disabled]="submitting"
+            [nzLoading]="submitting"
+            htmlType="submit"
+          >
+            {{ isEditing ? 'Update Lesson' : 'Create Lesson' }}
+          </button>
+        </div>
+      </form>
+    </nz-modal>
+  </div>
+</section>

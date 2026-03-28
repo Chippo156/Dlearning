@@ -8,9 +8,9 @@ import { SearchCourseComponent } from '@modules/search-course/search-course.comp
 import { CommonModule } from '@angular/common';
 import { GetCourseElasticSearchUx } from '@uxs/course-uxs/get-course-elastic-search.ux';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { CoursePageHeaderComponent } from './components/course-page-header/course-page-header.component';
-import { CoursePageSortBarComponent } from './components/course-page-sort-bar/course-page-sort-bar.component';
-import { CoursePageResultsComponent } from './components/course-page-results/course-page-results.component';
+import { CoursePageHeaderComponent } from '@modules/course-page-header/course-page-header.component';
+import { CoursePageSortBarComponent } from '@modules/course-page-sort-bar/course-page-sort-bar.component';
+import { CoursePageResultsComponent } from '@modules/course-page-results/course-page-results.component';
 const routes: Routes = [
   {
     path: '',

@@ -10,6 +10,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTagModule } from 'ng-zorro-antd/tag';
@@ -26,6 +27,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzTableModule,
     NzTagModule,
     NzEmptyModule,
+    NzModalModule,
     NzSpinModule,
   ],
   templateUrl: './admin-course-page.component.html',
@@ -45,6 +47,7 @@ export class AdminCoursePageComponent implements OnInit {
   selectedVideo: File | null = null;
   loading = false;
   submitting = false;
+  isModalVisible = false;
   message = '';
   error = '';
 
@@ -94,6 +97,20 @@ export class AdminCoursePageComponent implements OnInit {
     this.selectedVideo = input.files?.[0] || null;
   }
 
+  openCreateModal(): void {
+    this.resetForm();
+    this.isModalVisible = true;
+  }
+
+  closeModal(): void {
+    if (this.submitting) {
+      return;
+    }
+
+    this.isModalVisible = false;
+    this.resetForm();
+  }
+
   editCourse(course: CourseResponse): void {
     this.selectedCourseId = course.id;
     this.selectedFile = null;
@@ -109,6 +126,8 @@ export class AdminCoursePageComponent implements OnInit {
       courseLevel: course.courseLevel,
       points: course.points,
     });
+
+    this.isModalVisible = true;
   }
 
   resetForm(): void {
@@ -157,6 +176,7 @@ export class AdminCoursePageComponent implements OnInit {
       next: (res) => {
         this.message = res.message || 'Saved successfully.';
         this.submitting = false;
+        this.isModalVisible = false;
         this.resetForm();
         this.loadCourses();
       },

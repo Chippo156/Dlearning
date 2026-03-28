@@ -9,6 +9,7 @@ import { ApiResponse } from '../models/api-response.model';
 import { CourseResponse } from '../models/course-response.model';
 import { CourseChapter } from '@shared/models/data/course-chapter.model';
 import { CourseCreationRequest } from '@shared/models/request/course-creation.request';
+import { CourseDropdownItem } from '@shared/models/course-dropdown-item.model';
 
 @Injectable({
   providedIn: 'root',
@@ -105,5 +106,12 @@ export class CourseService extends HttpBaseService {
   deleteCourse(id: number): Observable<ApiResponse<void>> {
     const url = `${this.baseUrl}/courses/delete-course/${id}`;
     return this.http.delete<ApiResponse<void>>(url);
+  }
+
+  getCoursesForDropdown(): Observable<CourseDropdownItem[]> {
+    const url = `${this.baseUrl}/courses/get-courses-for-dropdown`;
+    return this.http
+      .get<ApiResponse<CourseDropdownItem[]>>(url)
+      .pipe(map((res) => res.data || []));
   }
 }

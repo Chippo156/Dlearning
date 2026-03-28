@@ -1,0 +1,193 @@
+<section class="min-h-screen bg-slate-100">
+  <div class="mx-auto max-w-7xl px-6 py-8">
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">
+          Chapter Management
+        </p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate-900">
+          Chapter CRUD Workspace
+        </h1>
+        <p class="mt-2 text-slate-600">
+          Create, update, delete chapters and filter chapters by course.
+        </p>
+      </div>
+      <div
+        class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+      >
+        Total: {{ chapters.length }} Chapters
+      </div>
+    </div>
+
+    <div class="mb-4" *ngIf="message">
+      <nz-alert nzType="success" [nzMessage]="message" nzShowIcon></nz-alert>
+    </div>
+    <div class="mb-4" *ngIf="error">
+      <nz-alert nzType="error" [nzMessage]="error" nzShowIcon></nz-alert>
+    </div>
+
+    <nz-card [nzBordered]="false" class="rounded-2xl shadow-sm">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 class="text-lg font-semibold text-slate-900">Chapter List</h2>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <nz-select
+            class="min-w-[240px]"
+            [ngModel]="selectedCourseFilterId"
+            (ngModelChange)="onFilterCourseChange($event)"
+            [ngModelOptions]="{ standalone: true }"
+            nzPlaceHolder="Filter by course"
+            nzShowSearch
+            [nzLoading]="loadingCourses"
+            nzAllowClear
+          >
+            <nz-option
+              *ngFor="let course of courseOptions"
+              [nzValue]="course.id"
+              [nzLabel]="course.courseName"
+            ></nz-option>
+          </nz-select>
+
+          <button nz-button nzType="primary" (click)="openCreateModal()">
+            Add Chapter
+          </button>
+        </div>
+      </div>
+
+      <div class="py-12" *ngIf="loading">
+        <nz-spin nzTip="Loading chapters..."></nz-spin>
+      </div>
+
+      <ng-container *ngIf="!loading && chapters.length === 0">
+        <nz-empty nzNotFoundContent="No chapters found"></nz-empty>
+      </ng-container>
+
+      <nz-table
+        *ngIf="!loading && chapters.length > 0"
+        #chapterTable
+        [nzData]="chapters"
+        [nzFrontPagination]="false"
+        [nzShowPagination]="false"
+        [nzBordered]="true"
+        [nzSize]="'middle'"
+      >
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Course</th>
+            <th>Chapter Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let chapter of chapterTable.data">
+            <td>{{ chapter.chapterId }}</td>
+            <td>
+              {{ chapter.courseTitle || getCourseTitle(chapter.courseId) }}
+            </td>
+            <td>
+              <p class="max-w-[260px] truncate font-medium text-slate-800">
+                {{ chapter.chapterName }}
+              </p>
+            </td>
+            <td>
+              <p class="max-w-[360px] truncate text-slate-600">
+                {{ chapter.description || '-' }}
+              </p>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <button
+                  nz-button
+                  nzType="default"
+                  nzSize="small"
+                  (click)="editChapter(chapter)"
+                >
+                  Edit
+                </button>
+                <button
+                  nz-button
+                  nzDanger
+                  nzSize="small"
+                  (click)="deleteChapter(chapter)"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+
+    <nz-modal
+      [nzVisible]="isModalVisible"
+      [nzTitle]="isEditing ? 'Edit Chapter' : 'Create New Chapter'"
+      [nzFooter]="null"
+      [nzMaskClosable]="false"
+      (nzOnCancel)="closeModal()"
+    >
+      <form
+        *nzModalContent
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+        class="grid grid-cols-1 gap-4"
+      >
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Course
+          <nz-select
+            formControlName="courseId"
+            nzPlaceHolder="Select course"
+            nzShowSearch
+          >
+            <nz-option
+              *ngFor="let course of courseOptions"
+              [nzValue]="course.id"
+              [nzLabel]="course.courseName"
+            ></nz-option>
+          </nz-select>
+        </label>
+
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Chapter Name
+          <input
+            type="text"
+            formControlName="chapterName"
+            class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+          />
+        </label>
+
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          Description
+          <textarea
+            rows="4"
+            formControlName="description"
+            class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+          ></textarea>
+        </label>
+
+        <div class="flex items-center justify-end gap-3">
+          <button
+            nz-button
+            nzType="default"
+            type="button"
+            (click)="closeModal()"
+            [disabled]="submitting"
+          >
+            Cancel
+          </button>
+          <button
+            nz-button
+            nzType="primary"
+            [disabled]="submitting"
+            [nzLoading]="submitting"
+            htmlType="submit"
+          >
+            {{ isEditing ? 'Update Chapter' : 'Create Chapter' }}
+          </button>
+        </div>
+      </form>
+    </nz-modal>
+  </div>
+</section>
