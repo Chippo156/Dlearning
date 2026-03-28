@@ -1,0 +1,117 @@
+<div class="min-h-screen bg-slate-50">
+  <div class="mx-auto w-full max-w-[1400px] px-4 py-8 sm:px-6">
+    <section
+      class="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-500 px-6 py-8 text-white shadow-xl md:px-8 md:py-10"
+    >
+      <p class="text-xs uppercase tracking-[0.22em] text-cyan-100">
+        Learning Hub
+      </p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
+        My Courses
+      </h1>
+      <p class="mt-3 max-w-2xl text-sm text-cyan-50 md:text-base">
+        Continue where you left off, review course details, and jump back into
+        learning with one click.
+      </p>
+      <div
+        class="mt-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium"
+      >
+        <i nz-icon nzType="book"></i>
+        {{ courses.length }} enrolled course{{
+          courses.length === 1 ? '' : 's'
+        }}
+      </div>
+    </section>
+
+    <div *ngIf="loading" class="flex justify-center py-20">
+      <nz-spin nzSize="large"></nz-spin>
+    </div>
+
+    <div
+      *ngIf="!loading && errorMessage"
+      class="mt-8 rounded-2xl border border-rose-200 bg-rose-50 p-5 text-rose-700"
+    >
+      <p class="font-semibold">Load failed</p>
+      <p class="mt-1 text-sm">{{ errorMessage }}</p>
+      <button nz-button nzType="default" class="mt-4" (click)="fetchCourses()">
+        Retry
+      </button>
+    </div>
+
+    <div
+      *ngIf="!loading && !errorMessage && courses.length === 0"
+      class="mt-8 rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm"
+    >
+      <div
+        class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500"
+      >
+        <i nz-icon nzType="read"></i>
+      </div>
+      <h2 class="mt-4 text-xl font-semibold text-slate-900">
+        No enrolled courses yet
+      </h2>
+      <p class="mt-2 text-slate-600">
+        Browse the course catalog and enroll to start your learning journey.
+      </p>
+      <a routerLink="/courses" nz-button nzType="primary" class="mt-6">
+        Explore Courses
+      </a>
+    </div>
+
+    <section
+      *ngIf="!loading && !errorMessage && courses.length > 0"
+      class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
+    >
+      <article
+        *ngFor="let course of courses"
+        class="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+      >
+        <div class="relative h-48 w-full overflow-hidden bg-slate-100">
+          <img
+            [src]="course.thumbnail || 'assets/images/logo/logo-header.svg'"
+            [alt]="course.title"
+            class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+          <div
+            class="absolute left-3 top-3 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-white"
+          >
+            {{ course.courseLevel || 'All Levels' }}
+          </div>
+        </div>
+
+        <div class="flex flex-1 flex-col p-5">
+          <h2 class="line-clamp-2 text-lg font-semibold text-slate-900">
+            {{ course.title }}
+          </h2>
+
+          <div
+            class="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-500"
+          >
+            <span class="rounded-full bg-slate-100 px-2.5 py-1"
+              >{{ course.points }} hrs</span
+            >
+          </div>
+
+          <div class="mt-6 grid grid-cols-2 gap-2">
+            <a
+              [routerLink]="['/courses', course.courseId]"
+              nz-button
+              nzType="default"
+              class="w-full"
+            >
+              Course Detail
+            </a>
+            <a
+              [routerLink]="['/learning', course.courseId]"
+              nz-button
+              nzType="primary"
+              class="w-full"
+            >
+              Learn
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+</div>

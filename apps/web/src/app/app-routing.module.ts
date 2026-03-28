@@ -72,16 +72,30 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'community',
+        loadComponent: () =>
+          import('./community-page/community-page.component').then(
+            (m) => m.CommunityPageComponent
+          ),
+      },
+      {
         path: 'ads',
         loadChildren: () =>
           import('./ads-page/ads-page.module').then((m) => m.AdsPageModule),
       },
       {
+        path: 'user-certificates',
+        loadChildren: () =>
+          import('./user-certificate-page/user-certificate-page.module').then(
+            (m) => m.UserCertificatePageModule
+          ),
+      },
+      {
         path: 'certificates',
         loadChildren: () =>
-          import('./certificate-page/certificate-page.module').then(
-            (m) => m.CertificatePageModule
-          ),
+          import(
+            './certificate-template-page/certificate-template-page.module'
+          ).then((m) => m.CertificateTemplatePageModule),
       },
       {
         path: 'deposit',
@@ -95,6 +109,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./favourites-page/favourites-page.module').then(
             (m) => m.FavouritesPageModule
+          ),
+      },
+      {
+        path: 'my-courses',
+        loadChildren: () =>
+          import('./my-courses-page/my-courses-page.module').then(
+            (m) => m.MyCoursesPageModule
           ),
       },
       {

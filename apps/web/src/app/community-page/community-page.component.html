@@ -1,0 +1,311 @@
+<div class="min-h-screen bg-slate-50">
+  <div class="mx-auto w-full max-w-[1200px] px-4 py-8 sm:px-6">
+    <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div
+        class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div>
+          <p class="text-xs uppercase tracking-[0.22em] text-slate-400">
+            Community
+          </p>
+          <h1 class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">
+            Share updates with the learning community
+          </h1>
+          <p class="mt-2 text-sm text-slate-600">
+            Create posts, highlight progress, and connect with other learners.
+          </p>
+        </div>
+        <div
+          class="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700"
+        >
+          <i nz-icon nzType="team"></i>
+          {{ allTotalElements }} posts
+        </div>
+      </div>
+      <div
+        class="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 py-4"
+      >
+        <div>
+          <p class="text-sm font-semibold text-slate-800">Start a new post</p>
+          <p class="text-xs text-slate-500">
+            Share updates, tips, or learning highlights.
+          </p>
+        </div>
+        <button nz-button nzType="primary" (click)="openCreateModal()">
+          <i nz-icon nzType="plus"></i>
+          Create Post
+        </button>
+      </div>
+    </section>
+
+    <section class="mt-8">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <button
+            nz-button
+            [nzType]="activeTab === 'all' ? 'primary' : 'default'"
+            (click)="setTab('all')"
+          >
+            All Posts
+          </button>
+          <button
+            nz-button
+            [nzType]="activeTab === 'mine' ? 'primary' : 'default'"
+            (click)="setTab('mine')"
+          >
+            My Posts
+          </button>
+        </div>
+        <div class="text-sm text-slate-500">
+          Showing {{ activePosts.length }} of {{ activeTotalElements }}
+        </div>
+      </div>
+
+      <div
+        *ngIf="activeTab === 'all' && loadingAll"
+        class="flex justify-center py-16"
+      >
+        <nz-spin nzSize="large"></nz-spin>
+      </div>
+      <div
+        *ngIf="activeTab === 'mine' && loadingMine"
+        class="flex justify-center py-16"
+      >
+        <nz-spin nzSize="large"></nz-spin>
+      </div>
+
+      <div
+        *ngIf="activeTab === 'all' && errorAll"
+        class="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-700"
+      >
+        {{ errorAll }}
+      </div>
+      <div
+        *ngIf="activeTab === 'mine' && errorMine"
+        class="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-700"
+      >
+        {{ errorMine }}
+      </div>
+
+      <div
+        *ngIf="activePosts.length === 0 && !loadingAll && !loadingMine"
+        class="mt-6 rounded-2xl border border-slate-200 bg-white p-10 text-center text-slate-500"
+      >
+        No posts yet. Be the first to share something.
+      </div>
+
+      <div class="mt-6 grid grid-cols-1 gap-6">
+        <article
+          *ngFor="let post of activePosts"
+          class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div class="flex items-start gap-3">
+              <img
+                [src]="post.avatar || 'assets/images/logo/logo-header.svg'"
+                [alt]="post.name"
+                class="h-11 w-11 rounded-full object-cover"
+              />
+              <div>
+                <p class="text-sm font-semibold text-slate-900">
+                  {{ post.name }}
+                </p>
+                <p class="text-xs text-slate-500">{{ post.createdAt }}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-slate-500">
+              <span class="rounded-full bg-slate-100 px-2.5 py-1"
+                >{{ post.likeCount || 0 }} likes</span
+              >
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <div *ngIf="editPostId !== post.id" class="text-sm text-slate-700">
+              {{ post.content }}
+            </div>
+
+            <div *ngIf="editPostId === post.id" class="space-y-3">
+              <textarea
+                [(ngModel)]="editContent"
+                class="h-24 w-full resize-none rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-800 focus:border-sky-400 focus:outline-none"
+                [attr.maxLength]="maxContentLength"
+              ></textarea>
+              <div class="flex flex-wrap items-center gap-3">
+                <label
+                  class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600"
+                >
+                  <i nz-icon nzType="picture"></i>
+                  Replace image
+                  <input
+                    type="file"
+                    class="hidden"
+                    accept="image/*"
+                    (change)="onEditImageChange($event)"
+                  />
+                </label>
+                <button nz-button nzType="default" (click)="cancelEdit()">
+                  Cancel
+                </button>
+                <button
+                  nz-button
+                  nzType="primary"
+                  [nzLoading]="updatingId === post.id"
+                  (click)="updatePost(post.id)"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="post.image && editPostId !== post.id"
+            class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50"
+          >
+            <img
+              [src]="post.image"
+              [alt]="post.content"
+              class="w-full max-h-[360px] object-cover"
+            />
+          </div>
+          <div
+            *ngIf="editPostId === post.id && editImagePreview"
+            class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50"
+          >
+            <img
+              [src]="editImagePreview"
+              alt="Updated post image"
+              class="w-full max-h-[360px] object-cover"
+            />
+          </div>
+
+          <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <button nz-button nzType="default" (click)="handleLike(post)">
+                <i nz-icon nzType="heart"></i>
+                Like
+              </button>
+              <button nz-button nzType="default" (click)="handleComment(post)">
+                <i nz-icon nzType="mail"></i>
+                Comment
+              </button>
+            </div>
+            <div
+              class="flex flex-wrap items-center gap-2"
+              *ngIf="canManage(post)"
+            >
+              <button
+                nz-button
+                nzType="default"
+                (click)="startEdit(post)"
+                *ngIf="editPostId !== post.id"
+              >
+                <i nz-icon nzType="edit"></i>
+                Edit
+              </button>
+              <button
+                nz-button
+                nzType="default"
+                [nzLoading]="deletingId === post.id"
+                (click)="deletePost(post.id)"
+                class="text-rose-600"
+              >
+                <i nz-icon nzType="close-circle"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="mt-8 flex justify-center" *ngIf="activeTotalElements > 0">
+        <nz-pagination
+          *ngIf="activeTab === 'all'"
+          [nzTotal]="allTotalElements"
+          [(nzPageIndex)]="allPagination.currentPage"
+          [nzPageSize]="allPagination.pageSize"
+          [nzShowQuickJumper]="true"
+          [nzShowSizeChanger]="true"
+          [nzPageSizeOptions]="[6, 9, 12, 18]"
+          (nzPageIndexChange)="changeAllPage($event)"
+          (nzPageSizeChange)="changeAllPageSize($event)"
+        ></nz-pagination>
+        <nz-pagination
+          *ngIf="activeTab === 'mine'"
+          [nzTotal]="mineTotalElements"
+          [(nzPageIndex)]="minePagination.currentPage"
+          [nzPageSize]="minePagination.pageSize"
+          [nzShowQuickJumper]="true"
+          [nzShowSizeChanger]="true"
+          [nzPageSizeOptions]="[6, 9, 12, 18]"
+          (nzPageIndexChange)="changeMinePage($event)"
+          (nzPageSizeChange)="changeMinePageSize($event)"
+        ></nz-pagination>
+      </div>
+    </section>
+  </div>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isCreateModalOpen"
+  nzTitle="Create Post"
+  [nzOkLoading]="isSubmitting"
+  [nzOkDisabled]="
+    !newContent.trim() || newContent.trim().length > maxContentLength
+  "
+  nzOkText="Post"
+  nzCancelText="Cancel"
+  (nzOnCancel)="closeCreateModal()"
+  (nzOnOk)="createPost()"
+>
+  <ng-container *nzModalContent>
+    <textarea
+      [(ngModel)]="newContent"
+      class="mt-2 h-32 w-full resize-none rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-800 focus:border-sky-400 focus:outline-none"
+      [attr.maxLength]="maxContentLength"
+      placeholder="Share your update, tips, or learning milestones..."
+    ></textarea>
+    <div class="mt-2 flex items-center justify-between text-xs text-slate-400">
+      <span>{{ newContent.length }} / {{ maxContentLength }}</span>
+      <span *ngIf="newContent.length > maxContentLength" class="text-rose-500">
+        Max length exceeded
+      </span>
+    </div>
+
+    <div class="mt-4 flex flex-wrap items-center gap-3">
+      <label
+        class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600"
+      >
+        <i nz-icon nzType="picture"></i>
+        Add image
+        <input
+          type="file"
+          class="hidden"
+          accept="image/*"
+          (change)="onNewImageChange($event)"
+        />
+      </label>
+      <button
+        *ngIf="newImagePreview"
+        nz-button
+        nzType="default"
+        class="px-3"
+        (click)="clearNewImage()"
+      >
+        Remove image
+      </button>
+    </div>
+
+    <div
+      *ngIf="newImagePreview"
+      class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white"
+    >
+      <img
+        [src]="newImagePreview"
+        alt="Post image preview"
+        class="w-full max-h-[320px] object-cover"
+      />
+    </div>
+  </ng-container>
+</nz-modal>

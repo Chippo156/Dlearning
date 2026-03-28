@@ -10,6 +10,7 @@ import { CourseResponse } from '../models/course-response.model';
 import { CourseChapter } from '@shared/models/data/course-chapter.model';
 import { CourseCreationRequest } from '@shared/models/request/course-creation.request';
 import { CourseDropdownItem } from '@shared/models/course-dropdown-item.model';
+import { BuyCourseResponse } from '@shared/models/data/buy-course-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -65,12 +66,12 @@ export class CourseService extends HttpBaseService {
       .pipe(map((response) => response.data));
   }
 
-  buyCourse(id: number): Observable<ApiResponse<any>> {
+  buyCourse(id: number): Observable<ApiResponse<BuyCourseResponse>> {
     const request = {
       courseId: id,
     };
     const url = `${this.baseUrl}/courses/buy-course`;
-    return this.http.post<ApiResponse<any>>(url, request);
+    return this.http.post<ApiResponse<BuyCourseResponse>>(url, request);
   }
 
   checkPurchase(courseId: number): Observable<ApiResponse<any>> {
@@ -113,5 +114,13 @@ export class CourseService extends HttpBaseService {
     return this.http
       .get<ApiResponse<CourseDropdownItem[]>>(url)
       .pipe(map((res) => res.data || []));
+  }
+
+  getCoursesByUser(): Observable<BuyCourseResponse[]> {
+    const url = `${this.baseUrl}/enrollments/get-course-by-user`;
+    return (
+      this.http.get<ApiResponse<BuyCourseResponse[]>>(url)
+        .pipe(map((res) => res.data || []))
+    );
   }
 }

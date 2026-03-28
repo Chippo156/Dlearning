@@ -6,10 +6,11 @@ import { CertificateService } from '@shared/services/certificate.service';
 import { CertificateResponse } from '@shared/models/data/certificate-response.model';
 
 @Component({
-  selector: 'app-certificate-page',
-  templateUrl: './certificate-page.component.html',
+  selector: 'app-certificate-template-page',
+  templateUrl: './certificate-template-page.component.html',
+  styleUrls: ['./certificate-template-page.component.less'],
 })
-export class CertificatePageComponent implements OnInit {
+export class CertificateTemplatePageComponent implements OnInit {
   certificates: CertificateResponse[] = [];
   loading = true;
   httpError = '';
