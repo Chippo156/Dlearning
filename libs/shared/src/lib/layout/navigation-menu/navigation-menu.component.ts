@@ -17,8 +17,6 @@ import { Observable } from 'rxjs';
 export class NavigationMenuComponent {
   userCredential$: Observable<LoginResponse | null>;
   constructor(private authStore: AuthStore) {
-    console.log(this.authStore.credentials$);
-
     this.userCredential$ = this.authStore.credentials$;
   }
 }

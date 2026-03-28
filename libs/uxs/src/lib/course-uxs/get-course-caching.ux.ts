@@ -36,14 +36,14 @@ export class GetCourseCachingUx
 
   ngOnInit(): void {
     if (this.init) {
-      this.getCoursesCaching(this.pagination);
+      this.getCourses(this.pagination);
     }
   }
 
-  override getCoursesCaching(pagination: Pagination): Subscription {
+  override getCourses(pagination: Pagination): Subscription {
     this.loading = true;
 
-    this.data = super.getCoursesCaching(pagination);
+    this.data = super.getCourses(pagination);
     return this.data;
   }
 

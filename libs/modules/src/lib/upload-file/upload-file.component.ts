@@ -21,20 +21,20 @@ export class UploadFileComponent {
   previewImage = '';
   selectedFile: File | null = null;
 
-  beforeUpload = () => false;
-
-  async handleChange(info: NzUploadChangeParam): Promise<void> {
-    const latestList = info.fileList.slice(-1);
-    this.fileList = latestList;
-
-    const latestFile = latestList[0];
-    const originFile = latestFile?.originFileObj as File | undefined;
-    if (!originFile) {
-      return;
+  beforeUpload = (file: NzUploadFile): boolean => {
+    const selected = this.getOriginFile(file);
+    if (!selected) {
+      return false;
     }
 
-    this.selectedFile = originFile;
-    this.previewImage = await this.toBase64(originFile);
+    this.selectedFile = selected;
+    this.fileList = [file];
+    void this.setPreview(selected);
+    return false;
+  };
+
+  async handleChange(info: NzUploadChangeParam): Promise<void> {
+    this.fileList = info.fileList.slice(-1);
   }
 
   handleRemove(): void {
@@ -48,6 +48,20 @@ export class UploadFileComponent {
       return;
     }
     this.updateAvatar.emit(this.selectedFile);
+  }
+
+  private async setPreview(file: File): Promise<void> {
+    this.previewImage = await this.toBase64(file);
+  }
+
+  private getOriginFile(file: NzUploadFile): File | null {
+    const originFile = file.originFileObj as File | undefined;
+    if (originFile instanceof File) {
+      return originFile;
+    }
+
+    const fallbackFile = file as unknown as File;
+    return fallbackFile instanceof File ? fallbackFile : null;
   }
 
   private toBase64(file: File): Promise<string> {

@@ -3,6 +3,8 @@
   [init]="true"
   [pagination]="pagination"
   [keyword]="keyword"
+  [searchSpecification]="searchSpecification"
+  [sortBy]="sortBy"
   (onSuccess)="onCoursesLoaded($event)"
 ></app-get-courses-elastic-search-ux>
 <div
@@ -22,6 +24,7 @@
       #searchCourse
       class="w-1/4 flex-shrink-0 bg-white text-slate-900"
       [searchControl]="searchControl"
+      (filtersChange)="onFilterChanged()"
     ></app-search-course>
 
     <!-- MAIN CONTENT AREA -->

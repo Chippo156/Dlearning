@@ -37,20 +37,30 @@ export class CourseService extends HttpBaseService {
     return formData;
   }
 
-  getCoursesCaching(
-    Pagination: Pagination
+  getCourses(
+    Pagination: Pagination,
+    keyword?: string
   ): Observable<ApiResponse<PaginationResponse<CourseResponse>>> {
-    const qps = `page=${Pagination.currentPage}&size=${Pagination.pageSize}`;
-    const url = `${this.baseUrl}/courses/get-courses-caching?${qps}`;
+    let qps = `page=${Pagination.currentPage}&size=${Pagination.pageSize}`;
+    if (keyword) {
+      qps += `&keyword=${encodeURIComponent(keyword)}`;
+    }
+    const url = `${this.baseUrl}/courses/get-all-courses?${qps}`;
     return this.http.get<ApiResponse<PaginationResponse<CourseResponse>>>(url);
   }
 
-  getCoursesElasticSearch(
-    Pagination: Pagination,
-    keyword: string
+  getCoursesBySpecification(
+    pagination: Pagination,
+    sortBy: string,
+    search?: string
   ): Observable<ApiResponse<PaginationResponse<CourseResponse>>> {
-    const qps = `page=${Pagination.currentPage}&size=${Pagination.pageSize}&keyword=${keyword}`;
-    const url = `${this.baseUrl}/courses/get-course-elastic-search?${qps}`;
+    let qps = `page=${pagination.currentPage}&size=${
+      pagination.pageSize
+    }&sortBy=${encodeURIComponent(sortBy)}`;
+    if (search?.trim()) {
+      qps += `&search=${encodeURIComponent(search.trim())}`;
+    }
+    const url = `${this.baseUrl}/courses/filter-courses-spec?${qps}`;
     return this.http.get<ApiResponse<PaginationResponse<CourseResponse>>>(url);
   }
 
@@ -118,9 +128,8 @@ export class CourseService extends HttpBaseService {
 
   getCoursesByUser(): Observable<BuyCourseResponse[]> {
     const url = `${this.baseUrl}/enrollments/get-course-by-user`;
-    return (
-      this.http.get<ApiResponse<BuyCourseResponse[]>>(url)
-        .pipe(map((res) => res.data || []))
-    );
+    return this.http
+      .get<ApiResponse<BuyCourseResponse[]>>(url)
+      .pipe(map((res) => res.data || []));
   }
 }

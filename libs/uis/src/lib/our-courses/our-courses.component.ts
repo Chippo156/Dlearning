@@ -51,7 +51,7 @@ export class OurCoursesComponent {
   loadMoreCourses() {
     if (this.hasMore) {
       this.pagination.currentPage++;
-      this.getCourseCachingUx.getCoursesCaching(this.pagination);
+      this.getCourseCachingUx.getCourses(this.pagination);
     }
   }
 

@@ -18,15 +18,14 @@ export class ApiInterceptor implements HttpInterceptor {
 
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler,
+    next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = this.authService.credentials?.token;
 
-    if (
-      token &&
-      !req.url.includes('/sign-in') &&
-      !req.url.includes('/register')
-    ) {
+    const isPublicAuthEndpoint =
+      /\/sign-in(\?|$)/.test(req.url) || /\/register(\?|$)/.test(req.url);
+
+    if (token && !isPublicAuthEndpoint) {
       req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
@@ -45,7 +44,7 @@ export class ApiInterceptor implements HttpInterceptor {
         this.notification.error(`Error ${error.status}`, message);
 
         return throwError(() => error);
-      }),
+      })
     );
   }
 }

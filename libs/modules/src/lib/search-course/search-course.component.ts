@@ -29,6 +29,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 })
 export class SearchCourseComponent {
   @Input() searchControl!: FormControl;
+  @Output() filtersChange = new EventEmitter<void>();
 
   level: string[] = [];
   type: string[] = [];
@@ -62,6 +63,7 @@ export class SearchCourseComponent {
     } else {
       this.level.push(lvl);
     }
+    this.filtersChange.emit();
   }
 
   toggleType(t: string) {
@@ -70,12 +72,19 @@ export class SearchCourseComponent {
     } else {
       this.type.push(t);
     }
+    this.filtersChange.emit();
+  }
+
+  onDurationChange(value: string) {
+    this.duration = value;
+    this.filtersChange.emit();
   }
 
   clearFilter() {
-    this.searchControl.reset();
+    this.searchControl.reset('', { emitEvent: false });
     this.level = [];
     this.type = [];
     this.duration = '';
+    this.filtersChange.emit();
   }
 }

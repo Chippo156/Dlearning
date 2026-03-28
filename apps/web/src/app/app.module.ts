@@ -13,6 +13,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { HTTP_BASE_SERVICE_CONFIG } from '@shared/services/http-base.service';
+import { SIGNALR_NOTIFICATION_CONFIG } from '@shared/services/signalr-notification.service';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { HeaderModule } from '@shared/layout/header/header.module';
 import { TopBarModule } from '@shared/layout/top-bar/top-bar.module';
@@ -59,6 +60,8 @@ import {
   VideoCameraOutline,
   WalletOutline,
   YoutubeOutline,
+  MenuOutline,
+  PictureTwoTone,
 } from '@ant-design/icons-angular/icons';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -112,6 +115,8 @@ const icons: IconDefinition[] = [
   VideoCameraOutline,
   WalletOutline,
   YoutubeOutline,
+  MenuOutline,
+  PictureTwoTone,
 ];
 
 @NgModule({
@@ -134,6 +139,12 @@ const icons: IconDefinition[] = [
       provide: HTTP_BASE_SERVICE_CONFIG,
       useValue: {
         baseUrl: environment.apiConfig.base,
+      },
+    },
+    {
+      provide: SIGNALR_NOTIFICATION_CONFIG,
+      useValue: {
+        hubUrl: environment.signalR.userQueueNotificationsHub,
       },
     },
     {

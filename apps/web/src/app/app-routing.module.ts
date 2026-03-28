@@ -105,6 +105,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'teach-now',
+        loadComponent: () =>
+          import('./teach-now-page/teach-now-page.component').then(
+            (m) => m.TeachNowPageComponent
+          ),
+      },
+      {
         path: 'favourites',
         loadChildren: () =>
           import('./favourites-page/favourites-page.module').then(

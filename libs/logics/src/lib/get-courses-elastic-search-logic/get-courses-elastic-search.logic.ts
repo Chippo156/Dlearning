@@ -8,9 +8,23 @@ export abstract class GetCourseElasticSearchLogic extends GetCourseElasticSearch
     super();
   }
 
-  getCoursesElasticSearch(pagination: Pagination, keyword: string) {
+  getCourses(
+    pagination: Pagination,
+    keyword: string,
+    searchSpecification: string = '',
+    sortBy: string = 'id'
+  ) {
+    const keywordSpecification = keyword?.trim()
+      ? `title:${keyword.trim()}`
+      : '';
+
+    const search = [keywordSpecification, searchSpecification]
+      .map((item) => item?.trim())
+      .filter(Boolean)
+      .join(',');
+
     return this.courseService
-      .getCoursesElasticSearch(pagination, keyword)
+      .getCoursesBySpecification(pagination, sortBy, search)
       .pipe(finalize(() => this.getCourseElasticSearchComplete()))
       .subscribe({
         next: (res) => this.getCourseElasticSearchSuccess(res),

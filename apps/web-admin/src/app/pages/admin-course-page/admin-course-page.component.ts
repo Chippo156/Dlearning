@@ -74,7 +74,7 @@ export class AdminCoursePageComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.courseService.getCoursesCaching(this.pagination).subscribe({
+    this.courseService.getCourses(this.pagination).subscribe({
       next: (res) => {
         this.courses = res.data.result;
         this.totalElements = res.data.totalElements;

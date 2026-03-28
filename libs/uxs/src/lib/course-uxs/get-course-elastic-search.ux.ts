@@ -28,6 +28,8 @@ export class GetCourseElasticSearchUx
   @Input() init: boolean = false;
   @Input() pagination!: Pagination;
   @Input() keyword!: string;
+  @Input() searchSpecification: string = '';
+  @Input() sortBy: string = 'id';
 
   @Output() onSuccess = new EventEmitter<PaginationResponse<CourseResponse>>();
 
@@ -41,17 +43,29 @@ export class GetCourseElasticSearchUx
 
   ngOnInit(): void {
     if (this.init) {
-      this.getCoursesElasticSearch(this.pagination, this.keyword);
+      this.getCourses(
+        this.pagination,
+        this.keyword,
+        this.searchSpecification,
+        this.sortBy
+      );
     }
   }
 
-  override getCoursesElasticSearch(
+  override getCourses(
     pagination: Pagination,
-    keyword: string
+    keyword: string,
+    searchSpecification: string = '',
+    sortBy: string = 'id'
   ): Subscription {
     this.loading = true;
 
-    this.data = super.getCoursesElasticSearch(pagination, keyword);
+    this.data = super.getCourses(
+      pagination,
+      keyword,
+      searchSpecification,
+      sortBy
+    );
     return this.data;
   }
 

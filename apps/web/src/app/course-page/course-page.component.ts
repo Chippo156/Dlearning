@@ -40,6 +40,8 @@ export class CoursePageComponent {
 
   option = '0';
   keyword: string = '';
+  searchSpecification: string = '';
+  sortBy: string = 'id';
 
   @ViewChild('ux', { static: true }) getUx!: GetCourseElasticSearchUx;
 
@@ -55,9 +57,16 @@ export class CoursePageComponent {
       .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe((keyword) => {
         this.keyword = keyword || '';
+        this.searchSpecification = this.buildSpecificationSearch();
 
         if (this.getUx) {
-          this.getUx.getCoursesElasticSearch(this.pagination, this.keyword);
+          this.pagination.currentPage = 1;
+          this.getUx.getCourses(
+            this.pagination,
+            this.keyword,
+            this.searchSpecification,
+            this.sortBy
+          );
         }
       });
   }
@@ -72,12 +81,85 @@ export class CoursePageComponent {
 
   setOption(option: string) {
     this.option = option;
+    this.sortBy = this.mapSortBy(option);
+    this.pagination.currentPage = 1;
+    this.reloadCourses();
   }
 
   setCurrentPage(page: number) {
     this.pagination.currentPage = page;
+    this.reloadCourses();
+  }
+
+  onFilterChanged() {
+    this.pagination.currentPage = 1;
+    this.searchSpecification = this.buildSpecificationSearch();
+    this.keyword = this.searchControl.value || '';
+    this.reloadCourses();
+  }
+
+  private reloadCourses() {
     if (this.getUx) {
-      this.getUx.getCoursesElasticSearch(this.pagination, this.keyword);
+      this.getUx.getCourses(
+        this.pagination,
+        this.keyword,
+        this.searchSpecification,
+        this.sortBy
+      );
+    }
+  }
+
+  private buildSpecificationSearch(): string {
+    const specs: string[] = [];
+
+    const selectedLevel = this.searchCourse?.level?.[0];
+    const selectedType = this.searchCourse?.type?.[0];
+    const selectedDuration = this.searchCourse?.duration;
+
+    if (selectedLevel) {
+      specs.push(`courseLevel:${selectedLevel}`);
+    }
+
+    if (selectedType) {
+      specs.push(`typeCourse:${selectedType}`);
+    }
+
+    if (selectedDuration) {
+      specs.push(...this.mapDurationToSpecification(selectedDuration));
+    }
+
+    return specs.join(',');
+  }
+
+  private mapDurationToSpecification(duration: string): string[] {
+    if (duration.startsWith('<')) {
+      return [`duration<${duration.slice(1)}`];
+    }
+
+    if (duration.startsWith('>')) {
+      return [`duration>${duration.slice(1)}`];
+    }
+
+    const [min, max] = duration.split('-');
+    if (min && max) {
+      return [`duration>${min}`, `duration<${max}`];
+    }
+
+    return [];
+  }
+
+  private mapSortBy(option: string): string {
+    switch (option) {
+      case '1':
+        return 'studentCount';
+      case '2':
+        return 'averageRating';
+      case '3':
+        return 'createdAt';
+      case '4':
+        return 'id';
+      default:
+        return 'id';
     }
   }
 

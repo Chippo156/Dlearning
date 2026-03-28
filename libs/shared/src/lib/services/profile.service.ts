@@ -31,4 +31,12 @@ export class ProfileService extends HttpBaseService {
       )
       .pipe(map((response) => response.data));
   }
+
+  uploadAvatar(file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    return this.http
+      .post<ApiResponse<string>>(`${this.baseUrl}/user/upload-avatar`, formData)
+      .pipe(map((response) => response.data));
+  }
 }

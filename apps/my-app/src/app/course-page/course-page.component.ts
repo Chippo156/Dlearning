@@ -58,7 +58,7 @@ export class CoursePageComponent {
         this.keyword = keyword || '';
 
         if (this.getUx) {
-          this.getUx.getCoursesElasticSearch(this.pagination, this.keyword);
+          this.getUx.getCourses(this.pagination, this.keyword);
         }
       });
   }
@@ -78,7 +78,7 @@ export class CoursePageComponent {
   setCurrentPage(page: number) {
     this.pagination.currentPage = page;
     if (this.getUx) {
-      this.getUx.getCoursesElasticSearch(this.pagination, this.keyword);
+      this.getUx.getCourses(this.pagination, this.keyword);
     }
   }
 

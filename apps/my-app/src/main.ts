@@ -18,6 +18,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { HTTP_BASE_SERVICE_CONFIG } from '@shared/services/http-base.service';
+import { SIGNALR_NOTIFICATION_CONFIG } from '@shared/services/signalr-notification.service';
 import { environment } from './environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations'; // ✅ THÊM
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
@@ -120,6 +121,12 @@ bootstrapApplication(AppComponent, {
       provide: HTTP_BASE_SERVICE_CONFIG,
       useValue: {
         baseUrl: environment.apiConfig.base,
+      },
+    },
+    {
+      provide: SIGNALR_NOTIFICATION_CONFIG,
+      useValue: {
+        hubUrl: environment.signalR.userQueueNotificationsHub,
       },
     },
     {

@@ -1,6 +1,9 @@
 <div class="flex flex-col items-center justify-center gap-4">
   <nz-upload
     nzListType="picture-card"
+    nzName="avatar"
+    [nzMultiple]="false"
+    nzAccept="image/*"
     [nzFileList]="fileList"
     [nzBeforeUpload]="beforeUpload"
     (nzChange)="handleChange($event)"
@@ -21,6 +24,7 @@
 
   <button
     *ngIf="selectedFile"
+    type="button"
     nz-button
     nzType="primary"
     class="px-6"

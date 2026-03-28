@@ -227,6 +227,7 @@
   [nzFooter]="null"
 >
   <app-upload-file
+    *nzModalContent
     (updateAvatar)="handleAvatarUpdated($event)"
   ></app-upload-file>
 </nz-modal>
@@ -238,6 +239,7 @@
   [nzFooter]="null"
 >
   <form
+    *nzModalContent
     nz-form
     nzLayout="vertical"
     [formGroup]="passwordForm"

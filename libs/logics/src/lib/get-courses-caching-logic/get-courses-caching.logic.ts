@@ -8,9 +8,9 @@ export abstract class GetCourseCachingLogic extends GetCourseCachingLogicImpleme
     super();
   }
 
-  getCoursesCaching(pagination: Pagination) {
+  getCourses(pagination: Pagination) {
     return this.courseService
-      .getCoursesCaching(pagination)
+      .getCourses(pagination)
       .pipe(finalize(() => this.getCourseCachingComplete()))
       .subscribe({
         next: (res) => this.getCourseCachingSuccess(res),

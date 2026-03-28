@@ -30,6 +30,7 @@
     Courses
   </a>
   <a
+    *ngIf="(userCredential$ | async)?.authenticated"
     nz-button
     nzType="link"
     [routerLink]="['/community']"

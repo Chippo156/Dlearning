@@ -8,6 +8,9 @@ import { ProfileService } from '@shared/services/profile.service';
 
 import { UserProfile } from '@shared/models/data/user-profile.model';
 import { UserProfileRequest } from '@shared/models/request/user-profile.request';
+import { Observable } from 'rxjs';
+import { AuthService } from '@shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -18,13 +21,19 @@ import { UserProfileRequest } from '@shared/models/request/user-profile.request'
 export class ProfilePageComponent implements OnInit {
   profileData!: UserProfile;
   avatar: string;
-
   constructor(
     private message: NzMessageService,
     private authStore: AuthStore,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private authService: AuthService,
+    private router: Router
   ) {
     const userProfile = this.authStore.userProfile;
+    this.authService.isLogin$.subscribe((isLogin) => {
+      if (!isLogin) {
+        this.router.navigate(['/']);
+      }
+    });
 
     this.profileData = { ...this.profileData, ...userProfile };
 
@@ -70,9 +79,25 @@ export class ProfilePageComponent implements OnInit {
     this.message.success('Password updated');
   }
 
-  async onUpdateAvatar(file: File): Promise<void> {
+  async onUpdateAvatar(file: File) {
     this.avatar = await this.toBase64(file);
-    this.message.success('Avatar updated');
+    this.profileService.uploadAvatar(file).subscribe({
+      next: (res) => {
+        this.profileService.getProfile().subscribe({
+          next: (res) => {
+            this.profileData = res;
+            this.authStore.userProfile = res;
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        this.message.error('Failed to update avatar');
+      },
+    });
   }
 
   private toBase64(file: File): Promise<string> {
